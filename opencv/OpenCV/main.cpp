@@ -1,12 +1,4 @@
-#include <iostream>
-#include <opencv2/opencv.hpp>
-#include <cvblob.h>
-#include <Phidget21/Phidget21.h>
-
-
-using namespace std;
-using namespace cv;
-using namespace cvb;
+#include "main.h"
 
 //---------------USEFUL INFORMATION---------------//
 
@@ -31,20 +23,37 @@ using namespace cvb;
 
 // Declaring public variables //
 
-Mat src, gray, distort;  // Contains image information. "Matlab-like"
+Mat src, distort;  // Contains image information. "Matlab-like"
+Mat gray, hsv;
+Mat ranger;
 int camSource = 1;  // Choose source of camera [0 - default, 1 - external, ...]
 
-// stuff for perspective
+// variables for perspective
 int board_w = 7;
 int board_h = 9;
 Size board_sz = Size(board_w, board_h); 
-int Z = 25;
-bool found;
+int Z = 25; // "height" from chessboard
+bool blPerspective;
 Point2f objPts[4], imgPts[4];
 Mat H;
 int gry;
 
+//var for histogram 
+MatND skinHistogram;
+int hbins = 30, sbins = 32;
+int histSize[] = {hbins, sbins};
+float hrange[] = {0, 180};
+float srange[] = {0, 256}; // upper boundary is exclusive
+const float* histRange[] = {hrange, srange};
+int channels[] = {0, 1};
+bool unif = true;
+bool accu = false;
 
+MatND backHistogram;
+
+
+Mat image;
+ Mat test;
 
 
 // Matrices for Undistortion //
@@ -62,9 +71,7 @@ Mat distortMat =(Mat_<double>(4,1) << \
 
 
 /// Function prototypes //
-//double angle(Point, Point, Point);
-//void findSquares(Mat&, vector<vector<Point> >&);
-//void drawSquares(Mat&, vector<vector<Point> >&);
+
 
 int thresh = 100;
 int max_thresh = 255;
@@ -77,50 +84,45 @@ Mat src_gray;
 
 int main (int argc, char** argv)
 {
-    // Phidgets ///
     
-    // Declare & Initialise Phidget Object
-    CPhidgetInterfaceKitHandle ifKit = 0;
-    CPhidgetInterfaceKit_create(&ifKit);
-    
-    //////////////
-    
-    
+    // INITIATE VIDEO CAPTURE //
     VideoCapture capture(camSource); // choosing the source of video. (0) being default
     if (!capture.isOpened()) // checking if chosen source is available
-        return -1;
+    { cout << "Invalid source chosen!" ;
+        return -1; }
     
-    // namedWindow("Source", CV_WINDOW_AUTOSIZE);    // highgui function ( this is redundant as imshow creates own window )
     capture >> src;
-    
-    
-
-    
     
     // downscale the image
     pyrDown(src, src,Size(src.cols/2, src.rows/2) );
     
-     Mat hsv,ranger;
+    //end//
     
-    
-    // TEST PERSPECTIVE
+    // DISTORTION CORRECTION //
+    // undistort source (wide angle lens option)
     undistort(src,distort,camMat,distortMat);
-    //distort = src;
+    
+    //end//
+    
+    
+    
+    // PERSPECTIVE CORRECTION (based on "Learning OpenCV - Gary Bradski") //
     
     cvtColor(distort, gray, CV_BGR2GRAY);
-    cvtColor(distort, src_gray, CV_BGR2GRAY);
+    //cvtColor(distort, src_gray, CV_BGR2GRAY);
     
-    //GET THE CHECKERBOARD ON THE PLANE
-    Mat equal;
-    cvtColor(distort, equal, CV_BGR2GRAY);
-    adaptiveThreshold(equal, equal, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 101, 7);
+    
+    // get chessboard on plane
+    Mat adaptive;
+    cvtColor(distort, adaptive, CV_BGR2GRAY);
+    adaptiveThreshold(adaptive, adaptive, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 101, 7);
     //equalizeHist(equal, equal);
-    imshow("too", equal);
+    //imshow("Adaptive Histogram", adaptive);
     vector<Point2f> corners;
-    found = findChessboardCorners(equal, board_sz, corners,
+    blPerspective = findChessboardCorners(adaptive, board_sz, corners,
                                   CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-    if(found) {
-        //Get Subpixel accuracy on those corners
+    if(blPerspective) {
+        //Get Subpixel accuracy on corners
         cornerSubPix(gray, corners,
                      Size(11,11),Size(-1,-1), 
                      TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1 ));
@@ -145,33 +147,75 @@ int main (int argc, char** argv)
         cout << H;
     }
 
-    // set a default perspective transform
+    // else set a default perspective transform
+    else{
+        H = (Mat_<double>(3,3) << \
+             41.64548974825176, 30.65534518492649, 204.4431915283202,
+             1.377646560422583, 37.35908584238238, 71.58721923828102,
+             0.003282731684869353, 0.08694364928835308, 1);
+    }
     
-    H = (Mat_<double>(3,3) << \
-         41.64548974825176, 30.65534518492649, 204.4431915283202,
-         1.377646560422583, 37.35908584238238, 71.58721923828102,
-         0.003282731684869353, 0.08694364928835308, 1);
+    // end // 
+    
+    // sample image
+    
+    image = imread("sample.jpg");
+    imshow("sample", image);
+    
+    cvtColor(image, src_gray, CV_BGR2GRAY);
+    
+    // test image
+   
+    test = imread("test.jpg");
+    imshow("test", test);
+    
+//    // check 'c' key press to continue 
+//    while(true){
+//        if(waitKey(0) == 99) break;
+//    }
+
     
     while (true)        // loop until keypress
     {
-        // Source Camera
+        // UPDATE CAMERA FEED //
         capture >> src; // offload captured image from camera -> src
-            pyrDown(src, src,Size(src.cols/2, src.rows/2) );
+        pyrDown(src, src,Size(src.cols/2, src.rows/2) );
         // Undistort
         undistort(src,distort,camMat,distortMat);
-        //distort = src;
+        
+        //temporary//
+        distort = image;
         
         // Camera Input
         imshow("Source", distort);        // highgui function
+        
+        // end //
     
-        // Find Square Viewport
-//        vector<vector<Point> > squares;
-//        findSquares(distort, squares);
-//        drawSquares(distort, squares);
+        // temporary//
+        src = image;
+        
+        // IMAGE PREPARATION //
+        cvtColor(src, gray, CV_BGR2GRAY);    // where 3rd arg is 'color space conversion code
+        cvtColor(src, hsv, CV_BGR2HSV);
+ 
+        
+        // obtain histogram 
+        
+        calcHist(&hsv,1,channels,Mat(),
+                 skinHistogram,2,histSize,histRange,
+                 unif,accu);
+        
+        // normalise 
+        normalize( skinHistogram, skinHistogram, 0, 255, NORM_MINMAX);
+        calcBackProject(&hsv,1,channels,
+                        skinHistogram,backHistogram,
+                        histRange);
+        
+        imshow("skin back projection", backHistogram);
+        
+
         
 //        blur(src, outBlur, Size(10,10)); // Size(...,...) <- template (width, height) class
-
-        cvtColor(src, gray, CV_BGR2GRAY);    // where 3rd arg is 'color space conversion code
 
         threshold(gray, gray, 200, 100, THRESH_BINARY);
         //imshow("test", gray);
@@ -197,7 +241,7 @@ int main (int argc, char** argv)
         
 
         
-        if(true){ //found
+        if(blPerspective){ //found
             
 //            //DRAW THE POINTS in order: B,G,R,YELLOW
 //            circle(distort,imgPts[0],9,Scalar(255,0,0),3);
@@ -223,10 +267,6 @@ int main (int argc, char** argv)
             createTrackbar("height", "Birds_Eye", &Z, 50,0);
 
         }
-
-        // redundant 
-//        imshow("test", gray);
-//        imshow("Source", distort);
         
         
 //        // Keypress check
@@ -246,7 +286,7 @@ int main (int argc, char** argv)
 
 void thresh_callback(int, void* )
 {
-    Mat src_copy = distort.clone();
+    Mat src_copy = image.clone();
     Mat threshold_output;
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;

@@ -14,9 +14,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DDA967CA14DF209800E1E92D"
-               BuildableName = "OpenCV"
-               BlueprintName = "OpenCV"
-               ReferencedContainer = "container:OpenCV.xcodeproj">
+               BuildableName = "msc-platform"
+               BlueprintName = "msc-platform"
+               ReferencedContainer = "container:msc-platform.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -39,9 +39,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DDA967CA14DF209800E1E92D"
-            BuildableName = "OpenCV"
-            BlueprintName = "OpenCV"
-            ReferencedContainer = "container:OpenCV.xcodeproj">
+            BuildableName = "msc-platform"
+            BlueprintName = "msc-platform"
+            ReferencedContainer = "container:msc-platform.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DDA967CA14DF209800E1E92D"
-            BuildableName = "OpenCV"
-            BlueprintName = "OpenCV"
-            ReferencedContainer = "container:OpenCV.xcodeproj">
+            BuildableName = "msc-platform"
+            BlueprintName = "msc-platform"
+            ReferencedContainer = "container:msc-platform.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
