@@ -263,6 +263,14 @@
 					/opt/local/include/,
 					/opt/local/include/opencv,
 					/opt/local/include/opencv2,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc,
+					/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
