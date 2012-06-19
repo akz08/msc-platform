@@ -18,6 +18,8 @@
 		DD1951631577D30100E41FD9 /* libopencv_objdetect.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD19515B1577D30000E41FD9 /* libopencv_objdetect.2.4.0.dylib */; };
 		DD1951661577D35300E41FD9 /* libopencv_gpu.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1951651577D35300E41FD9 /* libopencv_gpu.2.4.0.dylib */; };
 		DD1951681577DD8700E41FD9 /* libcvblob.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1951671577DD8700E41FD9 /* libcvblob.dylib */; };
+		DD2BDA7F1585F591000FD88F /* vPreprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */; };
+		DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA85158BF622000FD88F /* oFrameworks.cpp */; };
 		DDA967D014DF209800E1E92D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA967CF14DF209800E1E92D /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,9 @@
 		DD19515B1577D30000E41FD9 /* libopencv_objdetect.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.2.4.0.dylib; path = ../../../../../opt/local/lib/libopencv_objdetect.2.4.0.dylib; sourceTree = "<group>"; };
 		DD1951651577D35300E41FD9 /* libopencv_gpu.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_gpu.2.4.0.dylib; path = ../../../../../opt/local/lib/libopencv_gpu.2.4.0.dylib; sourceTree = "<group>"; };
 		DD1951671577DD8700E41FD9 /* libcvblob.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcvblob.dylib; path = ../../../../../usr/local/lib/libcvblob.dylib; sourceTree = "<group>"; };
+		DD2BDA7C1585F572000FD88F /* vPreprocess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vPreprocess.h; path = vision/vPreprocess.h; sourceTree = "<group>"; };
+		DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vPreprocess.cpp; path = vision/vPreprocess.cpp; sourceTree = "<group>"; };
+		DD2BDA85158BF622000FD88F /* oFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oFrameworks.cpp; sourceTree = "<group>"; };
 		DDA967CB14DF209800E1E92D /* msc-platform */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "msc-platform"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA967CF14DF209800E1E92D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,7 +86,16 @@
 			name = interface;
 			sourceTree = "<group>";
 		};
-		DD92936C14E19400007A6C68 /* OpenCV-Frameworks */ = {
+		DD2BDA7D1585F578000FD88F /* vision */ = {
+			isa = PBXGroup;
+			children = (
+				DD2BDA7C1585F572000FD88F /* vPreprocess.h */,
+				DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */,
+			);
+			name = vision;
+			sourceTree = "<group>";
+		};
+		DD92936C14E19400007A6C68 /* OpenCV.framework */ = {
 			isa = PBXGroup;
 			children = (
 				DD1951651577D35300E41FD9 /* libopencv_gpu.2.4.0.dylib */,
@@ -93,16 +107,17 @@
 				DD19515A1577D30000E41FD9 /* libopencv_legacy.2.4.0.dylib */,
 				DD19515B1577D30000E41FD9 /* libopencv_objdetect.2.4.0.dylib */,
 			);
-			name = "OpenCV-Frameworks";
+			name = OpenCV.framework;
 			sourceTree = "<group>";
 		};
 		DDA967C014DF209800E1E92D = {
 			isa = PBXGroup;
 			children = (
+				DD2BDA7D1585F578000FD88F /* vision */,
 				DD11C4D01582B41500A9369F /* interface */,
 				DD11C4CA1582A2A600A9369F /* Phidget21.framework */,
-				DDE886E215754C8E0090CBA0 /* cvBlob */,
-				DD92936C14E19400007A6C68 /* OpenCV-Frameworks */,
+				DDE886E215754C8E0090CBA0 /* cvBlob-legacy.framework */,
+				DD92936C14E19400007A6C68 /* OpenCV.framework */,
 				DDA967CE14DF209800E1E92D /* src */,
 				DDA967CC14DF209800E1E92D /* Products */,
 			);
@@ -121,17 +136,18 @@
 			children = (
 				DDA967CF14DF209800E1E92D /* main.cpp */,
 				DD11C4CD1582B36C00A9369F /* main.h */,
+				DD2BDA85158BF622000FD88F /* oFrameworks.cpp */,
 			);
 			name = src;
 			path = OpenCV;
 			sourceTree = "<group>";
 		};
-		DDE886E215754C8E0090CBA0 /* cvBlob */ = {
+		DDE886E215754C8E0090CBA0 /* cvBlob-legacy.framework */ = {
 			isa = PBXGroup;
 			children = (
 				DD1951671577DD8700E41FD9 /* libcvblob.dylib */,
 			);
-			name = cvBlob;
+			name = "cvBlob-legacy.framework";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,6 +202,8 @@
 			files = (
 				DDA967D014DF209800E1E92D /* main.cpp in Sources */,
 				DD11C4CF1582B3F800A9369F /* ioPhidget.cpp in Sources */,
+				DD2BDA7F1585F591000FD88F /* vPreprocess.cpp in Sources */,
+				DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

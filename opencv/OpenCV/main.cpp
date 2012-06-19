@@ -24,9 +24,9 @@
 // Declaring public variables //
 
 Mat src, distort;  // Contains image information. "Matlab-like"
-Mat gray, hsv;
+Mat gray, hsv,hsv1;
 Mat ranger;
-int camSource = 1;  // Choose source of camera [0 - default, 1 - external, ...]
+int camSource = 0;  // Choose source of camera [0 - default, 1 - external, ...]
 
 // variables for perspective
 int board_w = 7;
@@ -76,8 +76,8 @@ Mat distortMat =(Mat_<double>(4,1) << \
 int thresh = 100;
 int max_thresh = 255;
 RNG rng(12345);
-void thresh_callback(int, void* );
-Mat src_gray;
+void thresh_callback(const Mat&, const Mat&);
+Mat test_gray;
 
 
 // Main //
@@ -162,7 +162,7 @@ int main (int argc, char** argv)
     image = imread("sample.jpg");
     imshow("sample", image);
     
-    cvtColor(image, src_gray, CV_BGR2GRAY);
+    
     
     // test image
    
@@ -197,29 +197,87 @@ int main (int argc, char** argv)
         // IMAGE PREPARATION //
         cvtColor(src, gray, CV_BGR2GRAY);    // where 3rd arg is 'color space conversion code
         cvtColor(src, hsv, CV_BGR2HSV);
+        
+        cvtColor(test, hsv1, CV_BGR2HSV);
  
         
         // obtain histogram 
         
         calcHist(&hsv,1,channels,Mat(),
                  skinHistogram,2,histSize,histRange,
-                 unif,accu);
+                 true,false);
         
         // normalise 
-        normalize( skinHistogram, skinHistogram, 0, 255, NORM_MINMAX);
-        calcBackProject(&hsv,1,channels,
+        calcBackProject(&hsv1,1,channels,
                         skinHistogram,backHistogram,
                         histRange);
         
-        imshow("skin back projection", backHistogram);
+        normalize( backHistogram, backHistogram,0, 255, NORM_MINMAX);
+
+        GaussianBlur(backHistogram, backHistogram, Size(31,31), 0);
         
+        
+        
+        threshold(backHistogram, backHistogram, 105, 255, THRESH_BINARY);
+//adaptiveThreshold(backHistogram, backHistogram, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 101, 7);
+        
+        //equalizeHist(backHistogram, backHistogram);
+        Mat mask;
+        morphologyEx(backHistogram, mask, MORPH_CLOSE, Mat());
+        
+        vector<vector<Point> > contours;
+        vector<Vec4i> hierarchy;
+
+        findContours(mask, contours,hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+        
+        vector<RotatedRect> minRect( contours.size() );
+        
+        for( int i = 0; i <contours.size(); i++)
+        { minRect[i] = minAreaRect( Mat(contours[i]) );}
+        
+        // minAreaRect returns type RotatedRect . contains : center, size(wxh), angle(cw in deg), box(obsolete)
+        
+        /// Draw contours
+        //Mat drawing = Mat::zeros( backHistogram.size(), CV_8UC3 );
+        Mat drawing = test.clone();
+        
+        // going through all contours
+        for( int i = 0; i< contours.size(); i++ )
+        {
+            Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+            drawContours( drawing, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+            
+            Point2f rect_points[4]; minRect[i].points(rect_points);
+            
+            // calculating the midway points
+            Point2f half_points[4]; 
+            
+            for( int j = 0; j< 4; j++){
+                line( drawing, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
+                
+                half_points[j].x = ( rect_points[j].x+rect_points[(j+1)%4].x )/2 ;
+                half_points[j].y = ( rect_points[j].y+rect_points[(j+1)%4].y )/2 ;
+            }
+            
+            for( int j = 0; j < 2; j++){
+                
+                line(drawing, half_points[j], half_points[j+2], color);
+            }
+        }
+        imshow("contours", drawing);
+             
+        imshow("skin back projection", backHistogram);
+                
+        
+        cvtColor(image, test_gray, CV_BGR2GRAY);
+         //thresh_callback( test, test_gray );
 
         
 //        blur(src, outBlur, Size(10,10)); // Size(...,...) <- template (width, height) class
-
+        
         threshold(gray, gray, 200, 100, THRESH_BINARY);
         //imshow("test", gray);
-        //createTrackbar("test", "test", &gry, 400,0);
+        //createTrackbar("test", "test", &gry, 400,0);c
         
 //        Mat gray(gray.size(), CV_8UC1) = gray.clone();
 //        
@@ -234,8 +292,8 @@ int main (int argc, char** argv)
        
 
 
-        createTrackbar( " Threshold:", "Source", &thresh, max_thresh, thresh_callback );
-        thresh_callback( 0, 0 );
+        //createTrackbar( " Threshold:", "Source", &thresh, max_thresh );
+       
         
 
         
@@ -284,7 +342,7 @@ int main (int argc, char** argv)
 // Function prototypes //
 
 
-void thresh_callback(int, void* )
+void thresh_callback(const Mat& image, const Mat& src_gray )
 {
     Mat src_copy = image.clone();
     Mat threshold_output;
