@@ -29,7 +29,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 
-    //SERIAL READ
+    //SERIAL READ ( NEED TO IMPLEMENT DISCONNECT/RECONNECT CASE )
     if(ofGetFrameNum() % 10 == 0){
         int nRead = 0; // temp var to keep count per read
         
@@ -53,7 +53,7 @@ void testApp::update(){
     rawSerial = ofToFloat(bytesReadString);
     
     ofxOscMessage inputSerial;
-    inputSerial.setAddress("/input/raw/serial");
+    inputSerial.setAddress("/input/serial");
     inputSerial.addFloatArg(rawSerial);
     sender.sendMessage(inputSerial);
 }

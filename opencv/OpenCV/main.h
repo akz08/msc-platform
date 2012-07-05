@@ -11,11 +11,12 @@
 #include <opencv2/opencv.hpp>
 #include <cvblob.h>
 #include <math.h>
-
+#include "ioPhidget.h"
 
 
 using namespace std;
 using namespace cv;
 using namespace cvb;
+
 
 #endif

@@ -10,16 +10,81 @@
 #ifndef msc_platform_ioPhidget_h
 #define msc_platform_ioPhidget_h
 
-#include "Phidget21/Phidget21.h"
+#include "Phidget21.h"
 #include "stdio.h"
 
-class ioPhidget {
-    
+// these determine the rate of polling of data from phidgets (i think)
+#define FREQS_SIZE 20
+//double bridges[FREQS_SIZE] = {0};
+
+int CCONV AttachHandler(CPhidgetHandle phid, void *userptr);
+int CCONV DetachHandler(CPhidgetHandle phid, void *userptr);
+int CCONV ErrorHandler(CPhidgetHandle phid, void *userptr, int ErrorCode, const char *errorStr);
+int CCONV data(CPhidgetBridgeHandle phid, void *userPtr, int index, double val);
+
+
+class ioPhidget
+{
 public:
-    // Constructors
-    ioPhidget();
+    CPhidgetBridgeHandle bridge;
     
-private:
+    // define variables & pointers for phidget_bridge data
+    int serialNumber, version;
+	const char *deviceptr;
+    
+    int test;
+    
+    double dat[2];
+    //int dat;
+    void connect(int timeout);
+    void rawOutput();
+    
+    int isAttached;
+    
+    
+    bool isConnected;
+    
+    //struct to hold data from load cells
+    struct raw {
+        int index;
+        double value;
+        double xLoc;
+        double yLoc;
+    }lc0, lc1, lc2, lc3; 
+    
+    
+    void display_generic_properties(CPhidgetHandle phid);
+
+    int assignRawData(int index, double value);
+    int connectorStatus(bool connect);
+    
+    // Constructor
+    ioPhidget()
+    {
+
+        // create the bridge object
+        CPhidgetBridge_create(&bridge);
+        
+        // set handlers to be run when: plugged in/opened from software; unplugged/closed from software; generates error.
+        CPhidget_set_OnAttach_Handler((CPhidgetHandle)bridge, &AttachHandler, this);
+        CPhidget_set_OnDetach_Handler((CPhidgetHandle)bridge, &DetachHandler, this);
+        CPhidget_set_OnError_Handler((CPhidgetHandle)bridge, &ErrorHandler, this);
+
+        
+        return;
+    }
+    
+
+    
+    // Destructor
+    ~ioPhidget(){
+        printf("Closing Phidget...\n");
+        
+        //Cleaning up memory
+        CPhidget_close((CPhidgetHandle)bridge);
+        CPhidget_delete((CPhidgetHandle)bridge);
+    }
+    
     
     
 };

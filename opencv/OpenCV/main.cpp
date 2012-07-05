@@ -175,8 +175,39 @@ int main (int argc, char** argv)
 //    }
 
     
+    ioPhidget phidget;
+    phidget.connect(1000);
+//    if(phidget.isAttached){
+//        printf("it is attached!");
+//    }
+//    else{
+//        printf("not attached!");
+//    }
+    
+   
+
+
+    
+    
     while (true)        // loop until keypress
     {
+
+//        if ((bool)phidget.isConnected) {
+//            printf("1");
+//        }
+//        else {
+//            printf("0");
+//        }
+
+        if(phidget.isConnected){
+            
+            printf("lc%d : %f \n", phidget.lc0.index, phidget.lc0.value );
+            printf("lc%d : %f \n", phidget.lc1.index, phidget.lc1.value );
+            printf("lc%d : %f \n", phidget.lc2.index, phidget.lc2.value );
+            printf("lc%d : %f \n", phidget.lc3.index, phidget.lc3.value );
+            
+        }
+        
         // UPDATE CAMERA FEED //
         capture >> src; // offload captured image from camera -> src
         pyrDown(src, src,Size(src.cols/2, src.rows/2) );

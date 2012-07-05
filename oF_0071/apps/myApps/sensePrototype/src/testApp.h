@@ -5,7 +5,7 @@
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
-#define PORT 12345
+#define PORT 12000
 
 class testApp : public ofBaseApp{
 
@@ -22,7 +22,7 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
-	void gotMessage(ofMessage msg);
+	void gotMessage(ofMessage msg); 
     
     // OSC Sender
     ofxOscSender sender;
