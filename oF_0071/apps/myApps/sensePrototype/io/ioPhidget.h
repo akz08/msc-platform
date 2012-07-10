@@ -22,6 +22,13 @@ int CCONV DetachHandler(CPhidgetHandle phid, void *userptr);
 int CCONV ErrorHandler(CPhidgetHandle phid, void *userptr, int ErrorCode, const char *errorStr);
 int CCONV data(CPhidgetBridgeHandle phid, void *userPtr, int index, double val);
 
+//struct to hold data from load cells
+struct raw {
+    int index;
+    double value;
+    double xLoc;
+    double yLoc;
+};
 
 class ioPhidget
 {
@@ -29,14 +36,60 @@ public:
     CPhidgetBridgeHandle bridge;
     
     // define variables & pointers for phidget_bridge data
-    int serialNo, version;
+    int serialNumber, version;
 	const char *deviceptr;
     
+    int test;
+    
+    
+    double dat[2];
+    
+    struct raw lc0, lc1, lc2, lc3;
+    
+    double cell0, cell1, cell2, cell3;
+    double cells[4];
+    
+    
+    //int dat;
+    void connect(int timeout);
+    
+    void rawOutput();
+    
+    
+    
+    int isAttached;
+    
+    
+    
+    
+    bool isConnected;
+    
+    
+    
+    //    //struct to hold data from load cells
+    //    struct raw {
+    //        int index;
+    //        double value;
+    //        double xLoc;
+    //        double yLoc;
+    //    }lc0,lc1, lc2, lc3;
+    
+    
+    
+    
+    void display_generic_properties(CPhidgetHandle phid);
+    
+    double getValue(int index);
+    
+    double calibValue(int index);
+    double calibrate(int index, double current, double value1, double cur1, double value2, double cur2);
+    
+    int assignRawData(int index, double value);
+    int connectorStatus(bool connect);
+    
     // Constructor
-    ioPhidget(int timeout = 10000)
+    ioPhidget()
     {
-        const char *err;
-        int result;
         
         // create the bridge object
         CPhidgetBridge_create(&bridge);
@@ -46,44 +99,11 @@ public:
         CPhidget_set_OnDetach_Handler((CPhidgetHandle)bridge, &DetachHandler, this);
         CPhidget_set_OnError_Handler((CPhidgetHandle)bridge, &ErrorHandler, this);
         
-        //sets a bridge data event handler called by rate set by 'datarate'
-        CPhidgetBridge_set_OnBridgeData_Handler(bridge, &data, this);
-        
-        // open bridge for device connections
-        CPhidget_open((CPhidgetHandle)bridge, -1);
-        
-        //Wait for 10 seconds, otherwise exit
-        printf("Waiting for attachment...");
-        if((result = CPhidget_waitForAttachment((CPhidgetHandle)bridge, timeout)))
-        {
-            
-            CPhidget_getErrorDescription(result, &err);
-            printf("Problem waiting for attachment: %s\n", err);
-            return;
-        }
-        
-        display_generic_properties((CPhidgetHandle)bridge);
-        
-        //Wait for enter
-        //getchar();
-        
-        
         
         return;
     }
     
-    void display_generic_properties(CPhidgetHandle phid)
-    {
-        int sernum, version;
-        const char *deviceptr;
-        CPhidget_getDeviceType(phid, &deviceptr);
-        CPhidget_getSerialNumber(phid, &sernum);
-        CPhidget_getDeviceVersion(phid, &version);
-        
-        printf("%s\n", deviceptr);
-        printf("Version: %8d SerialNumber: %10d\n", version, sernum);
-        return;
-    }
+    
     
     // Destructor
     ~ioPhidget(){
@@ -93,6 +113,8 @@ public:
         CPhidget_close((CPhidgetHandle)bridge);
         CPhidget_delete((CPhidgetHandle)bridge);
     }
+    
+    
     
 };
 

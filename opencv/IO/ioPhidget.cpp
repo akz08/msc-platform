@@ -16,53 +16,100 @@ int ioPhidget::connectorStatus(bool connect){
     return 0;
 }
 
+double ioPhidget::getValue(int index){
+    
+    double value = 0;
+    CPhidgetBridge_getBridgeValue(bridge, index, &value);
+    if (value == 0) {
+        lc0.value = value;
+    }
+//    value = lc0.value;
+    return value;
+}
+
 int ioPhidget::assignRawData(int index, double value){
+    
+//    printf("Data Event (%d) %lf\n",index,value);// it reads in the data fine. problem with the assigning to structs
+    
+//    if(index == 0)
+//        printf("it was a zero!");
+
+    switch (index) {
+//        case 0:
+//            lc0.value = value;
+//            lc0.index = index;
+//            printf("Data Event (%d) %lf\n",lc0.index,lc0.value);
+//            break;
+//        case 1:
+//            lc1.value = value;
+//            lc1.index = index;
+//            printf("Data Event (%d) %lf\n",lc1.index,lc1.value);
+//            break;
+//        case 2:
+//            lc2.value = value;
+//            lc2.index = index;
+//            printf("Data Event (%d) %lf\n",lc2.index,lc2.value);
+//            break;
+//        case 3:
+//            lc3.value = value;
+//            lc3.index = index;
+//            printf("Data Event (%d) %lf\n",lc3.index,lc3.value);
+//            break;
+            
+        default:
+            break;
+    }
     
 //    switch (index) {
 //
 //        case 0:
+//    
 //            lc0.index = index;
 //            lc0.value = value;
+//            cell0 = value;
 //            break;
 //            
 //        case 1:
 //            lc1.index = index;
 //            lc1.value = value;
+//            cell1 = value;
 //            break;
 //            
 //        case 2:
 //            lc2.index = index;
 //            lc2.value = value;
+//            cell2 = value;
 //            break;
 //            
 //        case 3:
 //            lc3.index = index;
 //            lc3.value = value;
+//            cell3 = value;
 //            break;
 //            
 //        default:
 //            break;
 //    }
 
-    if (index == 0 ){
-        lc0.index = index;
-        lc0.value = value;
-    }
-    
-    else if (index == 1){
-        lc1.value = value;
-        lc1.index = index;
-    }
-    
-    else if (index == 2){
-        lc2.value = value;
-        lc2.index = index;
-    }
-    
-    else if (index == 3){
-        lc3.value = value;
-        lc3.index = 3;
-    }
+//    if (index == 0 ){
+//        lc0.index = index;
+//        lc0.value = value;
+//    }
+//    
+//    else if (index == 1){
+//        lc1.value = value;
+//        lc1.index = index;
+//    }
+//    
+//    else if (index == 2){
+//        lc2.value = value;
+//        lc2.index = index;
+//    }
+//    
+//    else if (index == 3){
+//        lc3.value = value;
+//        lc3.index = 3;
+//    }
     
     
     return 0;

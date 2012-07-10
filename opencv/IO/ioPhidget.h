@@ -22,6 +22,13 @@ int CCONV DetachHandler(CPhidgetHandle phid, void *userptr);
 int CCONV ErrorHandler(CPhidgetHandle phid, void *userptr, int ErrorCode, const char *errorStr);
 int CCONV data(CPhidgetBridgeHandle phid, void *userPtr, int index, double val);
 
+//struct to hold data from load cells
+struct raw {
+    int index;
+    double value;
+    double xLoc;
+    double yLoc;
+};
 
 class ioPhidget
 {
@@ -34,27 +41,46 @@ public:
     
     int test;
     
+    
     double dat[2];
+    
+    struct raw lc0, lc1, lc2, lc3;
+    
+    double cell0, cell1, cell2, cell3;
+    double cells[4];
+    
+    
     //int dat;
     void connect(int timeout);
+    
     void rawOutput();
     
+
+        
     int isAttached;
     
+
+
     
     bool isConnected;
     
-    //struct to hold data from load cells
-    struct raw {
-        int index;
-        double value;
-        double xLoc;
-        double yLoc;
-    }lc0, lc1, lc2, lc3; 
+
+    
+//    //struct to hold data from load cells
+//    struct raw {
+//        int index;
+//        double value;
+//        double xLoc;
+//        double yLoc;
+//    }lc0,lc1, lc2, lc3;
+    
+   
     
     
     void display_generic_properties(CPhidgetHandle phid);
 
+    double getValue(int index);
+    
     int assignRawData(int index, double value);
     int connectorStatus(bool connect);
     
