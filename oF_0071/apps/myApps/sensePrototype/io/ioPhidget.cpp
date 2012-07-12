@@ -32,9 +32,9 @@ double* ioPhidget::getValues(){
 
     double *array = new double[4];
     CPhidgetBridge_getBridgeValue(bridge, 0, &array[0]);
-    CPhidgetBridge_getBridgeValue(bridge, 0, &array[1]);
-    CPhidgetBridge_getBridgeValue(bridge, 0, &array[2]);
-    CPhidgetBridge_getBridgeValue(bridge, 0, &array[3]);
+    CPhidgetBridge_getBridgeValue(bridge, 1, &array[1]);
+    CPhidgetBridge_getBridgeValue(bridge, 2, &array[2]);
+    CPhidgetBridge_getBridgeValue(bridge, 3, &array[3]);
     
     return array;
     

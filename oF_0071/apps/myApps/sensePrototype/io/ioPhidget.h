@@ -81,7 +81,10 @@ public:
         double actValue2;
         double slope;
         double yIntercept;
-    }cBridge0, cBridge1, cBridge2, cBridge3;
+        double currentValue;
+        double currentCalibratedValue;
+        bool calculated;
+    };
     
 
     

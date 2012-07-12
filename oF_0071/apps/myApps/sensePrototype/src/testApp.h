@@ -35,14 +35,19 @@ public:
     
     // Phidget
     ioPhidget phidget;
-    struct bridgeCalib{
-        double Value1;
-        double Value2;
-        double gradient;
-        double Yintr;
-    }b0,b1,b2,b3;
+//    struct bridgeValues{
+//        double Value1;
+//        double Value2;
+//        double gradient;
+//        double Yintr;
+//        double currentValue;
+//    }b0,b1,b2,b3;
+    
+    ioPhidget::calibrationValues bridgeValuesArray[4];
+//    bridgeValues bridgeValuesArray[4];
+    
     int currentBridge;
-    double *currentBridgeValue;
+    double currentBridgeValue;
     double value;
     double blank;
     
@@ -64,6 +69,8 @@ public:
     vector<string> deviceLine;
     ofxUIDropDownList *ddl;
     ofxUILabel *serialValueLabel;
+    ofxUILabel *bridgeValueLabel;
+    ofxUILabel *bridgeCalibValueLabel;
     ofxUILabel *val;
     ofxUITextInput *txt;
     ofxUITextInput *calibLabel1;

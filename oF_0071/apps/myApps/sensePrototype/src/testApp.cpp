@@ -61,7 +61,8 @@ void testApp::setup(){
     
     guiSetup->addWidgetDown(new ofxUIRadio( 16, 16, "BRIDGE NUMBER", bridgeNo, OFX_UI_ORIENTATION_HORIZONTAL)); 
     guiSetup->addWidgetDown(new ofxUILabel("Bridge Value", OFX_UI_FONT_MEDIUM));
-    guiSetup->addWidgetDown(new ofxUILabel("Raw Bridge Value", OFX_UI_FONT_SMALL));
+    bridgeValueLabel = new ofxUILabel("Raw Bridge Value", OFX_UI_FONT_SMALL);
+    guiSetup->addWidgetDown(bridgeValueLabel);
 
     guiSetup->addWidgetDown(new ofxUILabel("Calibration Value 1", OFX_UI_FONT_MEDIUM));
     calibLabel1 = new ofxUITextInput(300, "VALUE 1", "Value 1", OFX_UI_FONT_LARGE);
@@ -75,7 +76,8 @@ void testApp::setup(){
  
     guiSetup->addWidgetDown(new ofxUILabelButton(false, "Calibrate", OFX_UI_FONT_MEDIUM));
     guiSetup->addWidgetDown(new ofxUILabel("Calibrated Value", OFX_UI_FONT_MEDIUM));
-    guiSetup->addWidgetDown(new ofxUILabel("Calibrated Bridge Value", OFX_UI_FONT_SMALL));
+    bridgeCalibValueLabel = new ofxUILabel("Calibrated Bridge Value", OFX_UI_FONT_SMALL);
+    guiSetup->addWidgetDown(bridgeCalibValueLabel);
 
     
     
@@ -93,26 +95,51 @@ void testApp::setup(){
     ofAddListener(guiSetup->newGUIEvent, this, &testApp::guiEvent); 
 //    guiSetup->loadSettings("GUI/guiSettings.xml"); // temporary commenting out
     
-    //
-
+    // initialise pointer
+    double hi = 2.3;
+//    currentBridgeValue = &hi;
+    currentBridge = 0;
+//    *bridgeValuesPointer =  new bridgeValues[4];
+//    bridgeValuesArray = {b0, b1, b2, b3};
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     
+    
+    
     value = value++;
     
     serialValueLabel->setLabel(current);
-    if (phidget.isConnected)
-    val->setLabel(ofToString(*currentBridgeValue));
+    if (phidget.isConnected){
+    
+        currentBridgeValue = phidget.getValues()[currentBridge];
+        bridgeValueLabel->setLabel(ofToString(currentBridgeValue));
+        
+        bridgeValuesArray[0].currentValue = phidget.getValues()[0];
+        bridgeValuesArray[1].currentValue = phidget.getValues()[1];
+        bridgeValuesArray[2].currentValue = phidget.getValues()[2];
+        bridgeValuesArray[3].currentValue = phidget.getValues()[3];
+        
+        
+        if (bridgeValuesArray[currentBridge].calculated){
+        
+            double calibration;
+            calibration = bridgeValuesArray[currentBridge].currentValue*bridgeValuesArray[currentBridge].slope + bridgeValuesArray[currentBridge].yIntercept;
+            
+            bridgeCalibValueLabel->setLabel(ofToString(calibration));
+        }
+    }
     
     // PHIDGET READ
-    if( phidget.isConnected ){
-//        printf("(0): %f \n", phidget.calibValue(0));
-//        printf("(1): %f \n", phidget.calibValue(1));
-//        printf("(2): %f \n", phidget.calibValue(2));
-//        printf("(3): %f \n", phidget.calibValue(3));
-    }
+//    if( phidget.isConnected ){
+////        printf("(0): %f \n", phidget.calibValue(0));
+////        printf("(1): %f \n", phidget.calibValue(1));
+////        printf("(2): %f \n", phidget.calibValue(2));
+////        printf("(3): %f \n", phidget.calibValue(3));
+//        phidget.cBridge0.slope;
+//        phidget.cBridge0.yIntercept;
+//    }
 
     //SERIAL READ ( NEED TO IMPLEMENT DISCONNECT/RECONNECT CASE )
 
@@ -228,11 +255,17 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         {
             cout << "ON ENTER: ";
         }       
+        if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+        {
+            cout << "UNFOCUSSED 2";
+            bridgeValuesArray[currentBridge].actValue1 = ofToFloat(textinput->getTextString());
+            bridgeValuesArray[currentBridge].rawValue1 = phidget.getValues()[currentBridge];
+        }
         string output = textinput->getTextString(); 
         double test = 2;
         
-        phidget.cBridge0.actValue1 = ofToFloat(output); // set actualvalue
-        phidget.cBridge0.rawValue1 = phidget.getValue(0); // get value at point in time
+//        phidget.cBridge0.actValue1 = ofToFloat(output); // set actualvalue
+//        phidget.cBridge0.rawValue1 = phidget.getValue(0); // get value at point in time
         
         cout << output << endl; 
     }
@@ -243,20 +276,48 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         {
             cout << "ON ENTER: "; 
         }       
+        if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+        {
+            cout << "UNFOCUSSED 2";
+            bridgeValuesArray[currentBridge].actValue2 = ofToFloat(textinput->getTextString());
+            bridgeValuesArray[currentBridge].rawValue2 = phidget.getValues()[currentBridge];
+        }
         string output = textinput->getTextString(); 
         cout << output << endl; 
     }
+    
+    if (name == "Calibrate"){
+        
+        bridgeValuesArray[currentBridge].slope = (bridgeValuesArray[currentBridge].actValue2 - bridgeValuesArray[currentBridge].actValue1) / (bridgeValuesArray[currentBridge].rawValue2 - bridgeValuesArray[currentBridge].rawValue1);
+        
+        bridgeValuesArray[currentBridge].yIntercept = bridgeValuesArray[currentBridge].actValue1 - (bridgeValuesArray[currentBridge].rawValue1 * bridgeValuesArray[currentBridge].slope);
+        
+        bridgeValuesArray[currentBridge].calculated = true;
+        //        // update actual values
+        //        phidget.cBridge0.actValue1 = ofToFloat(calibLabel1->getTextString());
+        //        phidget.cBridge0.actValue2 = ofToFloat(calibLabel2->getTextString());
+    }
+    
     if(name == "Brdg 0"){
         // load up the calibration values
-        calibLabel1->setTextString(ofToString(phidget.cBridge0.actValue1));
-        calibLabel2->setTextString(ofToString(phidget.cBridge0.actValue2));
+        calibLabel1->setTextString(ofToString(bridgeValuesArray[0].actValue1));
+        calibLabel2->setTextString(ofToString(bridgeValuesArray[0].actValue2));
+//        calibLabel1->setTextString(ofToString(phidget.cBridge0.actValue1));
+//        calibLabel2->setTextString(ofToString(phidget.cBridge0.actValue2));
         
-        double ho[2] = {1,2};
+//        double ho[2] = {1,2};
         if(phidget.isConnected){
-            currentBridgeValue = &ho[0];
-            double *temp;
-            temp = phidget.getValues();
-            currentBridgeValue = &temp[0];
+//            currentBridgeValue = &ho[0];
+//            double *temp;
+//            temp = phidget.getValues();
+//            currentBridgeValue = &temp[0];
+            
+//            currentBridgeValue = &phidget.getValues()[0];
+//            currentBridgeValue = phidget.getValue(0);
+//            currentBridgeValue = &b0.currentValue;
+            currentBridge = 0;
+            
+//            cout << phidget.getValues()[0] << endl;
         }
         else {
             
@@ -265,12 +326,12 @@ void testApp::guiEvent(ofxUIEventArgs &e){
     }
     else if(name == "Brdg 1"){
         // load up the calibration values
-        calibLabel1->setTextString(ofToString(phidget.cBridge1.actValue1));
-        calibLabel2->setTextString(ofToString(phidget.cBridge1.actValue2));
+        calibLabel1->setTextString(ofToString(bridgeValuesArray[1].actValue1));
+        calibLabel2->setTextString(ofToString(bridgeValuesArray[1].actValue2));
+//        calibLabel1->setTextString(ofToString(phidget.cBridge1.actValue1));
+//        calibLabel2->setTextString(ofToString(phidget.cBridge1.actValue2));
         if(phidget.isConnected){
-            double *temp;
-            temp = phidget.getValues();
-            currentBridgeValue = &temp[1];
+            currentBridge = 1;
         }
         else {
             
@@ -278,12 +339,12 @@ void testApp::guiEvent(ofxUIEventArgs &e){
     }
     else if(name == "Brdg 2"){
         // load up the calibration values
-        calibLabel1->setTextString(ofToString(phidget.cBridge2.actValue1));
-        calibLabel2->setTextString(ofToString(phidget.cBridge2.actValue2));
+        calibLabel1->setTextString(ofToString(bridgeValuesArray[2].actValue1));
+        calibLabel2->setTextString(ofToString(bridgeValuesArray[2].actValue2));
+//        calibLabel1->setTextString(ofToString(phidget.cBridge2.actValue1));
+//        calibLabel2->setTextString(ofToString(phidget.cBridge2.actValue2));
         if(phidget.isConnected){
-            double *temp;
-            temp = phidget.getValues();
-            currentBridgeValue = &temp[2];
+            currentBridge = 2;
         }
         else {
             
@@ -291,23 +352,19 @@ void testApp::guiEvent(ofxUIEventArgs &e){
     }
     else if(name == "Brdg 3"){
         // load up the calibration values
-        calibLabel1->setTextString(ofToString(phidget.cBridge3.actValue1));
-        calibLabel2->setTextString(ofToString(phidget.cBridge3.actValue2));
+        calibLabel1->setTextString(ofToString(bridgeValuesArray[3].actValue1));
+        calibLabel2->setTextString(ofToString(bridgeValuesArray[3].actValue2));
+//        calibLabel1->setTextString(ofToString(phidget.cBridge3.actValue1));
+//        calibLabel2->setTextString(ofToString(phidget.cBridge3.actValue2));
         if(phidget.isConnected){
-            double *temp;
-            temp = phidget.getValues();
-            currentBridgeValue = &temp[3];
+            currentBridge = 3;
         }
         else {
             
         }
     }
     
-    if (name == "calibrate"){
-        // update actual values
-        phidget.cBridge0.actValue1 = ofToFloat(calibLabel1->getTextString());
-        phidget.cBridge0.actValue2 = ofToFloat(calibLabel2->getTextString());
-    }
+
     
 }
 
