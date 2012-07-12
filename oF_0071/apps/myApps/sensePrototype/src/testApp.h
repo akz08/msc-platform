@@ -41,6 +41,10 @@ public:
         double gradient;
         double Yintr;
     }b0,b1,b2,b3;
+    int currentBridge;
+    double *currentBridgeValue;
+    double value;
+    double blank;
     
     // Serial Input
     ofSerial serial;
@@ -48,20 +52,21 @@ public:
     char    bytesReadString[5];     // null terminator needed
     int     nBytesRead;
     int     nTimesRead;
-    bool    startSerial;
     bool    serialConnected;
     
     // ofxUI initialisation
-    ofxUICanvas *gui;
+    void setGUISetup();
+    ofxUICanvas *guiSetup;
     void exit();
     void guiEvent(ofxUIEventArgs &e);
     string current;
 //    string *pointer;
     vector<string> deviceLine;
     ofxUIDropDownList *ddl;
-    ofxUILabel *lbl;
+    ofxUILabel *serialValueLabel;
+    ofxUILabel *val;
     ofxUITextInput *txt;
-    ofxUITextInput *tval1;
-    ofxUITextInput *tval2;
+    ofxUITextInput *calibLabel1;
+    ofxUITextInput *calibLabel2;
     
 };

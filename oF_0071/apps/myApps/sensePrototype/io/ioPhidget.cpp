@@ -8,7 +8,7 @@
 
 #include "ioPhidget.h"
 
-
+// redundant?
 int ioPhidget::connectorStatus(bool connect){
     
     isConnected = connect;
@@ -26,6 +26,18 @@ double ioPhidget::getValue(int index){
     }
     //    value = lc0.value;
     return value;
+}
+
+double* ioPhidget::getValues(){
+
+    double *array = new double[4];
+    CPhidgetBridge_getBridgeValue(bridge, 0, &array[0]);
+    CPhidgetBridge_getBridgeValue(bridge, 0, &array[1]);
+    CPhidgetBridge_getBridgeValue(bridge, 0, &array[2]);
+    CPhidgetBridge_getBridgeValue(bridge, 0, &array[3]);
+    
+    return array;
+    
 }
 
 double ioPhidget::calibValue(int index){
@@ -182,7 +194,7 @@ void ioPhidget::connect(int timeout = 10000){
     
     // open bridge for device connections
     CPhidget_open((CPhidgetHandle)bridge, -1);
-    
+
     //Wait for 10 seconds, otherwise exit
     printf("Waiting for attachment...");
     if((result = CPhidget_waitForAttachment((CPhidgetHandle)bridge, timeout)))

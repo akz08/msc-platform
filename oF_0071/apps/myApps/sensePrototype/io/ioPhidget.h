@@ -74,12 +74,21 @@ public:
     //        double yLoc;
     //    }lc0,lc1, lc2, lc3;
     
+    struct calibrationValues {
+        double rawValue1;
+        double rawValue2;
+        double actValue1;
+        double actValue2;
+        double slope;
+        double yIntercept;
+    }cBridge0, cBridge1, cBridge2, cBridge3;
     
-    
+
     
     void display_generic_properties(CPhidgetHandle phid);
     
     double getValue(int index);
+    double *getValues();
     
     double calibValue(int index);
     double calibrate(int index, double current, double value1, double cur1, double value2, double cur2);
@@ -90,6 +99,7 @@ public:
     // Constructor
     ioPhidget()
     {
+        isConnected = false;
         
         // create the bridge object
         CPhidgetBridge_create(&bridge);
@@ -98,6 +108,7 @@ public:
         CPhidget_set_OnAttach_Handler((CPhidgetHandle)bridge, &AttachHandler, this);
         CPhidget_set_OnDetach_Handler((CPhidgetHandle)bridge, &DetachHandler, this);
         CPhidget_set_OnError_Handler((CPhidgetHandle)bridge, &ErrorHandler, this);
+        
         
         
         return;
