@@ -4,7 +4,7 @@
 void testApp::setup(){
 
     // SETUP WINDOW & LOAD DEPENDENCIES
-    ofBackground(190, 190, 190);
+    ofBackground(113, 198, 113);
     ofSetFrameRate(60);         // set to 60fps (use as base for serial read)
     ofSetLogLevel(OF_LOG_VERBOSE /*OF_LOG_FATAL_ERROR*/);
     font.loadFont("DIN.otf",64); // located in /bin/data for now
@@ -42,7 +42,7 @@ void testApp::setup(){
     
     // ofxUI - setting up UI
     
-    guiSetup = new ofxUICanvas(100,100,320,700); //ofxUICanvas(float x, float y, float width, float height)	
+    guiSetup = new ofxUICanvas(10,10,320,700); //ofxUICanvas(float x, float y, float width, float height)	
 	guiSetup->setFont("DIN.otf");
 
     
@@ -66,6 +66,7 @@ void testApp::setup(){
     bridgeValueLabel = new ofxUILabel("Raw Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeValueLabel);
 
+    guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
     guiSetup->addWidgetDown(new ofxUILabel("Calibration Value 1", OFX_UI_FONT_MEDIUM));
     calibLabel1 = new ofxUITextInput(300, "VALUE 1", "Value 1", OFX_UI_FONT_LARGE);
     calibLabel1->setAutoClear(false);
@@ -80,7 +81,6 @@ void testApp::setup(){
     guiSetup->addWidgetDown(new ofxUILabel("Calibrated Value", OFX_UI_FONT_MEDIUM));
     bridgeCalibValueLabel = new ofxUILabel("Calibrated Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeCalibValueLabel);
-
     
     
     // SERIAL SECTION
@@ -89,10 +89,14 @@ void testApp::setup(){
     guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable serial")); 
     
     current = "Choose Serial Device";
-    serialValueLabel = new ofxUILabel("HI THERE", OFX_UI_FONT_MEDIUM); // rename this- essential
+    serialLabel = new ofxUILabel("CHOOSE THE DEVICE", OFX_UI_FONT_MEDIUM); // rename this- essential
+    guiSetup->addWidgetDown(serialLabel);
+    serialDropdown = new ofxUIDropDownList(200, current, /*items*/ deviceLine, OFX_UI_FONT_MEDIUM);
+//    serialDropdown->setDrawPadding(true);
+    guiSetup->addWidgetDown(serialDropdown);
+    guiSetup->addWidgetDown(new ofxUILabel("Serial Value", OFX_UI_FONT_MEDIUM));
+    serialValueLabel = new ofxUILabel("Raw Serial Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(serialValueLabel);
-    ddl = new ofxUIDropDownList(200, current, /*items*/ deviceLine, OFX_UI_FONT_MEDIUM);
-    guiSetup->addWidgetDown(ddl);
     
     ofAddListener(guiSetup->newGUIEvent, this, &testApp::guiEvent); 
 //    guiSetup->loadSettings("GUI/guiSettings.xml"); // temporary commenting out
@@ -120,7 +124,8 @@ void testApp::update(){
     // PHIDGET READ
 
     
-    serialValueLabel->setLabel(current);
+    
+    
     if (phidget.isConnected){
     
         currentBridgeValue = phidget.getValues()[currentBridge];
@@ -142,6 +147,11 @@ void testApp::update(){
 
     //SERIAL READ ( NEED TO IMPLEMENT DISCONNECT/RECONNECT CASE )
 
+    serialLabel->setLabel(current);
+    
+    if(serialConnected){
+        serialValueLabel->setLabel(ofToString(bytesReadString));
+    }
     
     if(ofGetFrameNum() % 10 == 0 && serialConnected){
         int nRead = 0; // temp var to keep count per read

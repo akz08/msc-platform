@@ -83,8 +83,9 @@ public:
     string current;
 //    string *pointer;
     vector<string> deviceLine;
-    ofxUIDropDownList *ddl;
+    ofxUIDropDownList *serialDropdown;
     ofxUILabel *serialValueLabel;
+    ofxUILabel *serialLabel;
     ofxUILabel *bridgeValueLabel;
     ofxUILabel *bridgeCalibValueLabel;
     ofxUILabel *val;
