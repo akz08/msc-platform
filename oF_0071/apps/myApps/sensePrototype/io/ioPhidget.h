@@ -30,6 +30,7 @@ struct raw {
     double yLoc;
 };
 
+
 class ioPhidget
 {
 public:

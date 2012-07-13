@@ -6,9 +6,11 @@
 #include "ofxUI.h"
 #include "ioPhidget.h"
 
+
 // OSC definitions of host to connect to
 #define HOST "localhost"
 #define PORT 12000
+
 
 class testApp : public ofBaseApp{
 
@@ -27,6 +29,25 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg); 
     
+    // duplicating struct structure from iophidget .. need to create a namespace maybe?
+    struct calibrationValues {
+        double rawValue1;
+        double rawValue2;
+        double actValue1;
+        double actValue2;
+        double slope;
+        double yIntercept;
+        double currentValue;
+        double currentCalibratedValue;
+        bool calculated;
+    };
+    
+    calibrationValues bridgeValuesArray[4];
+    
+    // XML LOAD/SAVE VALUES
+    void saveValues(string fileName, calibrationValues bvArray[]);
+    void loadValues(string fileName, calibrationValues bvArray[]);
+    
     // OSC Sender
     ofxOscSender sender;
     
@@ -35,15 +56,10 @@ public:
     
     // Phidget
     ioPhidget phidget;
-//    struct bridgeValues{
-//        double Value1;
-//        double Value2;
-//        double gradient;
-//        double Yintr;
-//        double currentValue;
-//    }b0,b1,b2,b3;
     
-    ioPhidget::calibrationValues bridgeValuesArray[4];
+
+    
+
 //    bridgeValues bridgeValuesArray[4];
     
     int currentBridge;
@@ -76,4 +92,8 @@ public:
     ofxUITextInput *calibLabel1;
     ofxUITextInput *calibLabel2;
     
+    bool enableSaving;
+    
+    double x;
+    double y;
 };

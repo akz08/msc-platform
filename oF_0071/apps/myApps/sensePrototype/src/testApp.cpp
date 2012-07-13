@@ -54,6 +54,8 @@ void testApp::setup(){
 //    txt->setAutoClear(false); // turn off autoclear
 //    gui->addWidgetDown(txt);
     
+    guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable saving")); 
+    
     // PHIDGET SECTION
     guiSetup->addWidgetDown(new ofxUILabel("PHIDGETS CALIBRATION", OFX_UI_FONT_LARGE));
     guiSetup->addWidgetDown(new ofxUISpacer(300, 2)); 
@@ -95,51 +97,48 @@ void testApp::setup(){
     ofAddListener(guiSetup->newGUIEvent, this, &testApp::guiEvent); 
 //    guiSetup->loadSettings("GUI/guiSettings.xml"); // temporary commenting out
     
-    // initialise pointer
-    double hi = 2.3;
-//    currentBridgeValue = &hi;
+    // NEED TO INITIALISE POINTERS & VALUES
+
     currentBridge = 0;
-//    *bridgeValuesPointer =  new bridgeValues[4];
-//    bridgeValuesArray = {b0, b1, b2, b3};
+    enableSaving = false;
+    
+    // load
+    loadValues("Variables/loadCells.xml", bridgeValuesArray);
+
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     
+
+    y = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
+    x = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+    
+    cout << "x = " << x << "y = " << y << endl;
     
     
-    value = value++;
+    // PHIDGET READ
+
     
     serialValueLabel->setLabel(current);
     if (phidget.isConnected){
     
         currentBridgeValue = phidget.getValues()[currentBridge];
         bridgeValueLabel->setLabel(ofToString(currentBridgeValue));
+
         
-        bridgeValuesArray[0].currentValue = phidget.getValues()[0];
-        bridgeValuesArray[1].currentValue = phidget.getValues()[1];
-        bridgeValuesArray[2].currentValue = phidget.getValues()[2];
-        bridgeValuesArray[3].currentValue = phidget.getValues()[3];
-        
-        
+        for (int i = 0; i < 4; i++){
+            bridgeValuesArray[i].currentValue = phidget.getValues()[i];
+            bridgeValuesArray[i].currentCalibratedValue = bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope + bridgeValuesArray[i].yIntercept;
+
+        }
         if (bridgeValuesArray[currentBridge].calculated){
-        
-            double calibration;
-            calibration = bridgeValuesArray[currentBridge].currentValue*bridgeValuesArray[currentBridge].slope + bridgeValuesArray[currentBridge].yIntercept;
-            
-            bridgeCalibValueLabel->setLabel(ofToString(calibration));
+            bridgeCalibValueLabel->setLabel(ofToString(bridgeValuesArray[currentBridge].currentCalibratedValue));
         }
     }
     
-    // PHIDGET READ
-//    if( phidget.isConnected ){
-////        printf("(0): %f \n", phidget.calibValue(0));
-////        printf("(1): %f \n", phidget.calibValue(1));
-////        printf("(2): %f \n", phidget.calibValue(2));
-////        printf("(3): %f \n", phidget.calibValue(3));
-//        phidget.cBridge0.slope;
-//        phidget.cBridge0.yIntercept;
-//    }
+
+
 
     //SERIAL READ ( NEED TO IMPLEMENT DISCONNECT/RECONNECT CASE )
 
@@ -194,6 +193,54 @@ void testApp::draw(){
     rect.height = 50;
     ofRect(rect);
     glPopMatrix();
+    
+    ofCircle(x, y, 5);
+}
+
+//--------------------------------------------------------------
+void testApp::saveValues(string fileName, calibrationValues bvArray[]){
+    ofxXmlSettings *XML = new ofxXmlSettings();
+    // saving the 4 data structures
+    for(int i = 0; i<4; i++)
+    {
+        int index = XML->addTag("Bridge");
+        if(XML->pushTag("Bridge", index))
+        {
+            XML->setValue("number", index);
+            XML->setValue("rawValue1", bvArray[i].rawValue1);
+            XML->setValue("rawValue2", bvArray[i].rawValue2);
+            XML->setValue("actValue1", bvArray[i].actValue1);
+            XML->setValue("actValue2", bvArray[i].actValue2);
+            XML->setValue("slope", bvArray[i].slope);
+            XML->setValue("yIntercept", bvArray[i].yIntercept);
+            XML->setValue("currentValue", bvArray[i].currentValue);
+            XML->setValue("currentCalibratedValue", bvArray[i].currentCalibratedValue);
+            XML->setValue("calculated", bvArray[i].calculated);
+        }
+        XML->popTag();
+    }
+    XML->saveFile(fileName);
+    delete XML;
+}
+void testApp::loadValues(string fileName, calibrationValues bvArray[]){
+    ofxXmlSettings *XML = new ofxXmlSettings();
+    XML->loadFile(fileName);
+    int index = XML->getNumTags("Bridge");
+    for(int i = 0; i < index; i++)
+    {
+        XML->pushTag("Bridge", i);
+        bvArray[i].rawValue1 = XML->getValue("rawValue1",0.0);
+        bvArray[i].rawValue2 = XML->getValue("rawValue2",0.0);
+        bvArray[i].actValue1 = XML->getValue("actValue1",0.0);
+        bvArray[i].actValue2 = XML->getValue("actValue2",0.0);
+        bvArray[i].slope = XML->getValue("slope",0.0);
+        bvArray[i].yIntercept = XML->getValue("yIntercept",0.0);
+        bvArray[i].currentValue = XML->getValue("currentValue",0.0);
+        bvArray[i].currentCalibratedValue = XML->getValue("currentCalibratedValue",0.0);
+        bvArray[i].calculated = XML->getValue("rawValue1",false);
+        XML->popTag();
+    }
+    delete XML;
 }
 
 //--------------------------------------------------------------
@@ -208,6 +255,14 @@ void testApp::guiEvent(ofxUIEventArgs &e){
     //    *pointer = name;
     //    cout << "pointer adjusted:" << current << endl;
     // now need to be selective of event name.
+    
+    if(name == "enable saving"){
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue()){
+            enableSaving = true;
+        }
+        else enableSaving = false;
+    }
     
     // ENABLE/DISABLE DEVICES
     if(name == "enable phidget"){
@@ -293,9 +348,7 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         bridgeValuesArray[currentBridge].yIntercept = bridgeValuesArray[currentBridge].actValue1 - (bridgeValuesArray[currentBridge].rawValue1 * bridgeValuesArray[currentBridge].slope);
         
         bridgeValuesArray[currentBridge].calculated = true;
-        //        // update actual values
-        //        phidget.cBridge0.actValue1 = ofToFloat(calibLabel1->getTextString());
-        //        phidget.cBridge0.actValue2 = ofToFloat(calibLabel2->getTextString());
+
     }
     
     if(name == "Brdg 0"){
@@ -304,6 +357,8 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         calibLabel2->setTextString(ofToString(bridgeValuesArray[0].actValue2));
 //        calibLabel1->setTextString(ofToString(phidget.cBridge0.actValue1));
 //        calibLabel2->setTextString(ofToString(phidget.cBridge0.actValue2));
+        
+        currentBridge = 0;
         
 //        double ho[2] = {1,2};
         if(phidget.isConnected){
@@ -315,7 +370,7 @@ void testApp::guiEvent(ofxUIEventArgs &e){
 //            currentBridgeValue = &phidget.getValues()[0];
 //            currentBridgeValue = phidget.getValue(0);
 //            currentBridgeValue = &b0.currentValue;
-            currentBridge = 0;
+            
             
 //            cout << phidget.getValues()[0] << endl;
         }
@@ -328,10 +383,10 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         // load up the calibration values
         calibLabel1->setTextString(ofToString(bridgeValuesArray[1].actValue1));
         calibLabel2->setTextString(ofToString(bridgeValuesArray[1].actValue2));
-//        calibLabel1->setTextString(ofToString(phidget.cBridge1.actValue1));
-//        calibLabel2->setTextString(ofToString(phidget.cBridge1.actValue2));
+
+        currentBridge = 1;
         if(phidget.isConnected){
-            currentBridge = 1;
+            
         }
         else {
             
@@ -341,10 +396,10 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         // load up the calibration values
         calibLabel1->setTextString(ofToString(bridgeValuesArray[2].actValue1));
         calibLabel2->setTextString(ofToString(bridgeValuesArray[2].actValue2));
-//        calibLabel1->setTextString(ofToString(phidget.cBridge2.actValue1));
-//        calibLabel2->setTextString(ofToString(phidget.cBridge2.actValue2));
+
+        currentBridge = 2;
         if(phidget.isConnected){
-            currentBridge = 2;
+            
         }
         else {
             
@@ -354,10 +409,10 @@ void testApp::guiEvent(ofxUIEventArgs &e){
         // load up the calibration values
         calibLabel1->setTextString(ofToString(bridgeValuesArray[3].actValue1));
         calibLabel2->setTextString(ofToString(bridgeValuesArray[3].actValue2));
-//        calibLabel1->setTextString(ofToString(phidget.cBridge3.actValue1));
-//        calibLabel2->setTextString(ofToString(phidget.cBridge3.actValue2));
+
+        currentBridge = 3;
         if(phidget.isConnected){
-            currentBridge = 3;
+            
         }
         else {
             
@@ -416,6 +471,8 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 //------------------ofxUI stuff here----------------------------
 void testApp::exit(){
     
+    if(enableSaving){
+        saveValues("Variables/loadCells.xml", bridgeValuesArray);}
     guiSetup->saveSettings("GUI/guiSettings.xml");
     delete guiSetup;
     
