@@ -78,9 +78,13 @@ public:
     
     // ofxUI initialisation
     void setGUISetup();
+    void setGUIPlatform();
     void eventGUISetup(ofxUIEventArgs &e);
+    void eventGUIPlatform(ofxUIEventArgs &e);
     
     ofxUICanvas *guiSetup;
+    ofxUICanvas *guiPlatform;
+    
     void exit();
     void guiEvent(ofxUIEventArgs &e);
     string currentSerial;
@@ -98,6 +102,14 @@ public:
     
     bool enableSaving;
     
-    double x;
-    double y;
+    double xPlatform;
+    double yPlatform;
+    
+    double platformBaseWidth;
+    double platformBaseHeight;
+    
+    bool simulateBalance;
+    ofxOscReceiver receiver;
+    float simulateBalanceX;
+    float simulateBalanceY;
 };

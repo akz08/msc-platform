@@ -12,6 +12,8 @@ void testApp::setup(){
     // OSC 
     // open an outgoing connection
     sender.setup(HOST, PORT);
+    // open incoming connection for testing
+    receiver.setup(PORT);
     
     // PHIDGET
     for(int i=0; i<4; i++){                                         // creating a list for number of bridges (4)
@@ -35,22 +37,54 @@ void testApp::setup(){
     
     // INITIALISE GUI
     setGUISetup();
+    setGUIPlatform();
     
     // SAVE/LOAD
     enableSaving = false;
     loadValues("Variables/loadCells.xml", bridgeValuesArray);
+    
+    // DRAWING
+    xPlatform = 960;
+    yPlatform = 100;
+    
+    platformBaseWidth = 230;
+    platformBaseHeight = 250;
+    
+    simulateBalance = true;
+    simulateBalanceX = 0;
+    simulateBalanceY = 0;
 
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 
-    // TESTING STUFF!
-    y = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
-    x = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+    // TESTING "BALANCE BOARD" POINT
+//    yPlatform = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
+//    xPlatform = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+//    
+//    cout << "x = " << xPlatform << "y = " << yPlatform << endl;
     
-    cout << "x = " << x << "y = " << y << endl;
-    
+    // SIMULATE BALANCE
+    if(simulateBalance){
+        
+        while(receiver.hasWaitingMessages()){
+            // get the next message
+            ofxOscMessage m;
+            receiver.getNextMessage(&m);
+            
+            // check for mouse moved message
+            if(m.getAddress() == "/3/xy"){
+                simulateBalanceX = m.getArgAsFloat(0);
+                simulateBalanceY = m.getArgAsFloat(1);
+            }
+            // check for mouse button message
+            else if(m.getAddress() == "/mouse/button"){
+           
+            }
+        }
+        
+    }
     
     // PHIDGET READ
     if (phidget.isConnected){
@@ -100,21 +134,34 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
-    ofSetColor(220);
+    ofSetColor(200);
+
+    ofRectangle scooterHandle;
+    scooterHandle.x = -150; 
+    scooterHandle.y = -12.5;
+    scooterHandle.width = 300;
+    scooterHandle.height = 25;
     
-    // we want a movable 'reference point' to draw the scooter
-    // drawing a test 'handle'
-    int width =ofGetWidth()/2;
-    int height = ofGetHeight()/2;
+    ofRectangle platformBase;
+    platformBase.x = -platformBaseWidth/2;
+    platformBase.y = scooterHandle.height + 10; // 10 is a 'buffer'
+    platformBase.width = platformBaseWidth;
+    platformBase.height = platformBaseHeight;
+    
+    
+    
     glPushMatrix();
-    glTranslatef(width, height, 0);
-    glRotatef(ofToFloat(bytesReadString),0,0,1);
-    ofRectangle rect;
-    rect.x = -150;
-    rect.y = -25;
-    rect.width = 300;
-    rect.height = 50;
-    ofRect(rect);
+        glTranslatef(xPlatform, yPlatform, 0); // the 'origin' is now the centre
+
+        ofRect(platformBase);
+        ofSetColor(255,0,0);
+        ofCircle(simulateBalanceX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 + simulateBalanceY*platformBaseHeight, 5);
+    
+        glPushMatrix();
+            ofSetColor(220);
+            glRotatef(ofToFloat(bytesReadString),0,0,1);
+            ofRect(scooterHandle);
+        glPopMatrix();
     glPopMatrix();
     
 }
@@ -168,6 +215,7 @@ void testApp::loadValues(string fileName, calibrationValues bvArray[]){
 //--------------------------------------------------------------
 void testApp::guiEvent(ofxUIEventArgs &e){
     eventGUISetup(e);
+    eventGUIPlatform(e);
 }
 
 void testApp::eventGUISetup(ofxUIEventArgs &e){
@@ -349,17 +397,55 @@ void testApp::eventGUISetup(ofxUIEventArgs &e){
     
 }
 
+void testApp::eventGUIPlatform(ofxUIEventArgs &e){
+    string name = e.widget->getName(); 
+
+    if(name == "xPlatform")
+	{
+		ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        xPlatform = slider->getScaledValue(); 
+	}
+    if(name == "yPlatform")
+	{
+		ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        yPlatform = slider->getScaledValue(); 
+	}
+    if(name == "platformBaseWidth")
+	{
+		ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        platformBaseWidth = slider->getScaledValue(); 
+	}
+    if(name == "platformBaseHeight")
+	{
+		ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        platformBaseHeight = slider->getScaledValue(); 
+	}
+}
+
+void testApp::setGUIPlatform(){
+    guiPlatform = new ofxUICanvas(340, 10, 320, ofGetHeight()-20);
+    guiPlatform->setFont("DIN.otf");
+    
+    guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
+    guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseHeight, "platformBaseHeight"));
+    ofAddListener(guiPlatform->newGUIEvent,this,&testApp::guiEvent);
+}
+
 void testApp::setGUISetup(){
     // ofxUI - setting up UI
     
-    guiSetup = new ofxUICanvas(10,10,320,700); //ofxUICanvas(float x, float y, float width, float height)	
+    guiSetup = new ofxUICanvas(10,10,320,ofGetHeight()-20); //ofxUICanvas(float x, float y, float width, float height)	
 	guiSetup->setFont("DIN.otf");
-    
-    guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable saving")); 
     
     // PHIDGET SECTION
     guiSetup->addWidgetDown(new ofxUILabel("PHIDGETS CALIBRATION", OFX_UI_FONT_LARGE));
-    guiSetup->addWidgetDown(new ofxUISpacer(300, 2)); 
+    guiSetup->addWidgetDown(new ofxUISpacer(300, 2));     
+    guiSetup->addWidgetDown(new ofxUIToggle(16, 16, false, "enable saving")); 
+    guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
     guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable phidget")); 
     
     guiSetup->addWidgetDown(new ofxUIRadio( 16, 16, "BRIDGE NUMBER", bridgeNo, OFX_UI_ORIENTATION_HORIZONTAL)); 
