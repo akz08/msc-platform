@@ -62,6 +62,7 @@ public:
 
 //    bridgeValues bridgeValuesArray[4];
     
+    vector<string> bridgeNo;
     int currentBridge;
     double currentBridgeValue;
     double value;
@@ -77,10 +78,12 @@ public:
     
     // ofxUI initialisation
     void setGUISetup();
+    void eventGUISetup(ofxUIEventArgs &e);
+    
     ofxUICanvas *guiSetup;
     void exit();
     void guiEvent(ofxUIEventArgs &e);
-    string current;
+    string currentSerial;
 //    string *pointer;
     vector<string> deviceLine;
     ofxUIDropDownList *serialDropdown;
