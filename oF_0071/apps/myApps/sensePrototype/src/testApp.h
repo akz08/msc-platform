@@ -112,4 +112,7 @@ public:
     ofxOscReceiver receiver;
     float simulateBalanceX;
     float simulateBalanceY;
+    
+    double testPlatformX;
+    double testPlatformY;
 };

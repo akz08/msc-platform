@@ -60,10 +60,13 @@ void testApp::setup(){
 void testApp::update(){
 
     // TESTING "BALANCE BOARD" POINT
-//    yPlatform = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
-//    xPlatform = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+//    testPlatformY = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
+//    testPlatformX = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[0].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+    
+    testPlatformX = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
+    testPlatformY = (bridgeValuesArray[2].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[1].currentCalibratedValue);
 //    
-//    cout << "x = " << xPlatform << "y = " << yPlatform << endl;
+    cout << "x = " << testPlatformX << "y = " << testPlatformY << endl;
     
     // SIMULATE BALANCE
     if(simulateBalance){
@@ -157,6 +160,9 @@ void testApp::draw(){
         ofSetColor(255,0,0);
         ofCircle(simulateBalanceX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 + simulateBalanceY*platformBaseHeight, 5);
     
+    ofCircle(testPlatformX*30, testPlatformY*30,20);
+
+       
         glPushMatrix();
             ofSetColor(220);
             glRotatef(ofToFloat(bytesReadString),0,0,1);
@@ -206,7 +212,7 @@ void testApp::loadValues(string fileName, calibrationValues bvArray[]){
         bvArray[i].yIntercept = XML->getValue("yIntercept",0.0);
         bvArray[i].currentValue = XML->getValue("currentValue",0.0);
         bvArray[i].currentCalibratedValue = XML->getValue("currentCalibratedValue",0.0);
-        bvArray[i].calculated = XML->getValue("rawValue1",false);
+        bvArray[i].calculated = XML->getValue("calculated",false);
         XML->popTag();
     }
     delete XML;
@@ -405,21 +411,25 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         xPlatform = slider->getScaledValue(); 
 	}
-    if(name == "yPlatform")
+    else if(name == "yPlatform")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         yPlatform = slider->getScaledValue(); 
 	}
-    if(name == "platformBaseWidth")
+    else if(name == "platformBaseWidth")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         platformBaseWidth = slider->getScaledValue(); 
 	}
-    if(name == "platformBaseHeight")
+    else if(name == "platformBaseHeight")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         platformBaseHeight = slider->getScaledValue(); 
 	}
+    else if(name == "enable balance simulation")
+    {
+        simulateBalance = !simulateBalance;
+    }
 }
 
 void testApp::setGUIPlatform(){
@@ -428,6 +438,7 @@ void testApp::setGUIPlatform(){
     
     guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
+    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, true, "enable balance simulation")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
