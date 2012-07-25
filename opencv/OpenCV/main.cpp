@@ -193,45 +193,6 @@ int main (int argc, char** argv)
     while (true)        // loop until keypress
     {
 
-//        if ((bool)phidget.isConnected) {
-//            printf("1");
-//        }
-//        else {
-//            printf("0");
-//        }
-
-//        if(phidget.isConnected){
-//            
-//            // this while loop runs at a different time as the events in ioPhidget. This causes the 'strange' values when the 
-//            // variables are accessed here... how to get the values in then?
-//            
-//            printf("(0): %f \n", phidget.getValue(0));
-//            printf("(1): %f \n", phidget.getValue(1));
-//            printf("(2): %f \n", phidget.getValue(2));
-//            printf("(3): %f \n", phidget.getValue(3));
-//            
-////            printf("lc%d : %f \n", phidget.lc0.index, phidget.lc0.value );
-////            printf("lc%d : %f \n", phidget.lc1.index, phidget.lc1.value );
-////            printf("lc%d : %f \n", phidget.lc2.index, phidget.lc2.value );
-////            printf("lc%d : %f \n", phidget.lc3.index, phidget.lc3.value );
-//            
-////            printf("lc%d : %f \n", phidget.lc0.index, phidget.cell0 );
-////            printf("lc%d : %f \n", phidget.lc1.index, phidget.cell1 );
-////            printf("lc%d : %f \n", phidget.lc2.index, phidget.cell2 );
-////            printf("lc%d : %f \n", phidget.lc3.index, phidget.cell3 );
-//            
-////            printf("lc%d : %f \n", phidget.lc0.index, phidget.cells[0] );
-////            printf("lc%d : %f \n", phidget.lc1.index, phidget.cells[1] );
-////            printf("lc%d : %f \n", phidget.lc2.index, phidget.cells[2] );
-////            printf("lc%d : %f \n", phidget.lc3.index, phidget.cells[3] );
-//            
-////            printf("lc%d : %f \n", lc0.index, lc0.value );
-////            printf("lc%d : %f \n", lc1.index, lc1.value );
-////            printf("lc%d : %f \n", lc2.index, lc2.value );
-////            printf("lc%d : %f \n", lc3.index, lc3.value );
-//            
-//            
-//        }
         
         // UPDATE CAMERA FEED //
         capture >> src; // offload captured image from camera -> src
