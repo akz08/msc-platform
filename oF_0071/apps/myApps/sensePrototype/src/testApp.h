@@ -90,9 +90,12 @@ public:
         float topRight;
         float bottomLeft;
         float bottomRight;
-    }; 
+    }bBoard; 
+    float total, topLeft, topRight, bottomLeft, bottomRight;
     bool connectedRemotes;
-    vector<CWiimote> wiimotes;
+    int exType;
+    std::vector<CWiimote> *pointerWiimotes;
+    std::vector<CWiimote> referenceWiimotes;
     
     // ofxUI initialisation
     void setGUISetup();

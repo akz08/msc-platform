@@ -57,21 +57,8 @@ void testApp::setup(){
     simulateBalanceX = 0;
     simulateBalanceY = 0;
 
-
-    connectedRemotes = false;
-    connectRemotes = false;
+    thread.startThread(true,false);
 }
-
-//void testApp::connectRemotes(){
-//    boost::posix_time::seconds workTime(3);  
-//    
-//    std::cout << "Worker: running" << std::endl;  
-//    
-//    // Pretend to do something useful...  
-//    boost::this_thread::sleep(workTime);  
-//    
-//    std::cout << "Worker: finished" << std::endl;  
-//}
 
 
 //--------------------------------------------------------------
@@ -148,14 +135,22 @@ void testApp::update(){
     }
     
     //WII BALANCE BOARD READ
-    if(connectRemotes){
-        std::vector<CWiimote>& wiimotes = wii.Connect();
-        connectedRemotes = true;
-        connectRemotes = false;
-    }
-    if(connectedRemotes&&wii.Poll()){
+    if(thread.boardReading){
+     
+//        thread.lock();
+//        bBoard.total = thread.total;
+//        bBoard.topLeft = thread.topLeft;
+//        bBoard.topRight = thread.topRight;
+//        bBoard.bottomLeft = thread.bottomLeft;
+//        bBoard.bottomRight = thread.bottomRight;
+//        
+//        cout<<"transfarring"<<endl;
+//        cout<< bBoard.total << endl;
+//        cout<< bBoard.topLeft << endl;
+//        thread.unlock();
         
     }
+
  
     //SEND OSC
     float rawSerial;
@@ -468,18 +463,10 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
         
         if(toggle->getValue()){
-            wii.Find(1);
-            connectRemotes = true;
-
-//            thread.startThread(true,true);
-//            if(thread.found){
-//                wii = thread.wii;
-//            }
-        }
+            
+                    }
         else {
-//            connectedRemotes = false;
-//            thread.stopThread();
-//            thread.dostuff = false;
+
         }
     }
 }
@@ -605,7 +592,7 @@ void testApp::exit(){
         saveValues("Variables/loadCells.xml", bridgeValuesArray);}
 
     delete guiSetup;
-//    thread.stopThread();
+    thread.stopThread();
 }
 
 

@@ -13,30 +13,86 @@
 #include "stdio.h"
 #include "wiicpp.h"
 #include "ofMain.h"
+#include "testApp.h"
 
 class ioThreading : public ofThread{
 public:
-    
-    bool dostuff;
-    
-    bool found; 
     CWii wii;
+    std::vector<CWiimote>::iterator i;
+    int exType;
+    std::vector<CWiimote> *pointerWiimotes;
+    std::vector<CWiimote> referenceWiimotes;
+    
+    // variable to access from main thread
+    
+    bool boardConnected;
+    bool boardReading;
+    float total, topLeft, topRight, bottomLeft, bottomRight;
     
     void threadedFunction(){
-        //start
-        dostuff = true;
-        found = false;
         
+        boardConnected = false;
+        boardReading = false;
+
         while(isThreadRunning()) {
+            
+            wii.Find(1);
+            std::vector<CWiimote>& wiimotes = wii.Connect();
+            pointerWiimotes = &wiimotes;
+            referenceWiimotes = *pointerWiimotes;
+            
+            boardConnected = true;
+            
+            while(boardConnected&&wiimotes.size()){
+                
+                if(wii.Poll()){
+                    boardReading = true;
+                    for(i = referenceWiimotes.begin(); i != referenceWiimotes.end(); ++i)
+                    {
+                        // Use a reference to make working with the iterator handy.
+                        CWiimote & wiimote = *i;
+                        switch(wiimote.GetEvent())
+                        {
+                            case CWiimote::EVENT_EVENT:
+                                exType = wiimote.ExpansionDevice.GetType();
+                                if(exType == wiimote.ExpansionDevice.TYPE_BALANCE_BOARD){
+                                    lock();
+                                    CBalanceBoard &bb = wiimote.ExpansionDevice.BalanceBoard;
+                                    bb.WeightSensor.GetWeight(total, topLeft, topRight, bottomLeft, bottomRight);
+                                    
+                                    
+                                    printf("balance board top left weight: %f\n", topLeft);
+                                    printf("balance board top right weight: %f\n", topRight);
+                                    printf("balance board bottom left weight: %f\n", bottomLeft);
+                                    printf("balance board bottom right weight: %f\n", bottomRight);
+                                    printf("balance board total weight: %f\n", total);
+                                    unlock();
+                                    
+                                }
+                                
+                                break;
+                            default:
+                                break;
+   
+                        }
+                        
+                    }
+                    
+                }
+            }
+        }
+    }
+            
+            
 //            cout<<"testing"<<endl;
         
         
 //        for(int i; i < 1;  i++){
 //            CWii wii;
-            std::vector<CWiimote>::iterator i;
-            wii.Find(5);
-            found = true;
-            return;}
+//            std::vector<CWiimote>::iterator i;
+//            wii.Find(5);
+//            found = true;
+//            return;}
 //            std::vector<CWiimote>& wiimotes = wii.Connect();
 //       
 //        do{
@@ -60,7 +116,7 @@ public:
 //        
 //        }
         //done
-    }
+    
     
     void HandleEvent(CWiimote &wm)
     {
