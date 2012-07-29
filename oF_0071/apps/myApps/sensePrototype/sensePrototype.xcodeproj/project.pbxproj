@@ -25,6 +25,7 @@
 		DD61F70615938B0A00E0F3B7 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD61F6F615938B0A00E0F3B7 /* ofxOscMessage.cpp */; };
 		DD61F70715938B0A00E0F3B7 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD61F6F815938B0A00E0F3B7 /* ofxOscReceiver.cpp */; };
 		DD61F70815938B0A00E0F3B7 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD61F6FA15938B0A00E0F3B7 /* ofxOscSender.cpp */; };
+		DD88F3CA15C1AE39000E20B5 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD88F3C915C1AE39000E20B5 /* IOBluetooth.framework */; };
 		DD8A1FFC15AB162C001B28EC /* ioPhidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD8A1FFA15AB162C001B28EC /* ioPhidget.cpp */; };
 		DDBB8B6F1596124500EB8F6D /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBB8B6E1596124500EB8F6D /* Phidget21.framework */; };
 		DDF2C4E715C0366900F391A2 /* libwiic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF2C4DC15C0366900F391A2 /* libwiic.dylib */; };
@@ -124,6 +125,8 @@
 		DD139E3B15A8B38D0013B788 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		DD139E3D15A8B38D0013B788 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		DD139E3E15A8B38D0013B788 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
+		DD4B547715C540620048D7B0 /* ioThreading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ioThreading.h; path = io/ioThreading.h; sourceTree = SOURCE_ROOT; };
+		DD4B547A15C54EDA0048D7B0 /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
 		DD61F6D315938B0A00E0F3B7 /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
 		DD61F6D815938B0A00E0F3B7 /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IpEndpointName.cpp; sourceTree = "<group>"; };
 		DD61F6D915938B0A00E0F3B7 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
@@ -157,6 +160,7 @@
 		DD61F6F915938B0A00E0F3B7 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		DD61F6FA15938B0A00E0F3B7 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		DD61F6FB15938B0A00E0F3B7 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		DD88F3C915C1AE39000E20B5 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = /System/Library/Frameworks/IOBluetooth.framework; sourceTree = "<absolute>"; };
 		DD8A1FFA15AB162C001B28EC /* ioPhidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ioPhidget.cpp; path = io/ioPhidget.cpp; sourceTree = "<group>"; };
 		DD8A1FFB15AB162C001B28EC /* ioPhidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioPhidget.h; path = io/ioPhidget.h; sourceTree = "<group>"; };
 		DDBB8B6E1596124500EB8F6D /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = /Library/Frameworks/Phidget21.framework; sourceTree = "<absolute>"; };
@@ -212,6 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD88F3CA15C1AE39000E20B5 /* IOBluetooth.framework in Frameworks */,
 				DDBB8B6F1596124500EB8F6D /* Phidget21.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
@@ -238,6 +243,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				DD4B547815C54EDA0048D7B0 /* ofxThread */,
 				DDF2C4C615C0366900F391A2 /* wiic */,
 				DDF2C4DD15C0366900F391A2 /* wiicpp */,
 				DD8A1FF915AB1610001B28EC /* ioPhidget */,
@@ -357,6 +363,23 @@
 			children = (
 				DD139E3D15A8B38D0013B788 /* ofxXmlSettings.cpp */,
 				DD139E3E15A8B38D0013B788 /* ofxXmlSettings.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		DD4B547815C54EDA0048D7B0 /* ofxThread */ = {
+			isa = PBXGroup;
+			children = (
+				DD4B547915C54EDA0048D7B0 /* src */,
+			);
+			name = ofxThread;
+			path = ../../../addons/ofxThread;
+			sourceTree = "<group>";
+		};
+		DD4B547915C54EDA0048D7B0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DD4B547A15C54EDA0048D7B0 /* ofxThread.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -584,6 +607,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				DD88F3C915C1AE39000E20B5 /* IOBluetooth.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -600,6 +624,7 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				DD4B547715C540620048D7B0 /* ioThreading.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -739,6 +764,8 @@
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -748,6 +775,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -772,6 +800,8 @@
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -782,6 +812,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -815,6 +846,7 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
@@ -910,6 +942,7 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,

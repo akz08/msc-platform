@@ -8,3 +8,4 @@ int main(){
 	ofSetupOpenGL(&window, 1300, 768, OF_WINDOW);
 	ofRunApp(new testApp()); // start the app
 }
+

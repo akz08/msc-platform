@@ -5,7 +5,11 @@
 #include "ofGraphics.h"
 #include "ofxUI.h"
 #include "ioPhidget.h"
-
+#include "wiicpp.h"
+//#include "ofThread.h"
+//#include "boost/thread.hpp"  // to help support multithreading for the wiic connection
+//#include <boost/date_time.hpp>  
+#include "ioThreading.h"
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
@@ -56,9 +60,6 @@ public:
     
     // Phidget
     ioPhidget phidget;
-    
-
-    
 
 //    bridgeValues bridgeValuesArray[4];
     
@@ -75,6 +76,23 @@ public:
     int     nBytesRead;
     int     nTimesRead;
     bool    serialConnected;
+    
+    // Wii Remote/ Balance Board
+    CWii wii;
+    vector<CWiimote>::iterator i; // should probably review this to be more descriptive 
+    int remotesFound;
+    bool reloadRemotes;
+    bool connectRemotes;
+    ioThreading thread;
+    struct balanceBoard {//total, topLeft, topRight, bottomLeft, bottomRight
+        float total;
+        float topLeft;
+        float topRight;
+        float bottomLeft;
+        float bottomRight;
+    }; 
+    bool connectedRemotes;
+    vector<CWiimote> wiimotes;
     
     // ofxUI initialisation
     void setGUISetup();
@@ -116,3 +134,4 @@ public:
     double testPlatformX;
     double testPlatformY;
 };
+

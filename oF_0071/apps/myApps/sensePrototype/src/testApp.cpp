@@ -4,7 +4,7 @@
 void testApp::setup(){
 
     // SETUP WINDOW & LOAD DEPENDENCIES
-    ofBackground(113, 198, 113);
+    ofBackground(250, 250, 250);
     ofSetFrameRate(60);                                             // set to 60fps (use as base for serial read)
     ofSetLogLevel(OF_LOG_VERBOSE /*OF_LOG_FATAL_ERROR*/);
     font.loadFont("DIN.otf",64);                                    // located in /bin/data for now
@@ -35,6 +35,9 @@ void testApp::setup(){
     nBytesRead = 0;
     memset(bytesReadString, 0, 5);
     
+    // WII BALANCE BOARD (REMOTES)
+    reloadRemotes = 0;
+    
     // INITIALISE GUI
     setGUISetup();
     setGUIPlatform();
@@ -54,11 +57,30 @@ void testApp::setup(){
     simulateBalanceX = 0;
     simulateBalanceY = 0;
 
+
+    connectedRemotes = false;
+    connectRemotes = false;
 }
+
+//void testApp::connectRemotes(){
+//    boost::posix_time::seconds workTime(3);  
+//    
+//    std::cout << "Worker: running" << std::endl;  
+//    
+//    // Pretend to do something useful...  
+//    boost::this_thread::sleep(workTime);  
+//    
+//    std::cout << "Worker: finished" << std::endl;  
+//}
+
 
 //--------------------------------------------------------------
 void testApp::update(){
 
+//    thread.lock();
+//    thread.threadedFunction();
+//    thread.unlock();
+/*
     // TESTING "BALANCE BOARD" POINT
 //    testPlatformY = (bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue)/(bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue+bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue);
 //    testPlatformX = (bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[0].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue+bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue);
@@ -67,7 +89,8 @@ void testApp::update(){
     testPlatformY = (bridgeValuesArray[2].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue)/(bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[1].currentCalibratedValue);
 //    
     cout << "x = " << testPlatformX << "y = " << testPlatformY << endl;
-    
+*/    
+ 
     // SIMULATE BALANCE
     if(simulateBalance){
         
@@ -122,6 +145,16 @@ void testApp::update(){
             nBytesRead = nRead;
         };
         memcpy(bytesReadString, bytesReturned, 4);
+    }
+    
+    //WII BALANCE BOARD READ
+    if(connectRemotes){
+        std::vector<CWiimote>& wiimotes = wii.Connect();
+        connectedRemotes = true;
+        connectRemotes = false;
+    }
+    if(connectedRemotes&&wii.Poll()){
+        
     }
  
     //SEND OSC
@@ -426,9 +459,28 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         platformBaseHeight = slider->getScaledValue(); 
 	}
-    else if(name == "enable balance simulation")
+    else if(name == "enable TouchOSC balance simulation")
     {
         simulateBalance = !simulateBalance;
+    }
+    else if(name == "enable Wii Balance Board")
+    {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        
+        if(toggle->getValue()){
+            wii.Find(1);
+            connectRemotes = true;
+
+//            thread.startThread(true,true);
+//            if(thread.found){
+//                wii = thread.wii;
+//            }
+        }
+        else {
+//            connectedRemotes = false;
+//            thread.stopThread();
+//            thread.dostuff = false;
+        }
     }
 }
 
@@ -438,7 +490,8 @@ void testApp::setGUIPlatform(){
     
     guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
-    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, true, "enable balance simulation")); 
+    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, false, "enable TouchOSC balance simulation")); 
+    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, false, "enable Wii Balance Board")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
@@ -454,10 +507,10 @@ void testApp::setGUISetup(){
     
     // PHIDGET SECTION
     guiSetup->addWidgetDown(new ofxUILabel("PHIDGETS CALIBRATION", OFX_UI_FONT_LARGE));
-    guiSetup->addWidgetDown(new ofxUISpacer(300, 2));     
-    guiSetup->addWidgetDown(new ofxUIToggle(16, 16, false, "enable saving")); 
-    guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
+    guiSetup->addWidgetDown(new ofxUISpacer(300, 2));  
     guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable phidget")); 
+//    guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
+    guiSetup->addWidgetDown(new ofxUIToggle(16, 16, false, "enable saving"));
     
     guiSetup->addWidgetDown(new ofxUIRadio( 16, 16, "BRIDGE NUMBER", bridgeNo, OFX_UI_ORIENTATION_HORIZONTAL)); 
     guiSetup->addWidgetDown(new ofxUILabel("Bridge Value", OFX_UI_FONT_MEDIUM));
@@ -552,7 +605,7 @@ void testApp::exit(){
         saveValues("Variables/loadCells.xml", bridgeValuesArray);}
 
     delete guiSetup;
-    
+//    thread.stopThread();
 }
 
 
