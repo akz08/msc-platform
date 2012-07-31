@@ -1,8 +1,41 @@
 #include "testApp.h"
+//#include "wiiRemoteInterf.h"
+
+//testApp::testApp(void) 
+//    : _impl (NULL)
+//{ }
+//
+//void testApp::init(void)
+//{
+//    _impl = new MyClassImpl();
+//}
+//
+//testApp::~testApp(void)
+//{
+//    if(_impl) {delete _impl; _impl = NULL; }
+//}
+//
+//void testApp::doSomethingWithMyClass(void)
+//{
+//    _myValue = 42;
+//    int result = _impl->doSomethingWith( _myValue);
+////    int result = 42;
+////    char* test = "hello";
+////    if (result == cBLABLA)
+////    {
+////        _impl->logMyMessage(test/*"Hello,Arthur!"*/);
+////    }
+////    else
+////    {
+////        _impl->logMyMessage(test/*"Don't worry."*/);
+////    }
+//}
 
 //--------------------------------------------------------------
 void testApp::setup(){
-
+    
+//    doSomethingWithMyClass();
+    
     // SETUP WINDOW & LOAD DEPENDENCIES
     ofBackground(250, 250, 250);
     ofSetFrameRate(60);                                             // set to 60fps (use as base for serial read)
@@ -36,7 +69,7 @@ void testApp::setup(){
     memset(bytesReadString, 0, 5);
     
     // WII BALANCE BOARD (REMOTES)
-    reloadRemotes = 0;
+//    reloadRemotes = 0;
     
     // INITIALISE GUI
     setGUISetup();
@@ -53,13 +86,20 @@ void testApp::setup(){
     platformBaseWidth = 230;
     platformBaseHeight = 250;
     
-    simulateBalance = true;
+    simulateBalance = false;
     simulateBalanceX = 0;
     simulateBalanceY = 0;
-
-    thread.startThread(true,false);
+    
+    wiiBalance = false;
+    
+//    thread.startThread(true,false);
+//    boost::thread workerThread(workerFunction, bBoard);
+//    workerThread.join(); 
 }
 
+//void testApp::workerFunction(struct balanceBoard){
+//    cout << "workerFunction" << endl;
+//}
 
 //--------------------------------------------------------------
 void testApp::update(){
@@ -98,6 +138,47 @@ void testApp::update(){
         }
         
     }
+    else if(wiiBalance){
+        // get the OSC messages from OSCulator
+        while(receiver.hasWaitingMessages()){
+            // get the next message
+            ofxOscMessage m;
+            receiver.getNextMessage(&m);
+            
+            // check for mouse moved message
+            if(m.getAddress() == "/wii/1/balance/0"){
+                wiiBottomLeft = m.getArgAsFloat(0);
+                cout << "wiiBottomLeft: "<< wiiBottomLeft <<endl;
+            }
+            else if(m.getAddress() == "/wii/1/balance/1"){
+                wiiBottomRight = m.getArgAsFloat(0);
+                cout<<"wiiBottomRight: "<<wiiBottomRight<<endl;
+            }
+            else if(m.getAddress() == "/wii/1/balance/2"){
+                wiiTopLeft = m.getArgAsFloat(0);
+                cout<<"wiiTopLeft: "<<wiiTopLeft<<endl;
+            }
+            else if(m.getAddress() == "/wii/1/balance/3"){
+                wiiTopRight = m.getArgAsFloat(0);
+                cout<<"wiiTopRight: "<<wiiTopRight<<endl;
+            }
+        }
+        
+        // NOTE : follow a standard similar to the wii balance board. 
+        // i.e. BL[bridge 0], BR[bridge 1], TL[bridge 2], TR[bridge 3]
+        // TO DO: include a setting to 'rotate' wii bB values for 'skateboard' orientation [switch when calculating testPlatformX & Y?]
+        
+        // processing the values into useful location information
+        // temporarily using testPlatformX & Y
+        
+        // effectively the difference between the extremeties
+        testPlatformX = (wiiTopRight + wiiBottomRight) - (wiiTopLeft + wiiBottomLeft); // correct
+        testPlatformY = (wiiBottomLeft + wiiBottomRight) - (wiiTopLeft + wiiTopRight); // correct
+        cout << "X: " << testPlatformX <<endl; // centre on zero (both weights cancel out)
+        cout << "Y: " << testPlatformY <<endl; // centre on zero
+        
+        // X & Y values vary greatly from 0. how to 'normalise' the values without knowing a maximum?
+    }
     
     // PHIDGET READ
     if (phidget.isConnected){
@@ -135,7 +216,7 @@ void testApp::update(){
     }
     
     //WII BALANCE BOARD READ
-    if(thread.boardReading){
+//    if(thread.boardReading){
      
 //        thread.lock();
 //        bBoard.total = thread.total;
@@ -149,9 +230,10 @@ void testApp::update(){
 //        cout<< bBoard.topLeft << endl;
 //        thread.unlock();
         
-    }
+//    }
 
- 
+
+    
     //SEND OSC
     float rawSerial;
     rawSerial = ofToFloat(bytesReadString);
@@ -179,16 +261,19 @@ void testApp::draw(){
     platformBase.width = platformBaseWidth;
     platformBase.height = platformBaseHeight;
     
-    
+    glPushMatrix();
+    glTranslatef(500,0,0);
+    ofCircle(testPlatformX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 +testPlatformY*platformBaseHeight,20);
+    glPopMatrix();
     
     glPushMatrix();
         glTranslatef(xPlatform, yPlatform, 0); // the 'origin' is now the centre
 
         ofRect(platformBase);
         ofSetColor(255,0,0);
-        ofCircle(simulateBalanceX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 + simulateBalanceY*platformBaseHeight, 5);
+        ofCircle(simulateBalanceX, simulateBalanceY, 30);
     
-    ofCircle(testPlatformX*30, testPlatformY*30,20);
+//    ofCircle(testPlatformX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 +testPlatformY*platformBaseHeight,20);
 
        
         glPushMatrix();
@@ -462,10 +547,12 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
         
-        if(toggle->getValue()){
-            
-                    }
-        else {
+        if(toggle->getValue())
+        {
+            wiiBalance = !wiiBalance;
+        }
+        else 
+        {
 
         }
     }
@@ -592,7 +679,7 @@ void testApp::exit(){
         saveValues("Variables/loadCells.xml", bridgeValuesArray);}
 
     delete guiSetup;
-    thread.stopThread();
+//    thread.stopThread();
 }
 
 

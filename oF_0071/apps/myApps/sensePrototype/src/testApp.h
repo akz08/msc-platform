@@ -7,18 +7,30 @@
 #include "ioPhidget.h"
 #include "wiicpp.h"
 //#include "ofThread.h"
-//#include "boost/thread.hpp"  // to help support multithreading for the wiic connection
-//#include <boost/date_time.hpp>  
+#include "boost/thread.hpp"  // to help support multithreading for the wiic connection
+#include <boost/date_time.hpp>  
 #include "ioThreading.h"
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
 #define PORT 12000
 
+class MyClassImpl;
 
 class testApp : public ofBaseApp{
 
+    // implementing PIMPL
+//    enum{ cBLABLA = 42};
+    
 public:
+//    testApp (void);
+//    ~testApp(void);
+//    
+//    void init(void);
+//    void doSomethingWithMyClass(void);
+    
+    //////
+    
 	void setup();
 	void update();
 	void draw();
@@ -78,24 +90,26 @@ public:
     bool    serialConnected;
     
     // Wii Remote/ Balance Board
-    CWii wii;
-    vector<CWiimote>::iterator i; // should probably review this to be more descriptive 
-    int remotesFound;
-    bool reloadRemotes;
-    bool connectRemotes;
-    ioThreading thread;
-    struct balanceBoard {//total, topLeft, topRight, bottomLeft, bottomRight
-        float total;
-        float topLeft;
-        float topRight;
-        float bottomLeft;
-        float bottomRight;
-    }bBoard; 
-    float total, topLeft, topRight, bottomLeft, bottomRight;
-    bool connectedRemotes;
-    int exType;
-    std::vector<CWiimote> *pointerWiimotes;
-    std::vector<CWiimote> referenceWiimotes;
+//    CWii wii;
+//    vector<CWiimote>::iterator i; // should probably review this to be more descriptive 
+//    int remotesFound;
+//    bool reloadRemotes;
+//    bool connectRemotes;
+//    ioThreading thread;
+//    struct balanceBoard {//total, topLeft, topRight, bottomLeft, bottomRight
+//        float total;
+//        float topLeft;
+//        float topRight;
+//        float bottomLeft;
+//        float bottomRight;
+//    }bBoard; 
+//    float total, topLeft, topRight, bottomLeft, bottomRight;
+//    bool connectedRemotes;
+//    int exType;
+//    std::vector<CWiimote> *pointerWiimotes;
+//    std::vector<CWiimote> referenceWiimotes;
+    
+//    void workerFunction(struct balanceBoard);
     
     // ofxUI initialisation
     void setGUISetup();
@@ -129,12 +143,24 @@ public:
     double platformBaseWidth;
     double platformBaseHeight;
     
-    bool simulateBalance;
     ofxOscReceiver receiver;
+    bool simulateBalance;
     float simulateBalanceX;
     float simulateBalanceY;
     
     double testPlatformX;
     double testPlatformY;
+    
+    bool wiiBalance;
+    float wiiBottomLeft;
+    float wiiBottomRight;
+    float wiiTopLeft;
+    float wiiTopRight;
+    
+    //////
+//private:
+//    MyClassImpl * _impl;
+//    int _myValue;
+    
 };
 
