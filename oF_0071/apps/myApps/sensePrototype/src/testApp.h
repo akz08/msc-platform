@@ -134,6 +134,8 @@ public:
     ofxUITextInput *txt;
     ofxUITextInput *calibLabel1;
     ofxUITextInput *calibLabel2;
+    ofxUIToggle *oscBalanceSimToggle;
+    ofxUIToggle *wiibbBalanceSimToggle;
     
     bool enableSaving;
     
@@ -144,14 +146,16 @@ public:
     double platformBaseHeight;
     
     ofxOscReceiver receiver;
-    bool simulateBalance;
+//    bool simulateBalance; // renaming
+    bool oscBalanceSim;
     float simulateBalanceX;
     float simulateBalanceY;
     
     double testPlatformX;
     double testPlatformY;
     
-    bool wiiBalance;
+//    bool wiiBalance; // renaming
+    bool wiibbBalanceSim;
     float wiiBottomLeft;
     float wiiBottomRight;
     float wiiTopLeft;

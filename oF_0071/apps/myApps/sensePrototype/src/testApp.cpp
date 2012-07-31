@@ -86,11 +86,11 @@ void testApp::setup(){
     platformBaseWidth = 230;
     platformBaseHeight = 250;
     
-    simulateBalance = false;
+//    simulateBalance = false; // simulateBalance & wiiBalance bool activation now contained within toggles
     simulateBalanceX = 0;
     simulateBalanceY = 0;
     
-    wiiBalance = false;
+//    wiiBalance = false;
     
 //    thread.startThread(true,false);
 //    boost::thread workerThread(workerFunction, bBoard);
@@ -118,8 +118,46 @@ void testApp::update(){
     cout << "x = " << testPlatformX << "y = " << testPlatformY << endl;
 */    
  
+    // PHIDGET READ
+    if (phidget.isConnected){
+        
+        currentBridgeValue = phidget.getValues()[currentBridge];
+        bridgeValueLabel->setLabel(ofToString(currentBridgeValue));
+        
+        for (int i = 0; i < 4; i++){
+            bridgeValuesArray[i].currentValue = phidget.getValues()[i];
+            bridgeValuesArray[i].currentCalibratedValue = bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope + bridgeValuesArray[i].yIntercept;
+        }
+        if (bridgeValuesArray[currentBridge].calculated){
+            bridgeCalibValueLabel->setLabel(ofToString(bridgeValuesArray[currentBridge].currentCalibratedValue));
+        }
+    }
+    
+    //SERIAL READ
+    serialLabel->setLabel(currentSerial);
+    if(serialConnected)
+    {
+        serialValueLabel->setLabel(ofToString(bytesReadString));
+        
+        if(ofGetFrameNum() % 10 == 0)
+        {
+            int nRead = 0; // temp var to keep count per read
+            serial.writeByte('a');
+            unsigned char bytesReturned[4];
+            memset(bytesReadString, 0, 5);
+            memset(bytesReturned, 0, 4);
+            
+            while( (nRead = serial.readBytes(bytesReturned,4)) > 0){
+                nTimesRead++;
+                nBytesRead = nRead;
+            };
+            memcpy(bytesReadString, bytesReturned, 4);
+        }
+    }
+    
     // SIMULATE BALANCE
-    if(simulateBalance){
+    // touchOSC
+    if(oscBalanceSim){
         
         while(receiver.hasWaitingMessages()){
             // get the next message
@@ -138,7 +176,8 @@ void testApp::update(){
         }
         
     }
-    else if(wiiBalance){
+    // Wii Balance Board ^TM
+    else if(wiibbBalanceSim){
         // get the OSC messages from OSCulator
         while(receiver.hasWaitingMessages()){
             // get the next message
@@ -180,40 +219,7 @@ void testApp::update(){
         // X & Y values vary greatly from 0. how to 'normalise' the values without knowing a maximum?
     }
     
-    // PHIDGET READ
-    if (phidget.isConnected){
     
-        currentBridgeValue = phidget.getValues()[currentBridge];
-        bridgeValueLabel->setLabel(ofToString(currentBridgeValue));
-
-        for (int i = 0; i < 4; i++){
-            bridgeValuesArray[i].currentValue = phidget.getValues()[i];
-            bridgeValuesArray[i].currentCalibratedValue = bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope + bridgeValuesArray[i].yIntercept;
-        }
-        if (bridgeValuesArray[currentBridge].calculated){
-            bridgeCalibValueLabel->setLabel(ofToString(bridgeValuesArray[currentBridge].currentCalibratedValue));
-        }
-    }
-
-    //SERIAL READ
-    serialLabel->setLabel(currentSerial);
-    if(serialConnected){
-        serialValueLabel->setLabel(ofToString(bytesReadString));
-    }
-    
-    if(ofGetFrameNum() % 10 == 0 && serialConnected){
-        int nRead = 0; // temp var to keep count per read
-        serial.writeByte('a');
-        unsigned char bytesReturned[4];
-        memset(bytesReadString, 0, 5);
-        memset(bytesReturned, 0, 4);
-        
-        while( (nRead = serial.readBytes(bytesReturned,4)) > 0){
-            nTimesRead++;
-            nBytesRead = nRead;
-        };
-        memcpy(bytesReadString, bytesReturned, 4);
-    }
     
     //WII BALANCE BOARD READ
 //    if(thread.boardReading){
@@ -271,7 +277,8 @@ void testApp::draw(){
 
         ofRect(platformBase);
         ofSetColor(255,0,0);
-        ofCircle(simulateBalanceX, simulateBalanceY, 30);
+//        ofCircle(simulateBalanceX, simulateBalanceY, 30);
+    ofCircle(simulateBalanceX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 + simulateBalanceY*platformBaseHeight, 5);
     
 //    ofCircle(testPlatformX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 +testPlatformY*platformBaseHeight,20);
 
@@ -541,19 +548,30 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
 	}
     else if(name == "enable TouchOSC balance simulation")
     {
-        simulateBalance = !simulateBalance;
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue())
+        {
+            oscBalanceSim = true; // flip the value (since initially is false)
+            wiibbBalanceSimToggle->setValue(false);
+            wiibbBalanceSim = false; // hacky implementation, should do it better
+        }
+        else
+        {
+            oscBalanceSim = false;
+        }
     }
     else if(name == "enable Wii Balance Board")
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        
         if(toggle->getValue())
         {
-            wiiBalance = !wiiBalance;
+            wiibbBalanceSim = true;
+            oscBalanceSimToggle->setValue(false);
+            oscBalanceSim = false;
         }
-        else 
+        else
         {
-
+            wiibbBalanceSim = false;
         }
     }
 }
@@ -564,8 +582,12 @@ void testApp::setGUIPlatform(){
     
     guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
-    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, false, "enable TouchOSC balance simulation")); 
-    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, false, "enable Wii Balance Board")); 
+    oscBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable TouchOSC balance simulation");
+    guiPlatform->addWidgetDown(oscBalanceSimToggle); 
+    wiibbBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable Wii Balance Board");
+    guiPlatform->addWidgetDown(wiibbBalanceSimToggle); 
+    
+    guiPlatform->addWidgetDown(new ofxUILabel("Platform Parameters", OFX_UI_FONT_MEDIUM));
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
@@ -586,7 +608,7 @@ void testApp::setGUISetup(){
 //    guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
     guiSetup->addWidgetDown(new ofxUIToggle(16, 16, false, "enable saving"));
     
-    guiSetup->addWidgetDown(new ofxUIRadio( 16, 16, "BRIDGE NUMBER", bridgeNo, OFX_UI_ORIENTATION_HORIZONTAL)); 
+    guiSetup->addWidgetDown(new ofxUIRadio( 16, 16, "Bridge Number", bridgeNo, OFX_UI_ORIENTATION_HORIZONTAL)); 
     guiSetup->addWidgetDown(new ofxUILabel("Bridge Value", OFX_UI_FONT_MEDIUM));
     bridgeValueLabel = new ofxUILabel("Raw Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeValueLabel);
