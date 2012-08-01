@@ -80,15 +80,16 @@ void testApp::setup(){
     loadValues("Variables/loadCells.xml", bridgeValuesArray);
     
     // DRAWING
-    xPlatform = 960;
-    yPlatform = 100;
+    xPlatform = 990;
+    yPlatform = 400;
     
     platformBaseWidth = 230;
     platformBaseHeight = 250;
+    scooterHandleLength = 200;
     
 //    simulateBalance = false; // simulateBalance & wiiBalance bool activation now contained within toggles
-    simulateBalanceX = 0;
-    simulateBalanceY = 0;
+    cogPlatformX = 0;
+    cogPlatformY = 0;
     
 //    wiiBalance = false;
     
@@ -155,9 +156,18 @@ void testApp::update(){
         }
     }
     
+    // to do: group the balance processing stuff
+    // ACTUAL BALANCE
+    if(phidget.isConnected && !oscBalanceSim && !wiibbBalanceSim)
+    {
+        // do the calculation of X-Y stuff here.........
+        cout << "normal phidget vis" << endl;
+        // do stuff to output cogPlatformX & Y
+    }
+    
     // SIMULATE BALANCE
     // touchOSC
-    if(oscBalanceSim){
+    else if(oscBalanceSim){
         
         while(receiver.hasWaitingMessages()){
             // get the next message
@@ -166,12 +176,11 @@ void testApp::update(){
             
             // check for mouse moved message
             if(m.getAddress() == "/3/xy"){
-                simulateBalanceX = m.getArgAsFloat(0);
-                simulateBalanceY = m.getArgAsFloat(1);
-            }
-            // check for mouse button message
-            else if(m.getAddress() == "/mouse/button"){
-           
+                cogPlatformX = m.getArgAsFloat(0);
+                cogPlatformX = cogPlatformX*2 - 1;
+
+                cogPlatformY = m.getArgAsFloat(1);
+                cogPlatformY = cogPlatformY*2 - 1;
             }
         }
         
@@ -179,6 +188,7 @@ void testApp::update(){
     // Wii Balance Board ^TM
     else if(wiibbBalanceSim){
         // get the OSC messages from OSCulator
+        // OSCulator set to have 0-1 range for each loadcell
         while(receiver.hasWaitingMessages()){
             // get the next message
             ofxOscMessage m;
@@ -211,10 +221,10 @@ void testApp::update(){
         // temporarily using testPlatformX & Y
         
         // effectively the difference between the extremeties
-        testPlatformX = (wiiTopRight + wiiBottomRight) - (wiiTopLeft + wiiBottomLeft); // correct
-        testPlatformY = (wiiBottomLeft + wiiBottomRight) - (wiiTopLeft + wiiTopRight); // correct
-        cout << "X: " << testPlatformX <<endl; // centre on zero (both weights cancel out)
-        cout << "Y: " << testPlatformY <<endl; // centre on zero
+        cogPlatformX = (wiiTopRight + wiiBottomRight) - (wiiTopLeft + wiiBottomLeft); // correct
+        cogPlatformY = (wiiBottomLeft + wiiBottomRight) - (wiiTopLeft + wiiTopRight); // correct
+        cout << "X: " << cogPlatformX <<endl; // centre on zero (both weights cancel out)
+        cout << "Y: " << cogPlatformY <<endl; // centre on zero
         
         // X & Y values vary greatly from 0. how to 'normalise' the values without knowing a maximum?
     }
@@ -253,43 +263,54 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
-    ofSetColor(200);
+    // RENDER THE SCOOTER PLATFORM
+    if(enableVisualisation){
+        
+        // setup scooter handle
+        ofRectangle scooterHandle; // to do: insert a scale. proper scaling for handle needed.
+        scooterHandle.x = -scooterHandleLength/2; 
+        scooterHandle.y = -11;
+        scooterHandle.width = scooterHandleLength;
+        scooterHandle.height = 22;
 
-    ofRectangle scooterHandle;
-    scooterHandle.x = -150; 
-    scooterHandle.y = -12.5;
-    scooterHandle.width = 300;
-    scooterHandle.height = 25;
-    
-    ofRectangle platformBase;
-    platformBase.x = -platformBaseWidth/2;
-    platformBase.y = scooterHandle.height + 10; // 10 is a 'buffer'
-    platformBase.width = platformBaseWidth;
-    platformBase.height = platformBaseHeight;
-    
-    glPushMatrix();
-    glTranslatef(500,0,0);
-    ofCircle(testPlatformX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 +testPlatformY*platformBaseHeight,20);
-    glPopMatrix();
-    
-    glPushMatrix();
-        glTranslatef(xPlatform, yPlatform, 0); // the 'origin' is now the centre
-
-        ofRect(platformBase);
-        ofSetColor(255,0,0);
-//        ofCircle(simulateBalanceX, simulateBalanceY, 30);
-    ofCircle(simulateBalanceX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 + simulateBalanceY*platformBaseHeight, 5);
-    
-//    ofCircle(testPlatformX*platformBaseWidth -platformBaseWidth/2, scooterHandle.height + 10 +testPlatformY*platformBaseHeight,20);
-
-       
+        // setup platform base (for CENTRE origin)
+        ofRectangle platformBase;
+        platformBase.x = - platformBaseWidth/2;
+        platformBase.y = - platformBaseHeight/2; 
+        platformBase.width = platformBaseWidth;
+        platformBase.height = platformBaseHeight;        
+                
         glPushMatrix();
-            ofSetColor(220);
-            glRotatef(ofToFloat(bytesReadString),0,0,1);
-            ofRect(scooterHandle);
+            glTranslatef(xPlatform, yPlatform, 0); // the 'origin' is now the center
+            ofSetColor(200); // set to grey or "gray"
+            ofRect(platformBase);   // draw the base first
+                   
+            glPushMatrix();
+                ofSetColor(0);    // set to black for dots
+                // we use the convention that x & y ranges from -1 to 1 with a specified "buffer" value
+                ofCircle(cogPlatformX*platformBaseWidth/2, cogPlatformY*platformBaseHeight/2, 4);
+            glPopMatrix();
+
+           // draw the handle & sort for rotation
+            glPushMatrix();
+                glTranslatef(0,-platformBaseHeight/2 - 20,0); // relative to centre of platform
+                // drawing the base attachement...for fun
+                ofSetColor(210);        
+                ofRect(-20,-35,40,55);
+                ofSetColor(205);
+                ofRect(-15,-35,30,55);
+                ofSetColor(212);
+                ofRect(-11,-35,22,25);
+                glRotatef(ofToFloat(bytesReadString),0,0,1);
+                ofSetColor(215);
+                ofRect(scooterHandle);
+                ofSetColor(220);
+                ofRect(-25,-13,50,26);
+            glPopMatrix();
+        
         glPopMatrix();
-    glPopMatrix();
-    
+        
+    }
 }
 
 //--------------------------------------------------------------
@@ -546,6 +567,11 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         platformBaseHeight = slider->getScaledValue(); 
 	}
+    else if(name == "scooterHandleLength")
+    {
+        ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        scooterHandleLength = slider->getScaledValue(); 
+    }
     else if(name == "enable TouchOSC balance simulation")
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
@@ -574,6 +600,18 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             wiibbBalanceSim = false;
         }
     }
+    else if(name == "enable visualisation")
+    {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue())
+        {
+            enableVisualisation = true;
+        }
+        else
+        {
+            enableVisualisation = false;
+        }
+    }
 }
 
 void testApp::setGUIPlatform(){
@@ -582,6 +620,7 @@ void testApp::setGUIPlatform(){
     
     guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
+    guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, true, "enable visualisation"));
     oscBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable TouchOSC balance simulation");
     guiPlatform->addWidgetDown(oscBalanceSimToggle); 
     wiibbBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable Wii Balance Board");
@@ -592,6 +631,7 @@ void testApp::setGUIPlatform(){
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseHeight, "platformBaseHeight"));
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 200, 400, scooterHandleLength, "scooterHandleLength"));
     ofAddListener(guiPlatform->newGUIEvent,this,&testApp::guiEvent);
 }
 

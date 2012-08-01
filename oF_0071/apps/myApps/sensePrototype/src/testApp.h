@@ -139,22 +139,26 @@ public:
     
     bool enableSaving;
     
+    bool enableVisualisation;
+        
     double xPlatform;
     double yPlatform;
     
     double platformBaseWidth;
     double platformBaseHeight;
+    double scooterHandleLength;
+    
+    double cogPlatformX;
+    double cogPlatformY;
     
     ofxOscReceiver receiver;
-//    bool simulateBalance; // renaming
     bool oscBalanceSim;
-    float simulateBalanceX;
-    float simulateBalanceY;
+//    float simulateBalanceX;
+//    float simulateBalanceY;
     
-    double testPlatformX;
-    double testPlatformY;
+//    double testPlatformX;
+//    double testPlatformY;
     
-//    bool wiiBalance; // renaming
     bool wiibbBalanceSim;
     float wiiBottomLeft;
     float wiiBottomRight;
