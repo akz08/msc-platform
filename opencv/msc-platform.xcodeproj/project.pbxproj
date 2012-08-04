@@ -12,15 +12,13 @@
 		DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA85158BF622000FD88F /* oFrameworks.cpp */; };
 		DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD6D5B4715922718006ADB4B /* Phidget21.framework */; };
 		DD8B1AB415BC8A8300D9A4B2 /* cleaned.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD8B1AB315BC8A8300D9A4B2 /* cleaned.cpp */; };
+		DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */; };
+		DDA0425015CC40B0004381D4 /* libopencv_core.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */; };
+		DDA0425115CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */; };
+		DDA0425215CC40B0004381D4 /* libopencv_imgproc.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424C15CC40B0004381D4 /* libopencv_imgproc.2.4.2.dylib */; };
+		DDA0425315CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424D15CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib */; };
+		DDA0425415CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424E15CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib */; };
 		DDA967D014DF209800E1E92D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA967CF14DF209800E1E92D /* main.cpp */; };
-		DDAF3FFE15A23C7D0073AC9B /* libopencv_calib3d.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FF615A23C7D0073AC9B /* libopencv_calib3d.2.4.1.dylib */; };
-		DDAF3FFF15A23C7D0073AC9B /* libopencv_core.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FF715A23C7D0073AC9B /* libopencv_core.2.4.1.dylib */; };
-		DDAF400015A23C7D0073AC9B /* libopencv_flann.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FF815A23C7D0073AC9B /* libopencv_flann.2.4.1.dylib */; };
-		DDAF400115A23C7D0073AC9B /* libopencv_gpu.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FF915A23C7D0073AC9B /* libopencv_gpu.2.4.1.dylib */; };
-		DDAF400215A23C7D0073AC9B /* libopencv_highgui.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FFA15A23C7D0073AC9B /* libopencv_highgui.2.4.1.dylib */; };
-		DDAF400315A23C7D0073AC9B /* libopencv_imgproc.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FFB15A23C7D0073AC9B /* libopencv_imgproc.2.4.1.dylib */; };
-		DDAF400415A23C7D0073AC9B /* libopencv_legacy.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FFC15A23C7D0073AC9B /* libopencv_legacy.2.4.1.dylib */; };
-		DDAF400515A23C7E0073AC9B /* libopencv_objdetect.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDAF3FFD15A23C7D0073AC9B /* libopencv_objdetect.2.4.1.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,16 +43,14 @@
 		DD2BDA85158BF622000FD88F /* oFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oFrameworks.cpp; sourceTree = "<group>"; };
 		DD6D5B4715922718006ADB4B /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../../Library/Frameworks/Phidget21.framework; sourceTree = "<group>"; };
 		DD8B1AB315BC8A8300D9A4B2 /* cleaned.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cleaned.cpp; sourceTree = "<group>"; };
+		DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_calib3d.2.4.2.dylib; sourceTree = "<group>"; };
+		DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_core.2.4.2.dylib; sourceTree = "<group>"; };
+		DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_highgui.2.4.2.dylib; sourceTree = "<group>"; };
+		DDA0424C15CC40B0004381D4 /* libopencv_imgproc.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_imgproc.2.4.2.dylib; sourceTree = "<group>"; };
+		DDA0424D15CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_legacy.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_legacy.2.4.2.dylib; sourceTree = "<group>"; };
+		DDA0424E15CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_objdetect.2.4.2.dylib; sourceTree = "<group>"; };
 		DDA967CB14DF209800E1E92D /* msc-platform */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "msc-platform"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA967CF14DF209800E1E92D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		DDAF3FF615A23C7D0073AC9B /* libopencv_calib3d.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_calib3d.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FF715A23C7D0073AC9B /* libopencv_core.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_core.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FF815A23C7D0073AC9B /* libopencv_flann.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_flann.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_flann.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FF915A23C7D0073AC9B /* libopencv_gpu.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_gpu.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_gpu.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FFA15A23C7D0073AC9B /* libopencv_highgui.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_highgui.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FFB15A23C7D0073AC9B /* libopencv_imgproc.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_imgproc.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FFC15A23C7D0073AC9B /* libopencv_legacy.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_legacy.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_legacy.2.4.1.dylib; sourceTree = "<group>"; };
-		DDAF3FFD15A23C7D0073AC9B /* libopencv_objdetect.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.2.4.1.dylib; path = ../../../../../opt/local/lib/libopencv_objdetect.2.4.1.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,14 +59,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */,
-				DDAF3FFE15A23C7D0073AC9B /* libopencv_calib3d.2.4.1.dylib in Frameworks */,
-				DDAF3FFF15A23C7D0073AC9B /* libopencv_core.2.4.1.dylib in Frameworks */,
-				DDAF400015A23C7D0073AC9B /* libopencv_flann.2.4.1.dylib in Frameworks */,
-				DDAF400115A23C7D0073AC9B /* libopencv_gpu.2.4.1.dylib in Frameworks */,
-				DDAF400215A23C7D0073AC9B /* libopencv_highgui.2.4.1.dylib in Frameworks */,
-				DDAF400315A23C7D0073AC9B /* libopencv_imgproc.2.4.1.dylib in Frameworks */,
-				DDAF400415A23C7D0073AC9B /* libopencv_legacy.2.4.1.dylib in Frameworks */,
-				DDAF400515A23C7E0073AC9B /* libopencv_objdetect.2.4.1.dylib in Frameworks */,
+				DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */,
+				DDA0425015CC40B0004381D4 /* libopencv_core.2.4.2.dylib in Frameworks */,
+				DDA0425115CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib in Frameworks */,
+				DDA0425215CC40B0004381D4 /* libopencv_imgproc.2.4.2.dylib in Frameworks */,
+				DDA0425315CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib in Frameworks */,
+				DDA0425415CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,14 +92,12 @@
 		DD92936C14E19400007A6C68 /* OpenCV.framework */ = {
 			isa = PBXGroup;
 			children = (
-				DDAF3FF615A23C7D0073AC9B /* libopencv_calib3d.2.4.1.dylib */,
-				DDAF3FF715A23C7D0073AC9B /* libopencv_core.2.4.1.dylib */,
-				DDAF3FF815A23C7D0073AC9B /* libopencv_flann.2.4.1.dylib */,
-				DDAF3FF915A23C7D0073AC9B /* libopencv_gpu.2.4.1.dylib */,
-				DDAF3FFA15A23C7D0073AC9B /* libopencv_highgui.2.4.1.dylib */,
-				DDAF3FFB15A23C7D0073AC9B /* libopencv_imgproc.2.4.1.dylib */,
-				DDAF3FFC15A23C7D0073AC9B /* libopencv_legacy.2.4.1.dylib */,
-				DDAF3FFD15A23C7D0073AC9B /* libopencv_objdetect.2.4.1.dylib */,
+				DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */,
+				DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */,
+				DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */,
+				DDA0424C15CC40B0004381D4 /* libopencv_imgproc.2.4.2.dylib */,
+				DDA0424D15CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib */,
+				DDA0424E15CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib */,
 			);
 			name = OpenCV.framework;
 			sourceTree = "<group>";
@@ -217,7 +209,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -228,14 +220,14 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -243,24 +235,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
 		DDA967D614DF209800E1E92D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/usr/local/include/,
 					/opt/local/include/,
@@ -279,7 +273,7 @@
 					"$(inherited)",
 					/opt/local/lib,
 					/opt/local/lib/db46,
-					"\"/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE\"",
+					"\"/opt/local/lib/perl5/5.12.4/darwin-thread-multi-2level/CORE\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "msc-platform";
@@ -291,6 +285,7 @@
 		DDA967D714DF209800E1E92D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/usr/local/include/,
 					/opt/local/include/,
@@ -301,7 +296,7 @@
 					"$(inherited)",
 					/opt/local/lib,
 					/opt/local/lib/db46,
-					"\"/opt/local/lib/perl5/5.12.3/darwin-multi-2level/CORE\"",
+					"\"/opt/local/lib/perl5/5.12.3/darwin-thread-multi-2level/CORE\"",
 				);
 				PRODUCT_NAME = "msc-platform";
 				SDKROOT = "";

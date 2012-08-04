@@ -85,6 +85,13 @@ Mat test_gray;
 int main (int argc, char** argv)
 {
     
+    FileStorage fs("test/test.yml", FileStorage::WRITE);
+    Mat cameraMatrix = (Mat_<double>(3,3) << 1000, 0, 320, 0, 1000, 240, 0, 0, 1);
+    fs << "cameraMatrix" << cameraMatrix;
+    fs.release();
+    
+    cout<<"worked!"<<endl;
+    
     // INITIATE VIDEO CAPTURE //
     VideoCapture capture(camSource); // choosing the source of video. (0) being default
     if (!capture.isOpened()) // checking if chosen source is available
@@ -345,7 +352,7 @@ int main (int argc, char** argv)
         
         
 //        // Keypress check
-        if (waitKey(10) >= 0)       // highgui function [waitKey(int delay)]
+        if (waitKey(10) == 27)       // highgui function [waitKey(int delay)] , 27 corresponds to ESC
             break;
 
               

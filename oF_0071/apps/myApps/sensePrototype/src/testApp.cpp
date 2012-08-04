@@ -258,6 +258,12 @@ void testApp::update(){
     inputSerial.setAddress("/input/serial");
     inputSerial.addFloatArg(rawSerial);
     sender.sendMessage(inputSerial);
+    
+    ofxOscMessage inputBalance;
+    inputBalance.setAddress("/input/balance");
+    inputBalance.addFloatArg(cogPlatformX);
+    inputBalance.addFloatArg(cogPlatformY);
+    sender.sendMessage(inputBalance);
 }
 
 //--------------------------------------------------------------
@@ -286,7 +292,7 @@ void testApp::draw(){
             ofRect(platformBase);   // draw the base first
                    
             glPushMatrix();
-                ofSetColor(0);    // set to black for dots
+                ofSetColor(90);    // set to black for dots
                 // we use the convention that x & y ranges from -1 to 1 with a specified "buffer" value
                 ofCircle(cogPlatformX*platformBaseWidth/2, cogPlatformY*platformBaseHeight/2, 4);
             glPopMatrix();
