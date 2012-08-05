@@ -60,59 +60,68 @@ void initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Ma
         fs["camMat"] >> camMat;
         fs["distortMat"] >> distortMat;
     }
-    else 
+    else // we do the calibration. 2-part process: init of vars; while loop
     {
         // calculating the board corner positions... ie find chessboard ?
-        vector<vector<Point2f> > imagePoints;
-        vector<Point2f> corners;
-        Size boardSize;
-        bool found;
-        clock_t prevTimestamp = 0;
-        bool blinkOutput = false;
-        found = findChessboardCorners(rawCameraMat, boardSize, corners,
-                                      CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE);
-        if(found)
+        vector<vector<Point2f> > imagePoints; // init
+        vector<Point2f> corners; // init
+        Size boardSize; // init
+        bool found; // init
+        clock_t prevTimestamp = 0; // init
+        int numSamples = 20; // init; take 20 samples  for calibration
+        bool calibrating = true; // init; while loop condition
+        bool blinkOutput = false; 
+        
+        // end of init. start the while loop around here
+        while(calibrating)
         {
-             // get subpixel accuracy on corners
-            Mat viewGrey;
-            cvtColor(rawCameraMat, viewGrey, CV_BGR2GRAY);
-            cornerSubPix(viewGrey, rawCameraMat, Size(11,11), Size(-1,-1), TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1));
-         
-            // now we take new samples from the camera after a delay time...
-            if(!capture.isOpened() || clock() - prevTimestamp > 1000*1e-3*CLOCKS_PER_SEC)
+            // keep trying to find the chessboard
+            found = findChessboardCorners(rawCameraMat, boardSize, corners,
+                                          CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE);
+            // if chessboard found, we get the corners, and "capture" the information every other second into a sample to be used for calibration
+            if(found)
             {
-                imagePoints.push_back(corners);
-                prevTimestamp = clock();
-                blinkOutput = capture.isOpened();
+                 // get subpixel accuracy on corners
+                Mat viewGrey;
+                cvtColor(rawCameraMat, viewGrey, CV_BGR2GRAY);
+                cornerSubPix(viewGrey, rawCameraMat, Size(11,11), Size(-1,-1), TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1));
+             
+                // now we take new samples from the camera after a delay time...
+                if(!capture.isOpened() || clock() - prevTimestamp > 1000*1e-3*CLOCKS_PER_SEC)
+                {
+                    imagePoints.push_back(corners);
+                    prevTimestamp = clock();
+                    blinkOutput = capture.isOpened();
+                    
+                }
                 
+                // draw chessboard corners
+                drawChessboardCorners(rawCameraMat, boardSize, Mat(corners), found);
             }
             
-            // draw chessboard corners
-            drawChessboardCorners(rawCameraMat, boardSize, Mat(corners), found);
-        }
-        
-        if(blinkOutput)
-            bitwise_not(rawCameraMat, rawCameraMat);
-        imshow("Distortion", rawCameraMat);
-        
-        // if we have a sufficient sample of images & points, we do the calibration
-        int numFrames = 20; // take 20 samples 
-        if( imagePoints.size() >= numFrames )
-        {
-            // run calibration function used here...
-            camMat = Mat::eye(3, 3, CV_64F);
-            distortMat = Mat::zeros(8, 1, CV_64F);
-            vector<vector<Point3f> > objectPoints(1);
-            objectPoints.resize(imagePoints.size(),objectPoints[0]); // necessary?
+            if(blinkOutput)
+                bitwise_not(rawCameraMat, rawCameraMat);
+            imshow("Distortion", rawCameraMat);
             
-            // find camera params
-            vector<Mat> rvecs, tvecs; // rotation & translation
-            vector<float> reprojErrs;
-            double rms = calibrateCamera(objectPoints, imagePoints, rawCameraMat.size(), camMat, distortMat, rvecs, tvecs, CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
-            cout << "Re-projection error reported by calibrateCamera: "<< rms << endl;
-            // we COULD compute the total average error
-            
-            // now we should save the camera parameters...and end the initial loop
+            // if we have a sufficient sample of images & corresp. points, we do the calibration
+            if( imagePoints.size() >= numSamples )
+            {
+                // run calibration function used here...
+                camMat = Mat::eye(3, 3, CV_64F);
+                distortMat = Mat::zeros(8, 1, CV_64F);
+                vector<vector<Point3f> > objectPoints(1);
+                objectPoints.resize(imagePoints.size(),objectPoints[0]); // necessary?
+                
+                // find camera params
+                vector<Mat> rvecs, tvecs; // rotation & translation
+                vector<float> reprojErrs;
+                double rms = calibrateCamera(objectPoints, imagePoints, rawCameraMat.size(), camMat, distortMat, rvecs, tvecs, CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
+                cout << "Re-projection error reported by calibrateCamera: "<< rms << endl;
+                // we COULD compute the total average error
+                
+                // now we should save the camera parameters...and end the initial loop
+                calibrating = false;
+            }
         }
     }
 }
