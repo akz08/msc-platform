@@ -20,7 +20,7 @@ int main()
 {
     VideoCapture capture;
     capture = initCamera(cameraSource);
-    bool undistorted = initUndistort(rawCameraMat, capture, false, camMat, distortMat);
+    bool undistorted = initUndistort(rawCameraMat, capture, true, camMat, distortMat);
     
     while(true&&undistorted)
     {

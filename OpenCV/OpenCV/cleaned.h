@@ -55,13 +55,14 @@ bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Ma
     {
         FileStorage fs;
         fs.open("camParameters/distortion.xml", FileStorage::READ);
-        if(fs.isOpened())
+        if(!fs.isOpened()) // if NOT opened
         {
             cerr << "Failed to open distortion.xml" << endl;
             return false;
         }
         fs["camMat"] >> camMat;
         fs["distortMat"] >> distortMat;
+        return true;
     }
     else // we do the calibration. 2-part process: init of vars; while loop
     {
