@@ -11,6 +11,7 @@
 #include <opencv2/opencv.hpp>
 #include <cvblob.h>
 #include <math.h>
+#include <time.h>
 #include "ioPhidget.h"
 
 
