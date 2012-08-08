@@ -16,7 +16,7 @@
 // initialise VideoCapture
 // check if valid camera source
 VideoCapture initCamera(int camSource);
-void loopCamera(Mat rawCameraMat, VideoCapture capture, bool scaleDown);
+void loopCamera(Mat& rawCameraMat, VideoCapture capture, bool scaleDown);
 bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Mat& camMat, Mat& distortMat );
 
 VideoCapture initCamera(int camSource)
@@ -31,7 +31,7 @@ VideoCapture initCamera(int camSource)
     return capture;
 }
 
-void loopCamera(Mat rawCameraMat, VideoCapture capture, bool scaleDown)
+void loopCamera(Mat& rawCameraMat, VideoCapture capture, bool scaleDown)
 {
     // loop camera read for main while loop
     capture >> rawCameraMat;
@@ -173,6 +173,107 @@ bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Ma
 // option to enable step (bool)
 // option to 
 // choose between chessboard calibration or ...
+
+bool initPerspective(Mat undistortedCameraMat, bool loadExisting, int sourceType, Mat& hmgMat);
+
+bool initPerspective(Mat undistortedCameraMat, bool loadExisting, int sourceType, Mat& hmgMat)
+{
+    
+#define CHESSBOARD 0
+#define LEDRECTANGLE 1
+    
+    // want to have to methods of calculating perspective:
+    // by chessboard, or by detecting (4) led points to form src points
+    if(loadExisting)
+    {
+        FileStorage fs;
+        fs.open("camParameters/perspective.xml", FileStorage::READ);
+        if(!fs.isOpened()) // if NOT opened
+        {
+            cerr << "Failed to open perspective.xml" << endl;
+            return false;
+        }
+        fs["hmgMat"] >> hmgMat;
+        
+        return true;
+    }
+    else
+    {
+        // find the chessboard/ some other method to find homography
+        switch(sourceType) // choose how source points to be determined
+        {
+            case(CHESSBOARD):
+            {
+                // finding the chessboard
+                vector<Point2f> corners;
+                bool foundChessboard;
+                int board_w = 5;
+                int board_h = 8;
+                Size boardSize = Size(board_w,board_h);
+                foundChessboard = findChessboardCorners(undistortedCameraMat, boardSize, corners,
+                                                        CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE | CALIB_CB_FILTER_QUADS);
+                if(foundChessboard)
+                {
+                    Mat greyCameraMat;
+                    cout << "found chessboard for perspective" <<endl;
+                    // get subpixel accuracy on corners
+                    cvtColor(undistortedCameraMat, greyCameraMat, CV_BGR2GRAY);
+                    cornerSubPix(greyCameraMat, corners, Size(11,11), Size(-1,-1), TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1));
+                    
+                    // now extracting the 4 points for homography
+                    // [top left, top right, bottom right, bottom left] (Clockwise)
+                    // this bit makes sense if you think in squares & the number of corners
+                    
+                    // need to do something about the size transform... currently 'soved' by *100
+                    
+                    Point2f srcQuad[4] =
+                    {
+                        Point2f(0,0),
+                        Point2f(board_w*100-1, 0),
+                        Point2f(board_w*100-1, board_h*100-1),
+                        Point2f(0, board_h*100-1)
+                    };
+                    
+                    Point2f dstQuad[4] =
+                    {
+                        Point2f(corners[0]),
+                        Point2f(corners[board_w-1]),  // board_w-1
+                        Point2f(corners[(board_h-1)*board_w + board_w-1]),  // (board_h-1)*board_w + board_w-1
+                        Point2f(corners[(board_h-1)*board_w])   // (board_h-1)*board_w
+                    };
+                    
+                    drawChessboardCorners(undistortedCameraMat, boardSize, corners, foundChessboard);
+                    imshow( "Checkers", undistortedCameraMat );
+                    
+                    hmgMat = getPerspectiveTransform(dstQuad, srcQuad);
+
+                    
+                    cout << "hmgMat" << hmgMat << endl;
+                    return true; // job's done here
+                }
+                else return false;
+            }
+            case(LEDRECTANGLE):
+            {
+                // to implement with 4 easily movable LEDs
+                // need to get the 4 points of the LEDs
+                
+                // first prompt to capture background
+                // second prompt to capture scene with 4 LEDs
+                break;
+            }
+            default:
+                cout << "unidentified source type, try again" << endl;
+                return false;
+                
+        }
+        
+        // perform perspective undistortion
+        
+        return true;
+    }
+    return false;
+}
 
 
 // FOOT DETECTION STEP // <-- THIS IS THE CORE CONTENT!!!
