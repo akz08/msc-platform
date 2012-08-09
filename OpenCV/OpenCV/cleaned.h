@@ -3,11 +3,6 @@
 
 /* the code has been restructured to have clearly sectioned out code for both photo trials for testing, and the main foot sensing algorithms */
 
-// DECLARE VARIABLES HERE //
-// chosen image source
-//Mat rawCameraMat;
-//int camSource = 0;    
-
 
 #pragma mark Camera Management
 // INITIALISE CAMERA SOURCE //
@@ -123,7 +118,7 @@ bool initUndistort(bool loadExisting, Mat rawCameraMat, VideoCapture capture, Ma
             if(blinkOutput)
                 bitwise_not(calibCameraMat, calibCameraMat);
             string msg = format("%d/%d", (int)imagePoints.size(), numSamples);
-            putText(calibCameraMat, msg, Point(50,50), 1, 1,Scalar(0,255,0));
+            putText(calibCameraMat, msg, Point(5,15), 1, 1,Scalar(0,255,0));
 
             imshow("Distortion", calibCameraMat);
             
@@ -160,6 +155,7 @@ bool initUndistort(bool loadExisting, Mat rawCameraMat, VideoCapture capture, Ma
                 fs.release();
                 
                 calibrating = false;    // end the calibration loop
+                destroyWindow("Distortion");
                 return true;
             }
             
@@ -292,6 +288,7 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                     fs.release();
                     
                     cout << "hmgMat" << hmgMat << endl;
+                    destroyWindow("Checkers");
                     return true; // job's done here
                 }
                 else return false;
@@ -309,12 +306,12 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                 {
                     // draw the circles on the image when clicked & also store the points of click
                     string msg = format("Click on four(4) points. Starting from the top left, moving clockwise");
-                    putText(perspectiveMat, msg, Point(50,50), 1, 1,Scalar(0,255,0));
+                    putText(perspectiveMat, msg, Point(5,15), 1, 1,Scalar(0,255,0));
                     imshow("ledRectangle", perspectiveMat);
                     
                     char key =  waitKey(100);
                     if( key  == 27 ) // 27 == ESC
-                        break;
+                        return false;
                 }
                 
                 // once the points have been collected, destroy the imshow and perform the homography
@@ -372,5 +369,5 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
     return false;
 }
 
-
+#pragma mark Foot Detection
 // FOOT DETECTION STEP // <-- THIS IS THE CORE CONTENT!!!
