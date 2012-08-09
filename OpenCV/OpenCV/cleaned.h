@@ -4,20 +4,18 @@
 /* the code has been restructured to have clearly sectioned out code for both photo trials for testing, and the main foot sensing algorithms */
 
 // DECLARE VARIABLES HERE //
-#pragma mark global variables
 // chosen image source
 //Mat rawCameraMat;
 //int camSource = 0;    
 
 
-
+#pragma mark Camera Management
 // INITIALISE CAMERA SOURCE //
 // set the default camera source
 // initialise VideoCapture
 // check if valid camera source
 VideoCapture initCamera(int camSource);
 void loopCamera(Mat& rawCameraMat, VideoCapture capture, bool scaleDown);
-bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Mat& camMat, Mat& distortMat );
 
 VideoCapture initCamera(int camSource)
 {
@@ -34,18 +32,26 @@ VideoCapture initCamera(int camSource)
 void loopCamera(Mat& rawCameraMat, VideoCapture capture, bool scaleDown)
 {
     // loop camera read for main while loop
+    if( !capture.isOpened() )
+    {
+        cout << "Invalid source chosen!" << endl;
+        return;
+    }
     capture >> rawCameraMat;
     if(scaleDown)
         pyrDown(rawCameraMat, rawCameraMat,Size(rawCameraMat.cols/2,rawCameraMat.rows/2));
 }
 
+#pragma mark Undistortion
 // UNDISTORTION STEP //
 // option to enable step (bool)
 // load distortion matrices by default
 // if none, initialise undistortion function
 // upon completion of undistortion - save/override distortion files
 
-bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Mat& camMat, Mat& distortMat)
+bool initUndistort(bool loadExisting, Mat rawCameraMat, VideoCapture capture, Mat& camMat, Mat& distortMat );
+
+bool initUndistort(bool loadExisting, Mat rawCameraMat, VideoCapture capture, Mat& camMat, Mat& distortMat)
 {
     // to be called before the main while loop
     // has internal while loop for the calibration process
@@ -168,19 +174,52 @@ bool initUndistort(Mat rawCameraMat, VideoCapture capture, bool loadExisting, Ma
     return false; 
 }
 
-
+#pragma mark Perspective
 // PERSPECTIVE CORRECTION STEP //
 // option to enable step (bool)
 // option to 
-// choose between chessboard calibration or ...
+// choose between chessboard calibration or user-clicked points
 
-bool initPerspective(Mat undistortedCameraMat, bool loadExisting, int sourceType, Mat& hmgMat);
+// initialising a public Mat to be used for drawing on for initPerspective
+Mat perspectiveMat;
+vector<Point2f> perspectivePoints;
+bool enoughPerspectivePoints;
 
-bool initPerspective(Mat undistortedCameraMat, bool loadExisting, int sourceType, Mat& hmgMat)
+// initialising onMouse function
+void onMouse(int event, int x, int y, int, void* param);
+
+void onMouse(int event, int x, int y, int, void* param)
 {
-    
+    switch (event) {
+        case CV_EVENT_LBUTTONDOWN:
+        {
+            cout << "detected a left mouse click at: " << x << ", " << y  << endl;
+
+            if(perspectivePoints.size() < 4)
+            {
+                circle(perspectiveMat, Point(x,y), 10, Scalar(0,0,0), 3, 8);
+                perspectivePoints.push_back(Point(x,y));
+                cout << "saved the point: " << x << ", " << y << endl;
+            }
+            else {
+                enoughPerspectivePoints = true;
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 #define CHESSBOARD 0
-#define LEDRECTANGLE 1
+#define CLICKRECTANGLE 1
+#define LEDRECTANGLE 2
+
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat);
+
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat)
+{
     
     // want to have to methods of calculating perspective:
     // by chessboard, or by detecting (4) led points to form src points
@@ -247,6 +286,64 @@ bool initPerspective(Mat undistortedCameraMat, bool loadExisting, int sourceType
                     
                     hmgMat = getPerspectiveTransform(dstQuad, srcQuad);
 
+                    // saving...
+                    FileStorage fs("camParameters/perspective.xml", FileStorage::WRITE);
+                    fs << "hmgMat" << hmgMat;
+                    fs.release();
+                    
+                    cout << "hmgMat" << hmgMat << endl;
+                    return true; // job's done here
+                }
+                else return false;
+            }
+            case(CLICKRECTANGLE):
+            {
+                // USE 4 USER DEFINED POINTS
+                undistortedCameraMat.copyTo(perspectiveMat); // copy to a globally accessible variable
+                
+                namedWindow("ledRectangle", 0);
+                setMouseCallback("ledRectangle", onMouse, 0);
+                perspectivePoints.empty();
+                enoughPerspectivePoints = false;
+                while(!enoughPerspectivePoints)
+                {
+                    // draw the circles on the image when clicked & also store the points of click
+                    string msg = format("Click on four(4) points. Starting from the top left, moving clockwise");
+                    putText(perspectiveMat, msg, Point(50,50), 1, 1,Scalar(0,255,0));
+                    imshow("ledRectangle", perspectiveMat);
+                    
+                    char key =  waitKey(100);
+                    if( key  == 27 ) // 27 == ESC
+                        break;
+                }
+                
+                // once the points have been collected, destroy the imshow and perform the homography
+                destroyWindow("ledRectangle");
+                
+                Point2f srcQuad[4] =
+                {
+                    Point2f(0,0),
+                    Point2f(perspectiveMat.cols-1, 0),
+                    Point2f(perspectiveMat.cols-1, perspectiveMat.rows-1),
+                    Point2f(0, perspectiveMat.rows-1)
+                };
+                
+                Point2f dstQuad[4] =
+                {
+                    Point2f(perspectivePoints[0]),
+                    Point2f(perspectivePoints[1]),
+                    Point2f(perspectivePoints[2]),
+                    Point2f(perspectivePoints[3])
+                };
+                
+                hmgMat = getPerspectiveTransform(dstQuad, srcQuad);
+                
+                if(enoughPerspectivePoints /*&& hmgMat is not empty*/)
+                {
+                    // saving...
+                    FileStorage fs("camParameters/perspective.xml", FileStorage::WRITE);
+                    fs << "hmgMat" << hmgMat;
+                    fs.release();
                     
                     cout << "hmgMat" << hmgMat << endl;
                     return true; // job's done here
