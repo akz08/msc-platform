@@ -212,9 +212,9 @@ void onMouse(int event, int x, int y, int, void* param)
 #define CLICKRECTANGLE 1
 #define LEDRECTANGLE 2
 
-bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat);
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat, Size& dstSize);
 
-bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat)
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat, Size& dstSize)
 {
     
     // want to have to methods of calculating perspective:
@@ -258,18 +258,8 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                     // now extracting the 4 points for homography
                     // [top left, top right, bottom right, bottom left] (Clockwise)
                     // this bit makes sense if you think in squares & the number of corners
-                    
-                    // need to do something about the size transform... currently 'soved' by *100
-                    
+    
                     Point2f srcQuad[4] =
-                    {
-                        Point2f(0,0),
-                        Point2f(board_w*100-1, 0),
-                        Point2f(board_w*100-1, board_h*100-1),
-                        Point2f(0, board_h*100-1)
-                    };
-                    
-                    Point2f dstQuad[4] =
                     {
                         Point2f(corners[0]),
                         Point2f(corners[board_w-1]),  // board_w-1
@@ -277,10 +267,19 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                         Point2f(corners[(board_h-1)*board_w])   // (board_h-1)*board_w
                     };
                     
+                    // need to do something about the size transform... currently 'soved' by *100
+                    Point2f dstQuad[4] =
+                    {
+                        Point2f(0,0),
+                        Point2f(board_w*100-1, 0),
+                        Point2f(board_w*100-1, board_h*100-1),
+                        Point2f(0, board_h*100-1)
+                    };
+                    
                     drawChessboardCorners(undistortedCameraMat, boardSize, corners, foundChessboard);
                     imshow( "Checkers", undistortedCameraMat );
                     
-                    hmgMat = getPerspectiveTransform(dstQuad, srcQuad);
+                    hmgMat = getPerspectiveTransform(srcQuad, dstQuad);
 
                     // saving...
                     FileStorage fs("camParameters/perspective.xml", FileStorage::WRITE);
@@ -317,15 +316,9 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                 // once the points have been collected, destroy the imshow and perform the homography
                 destroyWindow("ledRectangle");
                 
-                Point2f srcQuad[4] =
-                {
-                    Point2f(0,0),
-                    Point2f(perspectiveMat.cols-1, 0),
-                    Point2f(perspectiveMat.cols-1, perspectiveMat.rows-1),
-                    Point2f(0, perspectiveMat.rows-1)
-                };
+                // choosing this kind of dstQuad will deform the image 
                 
-                Point2f dstQuad[4] =
+                Point2f srcQuad[4] =
                 {
                     Point2f(perspectivePoints[0]),
                     Point2f(perspectivePoints[1]),
@@ -333,7 +326,79 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                     Point2f(perspectivePoints[3])
                 };
                 
-                hmgMat = getPerspectiveTransform(dstQuad, srcQuad);
+                // 'smart' way of determining destination size
+                // defining the src image dimensions
+                float topWidth, bottomWidth, leftHeight, rightHeight;
+                topWidth = perspectivePoints[1].x - perspectivePoints[0].x;
+                bottomWidth = perspectivePoints[2].x - perspectivePoints[3].x;
+                leftHeight = perspectivePoints[3].y - perspectivePoints[0].y;
+                rightHeight = perspectivePoints[2].y - perspectivePoints[1].y;
+                
+                bool verticalSkew;
+                bool horizontalSkew;
+                float ratio_w = 3, ratio_h = 4; // using temp values for testing
+                float scaled_w, scaled_h;
+                
+                if (abs(topWidth-bottomWidth) < abs(leftHeight-rightHeight)) 
+                {
+                    horizontalSkew = true; // so lH & rH are of interest
+                    // determine which is smaller & scale according to aspect ratio
+                    float minHeight = min(leftHeight, rightHeight); // scale it down
+                    float unit = minHeight/ratio_h; // compare to the height ratio
+                    scaled_w = ratio_w * unit; // scale the image properly
+                    scaled_h = ratio_h * unit;
+                    
+                }
+                else if(abs(topWidth-bottomWidth) > abs(leftHeight-rightHeight))
+                {
+                    verticalSkew = true; // so tW & bW are of interest
+                    float minWidth = min(topWidth, bottomWidth);
+                    float unit = minWidth/ratio_w; // compare to the width ratio
+                    scaled_w = ratio_w * unit; // scale the image properly
+                    scaled_h = ratio_h * unit;
+                }
+                
+                Point2f dstQuad[4] =
+                {
+                    Point2f(0, 0),
+                    Point2f(scaled_w, 0),
+                    Point2f(scaled_w, scaled_h),
+                    Point2f(0, scaled_h)
+                };
+                
+                // output a decent display destination size
+                // do some checks for scaled_w & h . modify if necessary to fit screen
+                if(horizontalSkew)
+                {
+                    if(scaled_w > 800)
+                    {
+                        float downScale = 800/scaled_w;
+                        scaled_w = 800;
+                        scaled_h = scaled_h * downScale;
+                    }
+                }
+                else if (verticalSkew)
+                {
+                    if(scaled_h > 800)
+                    {
+                        float downScale = 800/scaled_h;
+                        scaled_h = 800;
+                        scaled_w = scaled_w * downScale;
+                    }
+                }
+                
+                dstSize = Size(scaled_w, scaled_h);
+                
+                // depreciated
+//                Point2f dstQuad[4] =
+//                {
+//                    Point2f(0,0),
+//                    Point2f(perspectiveMat.cols-1, 0),
+//                    Point2f(perspectiveMat.cols-1, perspectiveMat.rows-1),
+//                    Point2f(0, perspectiveMat.rows-1)
+//                };
+                
+                hmgMat = getPerspectiveTransform(srcQuad, dstQuad);
                 
                 if(enoughPerspectivePoints /*&& hmgMat is not empty*/)
                 {

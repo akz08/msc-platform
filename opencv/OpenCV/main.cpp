@@ -13,15 +13,16 @@ int main()
     bool undistorted;
     bool persp;
     Mat H; // homography matrix
+    Size dstSize;
     
     capture = initCamera(cameraSource);
     capture >> rawCameraMat;
-    undistorted = initUndistort(false, rawCameraMat, capture, camMat, distortMat);
+    undistorted = initUndistort(true, rawCameraMat, capture, camMat, distortMat);
     
     if(undistorted)
     {
         undistort(rawCameraMat,undistortedCameraMat, camMat, distortMat);
-        persp = initPerspective(false, undistortedCameraMat, CLICKRECTANGLE, H);
+        persp = initPerspective(false, undistortedCameraMat, CLICKRECTANGLE, H, dstSize);
     }    
     
     while(true&&undistorted&&persp)
@@ -31,7 +32,7 @@ int main()
         
         loopCamera(rawCameraMat, capture, false);
         undistort(rawCameraMat, undistorted, camMat, distortMat);
-        warpPerspective(undistorted, processed, H, undistorted.size(),  INTER_LINEAR, BORDER_CONSTANT, Scalar());
+        warpPerspective(undistorted, processed, H, dstSize,  INTER_LINEAR+CV_WARP_FILL_OUTLIERS, BORDER_CONSTANT, Scalar());
 
         imshow("output", processed);
 
