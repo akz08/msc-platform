@@ -212,10 +212,12 @@ void onMouse(int event, int x, int y, int, void* param)
 #define CLICKRECTANGLE 1
 #define LEDRECTANGLE 2
 
-bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat, Size& dstSize);
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int calcType, Mat& hmgMat, Size& dstSize, float ratio_w = 7, float ratio_h = 14);
 
-bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType, Mat& hmgMat, Size& dstSize)
+bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int calcType, Mat& hmgMat, Size& dstSize, float ratio_w, float ratio_h)
 {
+    // note optional parameters ratio_w & ratio_h used as the aspect ratio when choosing calcType CLICKRECTANGLE
+    
     
     // want to have to methods of calculating perspective:
     // by chessboard, or by detecting (4) led points to form src points
@@ -235,13 +237,14 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
     else
     {
         // find the chessboard/ some other method to find homography
-        switch(sourceType) // choose how source points to be determined
+        switch(calcType) // choose how source points to be determined
         {
             case(CHESSBOARD):
             {
                 // finding the chessboard
                 vector<Point2f> corners;
                 bool foundChessboard;
+                // pre-setting board_w & h
                 int board_w = 5;
                 int board_h = 8;
                 Size boardSize = Size(board_w,board_h);
@@ -336,7 +339,6 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int sourceType
                 
                 bool verticalSkew;
                 bool horizontalSkew;
-                float ratio_w = 3, ratio_h = 4; // using temp values for testing
                 float scaled_w, scaled_h;
                 
                 if (abs(topWidth-bottomWidth) < abs(leftHeight-rightHeight)) 
