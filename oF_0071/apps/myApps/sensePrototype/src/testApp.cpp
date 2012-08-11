@@ -40,7 +40,7 @@ void testApp::setup(){
     ofBackground(250, 250, 250);
     ofSetFrameRate(60);                                             // set to 60fps (use as base for serial read)
     ofSetLogLevel(OF_LOG_VERBOSE /*OF_LOG_FATAL_ERROR*/);
-    font.loadFont("DIN.otf",64);                                    // located in /bin/data for now
+    font.loadFont("DIN.otf",12);                                    // located in /bin/data for now
     
     // OSC 
     // open an outgoing connection
@@ -269,6 +269,14 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+    // PRINT RELEVANT NETWORK DATA
+    ofSetColor(0);
+    string portInfo, hostInfo;
+    portInfo = "Port(Outgoing): " + ofToString(PORT);
+    hostInfo = "Host: " + ofToString(HOST); 
+    font.drawString(portInfo, ofGetWidth() - 200, ofGetHeight() - 10);
+    font.drawString(hostInfo, ofGetWidth() - 200, ofGetHeight() - 30);
+    
     // RENDER THE SCOOTER PLATFORM
     if(enableVisualisation){
         
