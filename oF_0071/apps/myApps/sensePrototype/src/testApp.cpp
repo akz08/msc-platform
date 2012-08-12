@@ -44,9 +44,9 @@ void testApp::setup(){
     
     // OSC 
     // open an outgoing connection
-    sender.setup(HOST, PORT);
-    // open incoming connection for testing
-    receiver.setup(PORT);
+    sender.setup(HOST, PORT_SEND);
+    // open incoming connection for testing... use a different port from sender
+    receiver.setup(PORT_RECEIVE);
     
     // PHIDGET
     for(int i=0; i<4; i++){                                         // creating a list for number of bridges (4)
@@ -80,6 +80,7 @@ void testApp::setup(){
     loadValues("Variables/loadCells.xml", bridgeValuesArray);
     
     // DRAWING
+    enableVisualisation = true;
     xPlatform = 990;
     yPlatform = 400;
     
@@ -269,13 +270,15 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
-    // PRINT RELEVANT NETWORK DATA
+    // PRINT RELEVANT NETWORK INFORMATION
     ofSetColor(0);
-    string portInfo, hostInfo;
-    portInfo = "Port(Outgoing): " + ofToString(PORT);
+    string portInfo, hostInfo, inportInfo;
+    inportInfo = "Port(Incoming: " + ofToString(PORT_RECEIVE);
+    portInfo = "Port(Outgoing): " + ofToString(PORT_SEND);
     hostInfo = "Host: " + ofToString(HOST); 
-    font.drawString(portInfo, ofGetWidth() - 200, ofGetHeight() - 10);
-    font.drawString(hostInfo, ofGetWidth() - 200, ofGetHeight() - 30);
+    font.drawString(inportInfo, ofGetWidth() - 200, ofGetHeight() - 10);
+    font.drawString(portInfo, ofGetWidth() - 200, ofGetHeight() - 30);
+    font.drawString(hostInfo, ofGetWidth() - 200, ofGetHeight() - 50);
     
     // RENDER THE SCOOTER PLATFORM
     if(enableVisualisation){

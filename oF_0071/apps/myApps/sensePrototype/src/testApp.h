@@ -13,7 +13,8 @@
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
-#define PORT 12000
+#define PORT_SEND 12000
+#define PORT_RECEIVE 12345
 
 class MyClassImpl;
 
