@@ -27,12 +27,19 @@ int main()
 //    int i = 0;
     
     // trying to perform a gaussian bg-fg segmentation
-//    Mat frame, back, fore;
-//    BackgroundSubtractorMOG2 bg(100, 6, false);
-//    vector<vector<Point> > contours;
+    
+    // MOG2 implementation
+    Mat frame, back, fore;
+    BackgroundSubtractorMOG2 bg(100, 16, false);
+    vector<vector<Point> > contours;
 
-    Mat frame, foreground;
-    BackgroundSubtractorMOG mog;
+    // MOG implementation
+//    Mat frame, foreground;
+//    BackgroundSubtractorMOG mog; // MOG takes in a binary image...
+//    vector<vector<Point> > contours;
+//    
+    int cmin = 800;
+    int cmax = 2000;
     
     while(true&&undistorted&&persp)
     {
@@ -43,24 +50,102 @@ int main()
         undistort(rawCameraMat, undistorted, camMat, distortMat);
         warpPerspective(undistorted, processed, H, dstSize,  INTER_LINEAR+CV_WARP_FILL_OUTLIERS, BORDER_CONSTANT, Scalar());
 
-//        processed.copyTo(frame);
-//        bg.operator()(frame, fore);
-//        bg.getBackgroundImage(back);
-//        erode(fore, fore, Mat::ones(Size(4,4), CV_64F));
-//        dilate(fore, fore, Mat::ones(Size(4,4), CV_64F) );   
-//        findContours(fore, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-//        drawContours(processed, contours, -1, Scalar(255,0,0));
-//        imshow("background", back);
-//        imshow("foreground", fore);
-        
-        cvtColor(processed, processed, CV_RGB2HSV);
+        // MOG2 implementation
         processed.copyTo(frame);
-        mog(frame,foreground,0.001);
-        erode(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-        dilate(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-//        threshold(foreground, foreground, 155, 255, THRESH_BINARY_INV); // just to complement the image... can just do a NOT
-        bitwise_not(foreground, foreground);
-        imshow("gaussian", foreground);
+        bg.operator()(frame, fore,0.001);
+        bg.getBackgroundImage(back);
+        erode(fore, fore, Mat::ones(Size(4,4), CV_64F));
+        dilate(fore, fore, Mat::ones(Size(4,4), CV_64F) ); 
+        Mat tempContours;
+        fore.copyTo(tempContours);
+        findContours(tempContours, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+        
+        // FILTER OUT CONTOURS OUT OF (LENGTH) RANGE
+        vector<vector<Point> >::iterator itc = contours.begin();
+        while(itc != contours.end())
+        {
+            if (itc->size() < cmin || itc->size() > cmax)
+            {
+                itc = contours.erase(itc);
+            }
+            else
+                ++itc;
+        }
+
+        drawContours(processed, contours, -1, Scalar(255,0,0));
+        imshow("background", back);
+        
+        // NOTE: a problem with accessing contours. ensure contour exists before trying to perform the following methods
+        
+        // we want to now compute the component's shape descriptors
+        // BOUNDING BOX METHOD
+        Rect r0 = boundingRect(Mat(contours[0]));
+        rectangle(processed, r0, Scalar(0), 2); // thickness '2'
+        
+        // CONVEX HULL
+        vector<Point> hull;
+        convexHull(Mat(contours[0]), hull);
+        // Iterate over each segment and draw it 
+        vector<Point>::const_iterator it = hull.begin();
+        while (it != hull.end()) 
+        {
+            line(processed, *it, *(it+1), Scalar(0), 2);
+            ++it;
+        }
+        // last line linked to first point
+        line(processed, *(hull.begin()), *(hull.end()-1), Scalar(20),2);
+        
+        
+        // as well as the moments to find the centre + maybe medial/principal axes
+        itc = contours.begin();
+        while(itc != contours.end())
+        {
+            //compute all moments
+            Moments mom = moments(Mat(*itc++));
+            
+            // draw mass center
+            circle(processed, Point(mom.m10/mom.m00,mom.m01/mom.m00), 2, Scalar(0), 2);
+        }
+        
+        // applying a mask to show foreground
+        Mat mask(fore.size(),CV_8U);
+        processed.copyTo(fore,mask);
+        
+        imshow("foreground", fore);
+        
+        
+        
+        // MOG implementation
+//        cvtColor(processed, processed, CV_RGB2HSV); // sometimes greater contrast in HSV space
+//        processed.copyTo(frame);
+//        mog(frame,foreground,0.01);
+//        erode(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
+//        dilate(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
+//        bitwise_not(foreground, foreground); // just to flip
+//        Mat image;
+//        foreground.copyTo(image);
+//        
+//        findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+//        
+//        // FILTER OUT "BAD" CONTOURS
+//        vector<vector<Point> >::iterator itc = contours.begin();
+//        while(itc != contours.end())
+//        {
+//            if (itc->size() < cmin || itc->size() > cmax)
+//            {
+//                itc = contours.erase(itc);
+//            }
+//            else
+//                ++itc;
+//        }
+//        
+//        Mat result(image.size(), CV_8U, Scalar(255));
+//        drawContours(result,  contours, -1, Scalar(0),2);
+//        imshow("contours", result);
+//        createTrackbar("cmin", "contours", &cmin, 100);
+//        createTrackbar("cmax", "contours", &cmax, 6000);
+//        imshow("gaussian", foreground); 
+        
         
         
         
