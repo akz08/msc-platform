@@ -60,52 +60,15 @@ int main()
         fore.copyTo(tempContours);
         findContours(tempContours, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
         
-        // FILTER OUT CONTOURS OUT OF (LENGTH) RANGE
-        vector<vector<Point> >::iterator itc = contours.begin();
-        while(itc != contours.end())
-        {
-            if (itc->size() < cmin || itc->size() > cmax)
-            {
-                itc = contours.erase(itc);
-            }
-            else
-                ++itc;
-        }
-
-        drawContours(processed, contours, -1, Scalar(255,0,0));
-        imshow("background", back);
+                            
+        // just calculating the arc length of contour
+        double length = arcLength(contours[0], true);
+        cout << "contour[0] length" << length << endl;
         
-        // NOTE: a problem with accessing contours. ensure contour exists before trying to perform the following methods
-        
-        // we want to now compute the component's shape descriptors
-        // BOUNDING BOX METHOD
-        Rect r0 = boundingRect(Mat(contours[0]));
-        rectangle(processed, r0, Scalar(0), 2); // thickness '2'
-        
-        // CONVEX HULL
-        vector<Point> hull;
-        convexHull(Mat(contours[0]), hull);
-        // Iterate over each segment and draw it 
-        vector<Point>::const_iterator it = hull.begin();
-        while (it != hull.end()) 
-        {
-            line(processed, *it, *(it+1), Scalar(0), 2);
-            ++it;
-        }
-        // last line linked to first point
-        line(processed, *(hull.begin()), *(hull.end()-1), Scalar(20),2);
-        
-        
-        // as well as the moments to find the centre + maybe medial/principal axes
-        itc = contours.begin();
-        while(itc != contours.end())
-        {
-            //compute all moments
-            Moments mom = moments(Mat(*itc++));
-            
-            // draw mass center
-            circle(processed, Point(mom.m10/mom.m00,mom.m01/mom.m00), 2, Scalar(0), 2);
-        }
+        // some interesting functions that could be of use:
+        // cv::contourArea
+        // cv::pointPolygonTest test if point in or out of contour
+        // cv::matchShapes measure resemblance between two contours
         
         // applying a mask to show foreground
         Mat mask(fore.size(),CV_8U);
