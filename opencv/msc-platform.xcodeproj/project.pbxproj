@@ -109,6 +109,7 @@
 		DDA967C014DF209800E1E92D = {
 			isa = PBXGroup;
 			children = (
+				DDB42B3915E1025E0049EB0D /* algo */,
 				DD6D5B4715922718006ADB4B /* Phidget21.framework */,
 				DD2BDA7D1585F578000FD88F /* vision */,
 				DD11C4D01582B41500A9369F /* interface */,
@@ -137,6 +138,13 @@
 			);
 			name = src;
 			path = OpenCV;
+			sourceTree = "<group>";
+		};
+		DDB42B3915E1025E0049EB0D /* algo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = algo;
 			sourceTree = "<group>";
 		};
 		DDE886E215754C8E0090CBA0 /* cvBlob-legacy.framework */ = {

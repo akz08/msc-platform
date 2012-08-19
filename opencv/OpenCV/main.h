@@ -465,102 +465,110 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int calcType, 
 
 #pragma mark Foot Detection
 // FOOT DETECTION STEP // <-- THIS IS THE CORE CONTENT!!!
-void footDetection(Mat inputImage);
-
-void footDetection(Mat inputImage)
-{
-    Mat background, foreground;
-    Mat frame; // temporary. sort and remove.
-    int mogLearningRate = 0.01;
-    int mogType;
-#define USE_MOG_1 = 1
-#define USE_MOG_2 = 2
-    
-    
-    // BACKGROUND-FOREGROUND SEGMENTATION
-    // step out - step in . the history & learning rate helps to define how long this process is.
-    
-    if(mogType == 1)
-    {
-        // MOG implementation
-        BackgroundSubtractorMOG mog1; // MOG takes in a BINARY image
-        
-//        cvtColor(processed, processed, CV_RGB2HSV); // sometimes greater contrast in HSV space
-        inputImage.copyTo(frame);
-        
-        mog1(frame,foreground,mogLearningRate);
-    
-    }
-    else if(mogType == 2)
-    {
-        // MOG2 implementation
-        BackgroundSubtractorMOG2 mog2(100, 16, false);
-        
-        inputImage.copyTo(frame);
-        mog2.operator()(frame, foreground,mogLearningRate);
-        mog2.getBackgroundImage(background);
-         
-
-
-    }
-    else
-        return;
-    
-    // the output of either mog will be a background and a foreground
-    
-    // FOREGROUND CLEANING UP
-    erode(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-    dilate(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-    bitwise_not(foreground, foreground); // just to flip
-    
-    Mat image;
-    foreground.copyTo(image);
-    
-    // contour stuff
-    
-    vector<vector<Point> > contours;
-    
-    int cmin = 800;
-    int cmax = 2000;
-    
-    findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-    
-    // FILTER OUT "BAD" CONTOURS
-    vector<vector<Point> >::iterator itc = contours.begin();
-    while(itc != contours.end())
-    {
-        if (itc->size() < cmin || itc->size() > cmax)
-        {
-            itc = contours.erase(itc);
-        }
-        else
-            ++itc;
-    }
-    
-    Mat result(image.size(), CV_8U, Scalar(255));
-    drawContours(result,  contours, -1, Scalar(0),2);
-    imshow("contours", result);
-    createTrackbar("cmin", "contours", &cmin, 100);
-    createTrackbar("cmax", "contours", &cmax, 6000);
-    imshow("gaussian", foreground); 
-
-    
-    // EXTRACTING MAXIMUM 2 LIKELY AREAS OF FOOT PRESENCE 
-    
-    // HISTOGRAM BACK PROJECTION TO HELP BUILD A 'PROFILE' OF WHAT A FOOT IS
-
-    
-    // now to do some processing and get a good mask out of it
-    
-    // one method used
-    Mat mask;
-    mophologyEx(foreground, mask, MORPH_CLOSE, Mat());
-    
-    // another method used
-    Mat mask1(foreground.size((), CV_8U);
-              inputMat.copyTo(foreground,mask1);
-              
-}
+//void initFootDetection(int mogType = 2);
+//
+//
+//void footDetection(Mat inputImage, int mogType = 2);
+//
+//void footDetection(Mat inputImage, int mogType)
+//{
+//    Mat background, foreground;
+//    Mat frame; // temporary. sort and remove.
+//    int mogLearningRate = 0.001;
+//    
+//#define USE_MOG_1 = 1
+//#define USE_MOG_2 = 2
+//    
+//    
+//    // BACKGROUND-FOREGROUND SEGMENTATION
+//    // step out - step in . the history & learning rate helps to define how long this process is.
+//    
+//    if(mogType == 1)
+//    {
+//        // MOG implementation
+//        BackgroundSubtractorMOG mog1; // MOG takes in a BINARY image
+//        
+////        cvtColor(processed, processed, CV_RGB2HSV); // sometimes greater contrast in HSV space
+//        
+//        //
+//        inputImage.copyTo(frame);
+//        //
+//        mog1(frame,foreground,mogLearningRate);
+//        mog1.getBackgroundImage(background);
+//    
+//    }
+//    else if(mogType == 2)
+//    {
+//        // MOG2 implementation (history, varThreshold, shadow)
+//        BackgroundSubtractorMOG2 mog2(100, 16, false);
+//        //
+//        inputImage.copyTo(frame);
+//        //
+//        mog2.operator()(frame, foreground,mogLearningRate);
+//        mog2.getBackgroundImage(background);
+//
+//    }
+//    else // probably unnecessary
+//        return;
+//    
+//    // FOREGROUND CLEANING UP
+//    morphologyEx(foreground, foreground, MORPH_OPEN, Mat()); // erode~dilate
+////    bitwise_not(foreground, foreground);
+//    
+//    Mat image;
+//    foreground.copyTo(image);
+//    
+//    // contour stuff
+//    
+//    vector<vector<Point> > contours;
+//    
+//    findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+//    
+//    // FILTER OUT "BAD" CONTOURS // EXTRACTING MAXIMUM 2 LIKELY AREAS OF FOOT PRESENCE 
+//    // how to decide what is too big/ too small? people have different sized feet
+//    int minContourSize = 800;
+//    int maxContourSize = 2000;
+//    
+//    // also calculate the distance from the two "feet"
+//
+//    vector<vector<Point> >::iterator iterContours = contours.begin();
+//    while(iterContours != contours.end())
+//    {
+//        if (iterContours->size() < minContourSize || iterContours->size() > maxContourSize)
+//        {
+//            iterContours = contours.erase(iterContours);
+//        }
+//        else
+//            ++iterContours;
+//    }
+//    
+//    Mat result(image.size(), CV_8U, Scalar(255));
+//    drawContours(result,  contours, -1, Scalar(0),2);
+//    imshow("contours", image);
+//    createTrackbar("cmin", "contours", &minContourSize, 100);
+//    createTrackbar("cmax", "contours", &maxContourSize, 6000);
+//    imshow("foreground", foreground);
+//    imshow("background", background);
+//
+//    
+//    // we now have two good contours to base the foot on
+//    // HISTOGRAM BACK PROJECTION TO HELP BUILD A 'PROFILE' OF WHAT A FOOT IS
+//
+//    
+//    
+//    
+//    
+//    // now to do some processing and get a good mask out of it
+//    
+//    // one method used
+////    Mat mask;
+////    mophologyEx(foreground, mask, MORPH_CLOSE, Mat());
+////    
+////    // another method used
+////    Mat mask1(foreground.size((), CV_8U);
+////    inputMat.copyTo(foreground,mask1);
+//              
+//}
 
 
 

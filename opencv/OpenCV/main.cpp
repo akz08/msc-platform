@@ -7,6 +7,7 @@ Mat rawCameraMat, undistortedCameraMat;
 int cameraSource = 0; // 0 being default
 Mat camMat, distortMat;
 
+
 int main()
 {
     bool undistorted;
@@ -24,109 +25,83 @@ int main()
         persp = initPerspective(true, undistortedCameraMat, CLICKRECTANGLE, H, dstSize);
     }    
     
-//    int i = 0;
+    // need to first init bgsubtractor
+    BackgroundSubtractorMOG2 mog2(100, 16, false);
     
-    // trying to perform a gaussian bg-fg segmentation
+    Mat bgSegmentation, foreground, background;
+    double mogLearningRate = 0.001;
     
-    // MOG2 implementation
-    Mat frame, back, fore;
-    BackgroundSubtractorMOG2 bg(100, 16, false);
-    vector<vector<Point> > contours;
-
-    // MOG implementation
-//    Mat frame, foreground;
-//    BackgroundSubtractorMOG mog; // MOG takes in a binary image...
-//    vector<vector<Point> > contours;
-//    
-    int cmin = 800;
-    int cmax = 2000;
+    int minContourSize = 800;
+    int maxContourSize = 2000;
     
     while(true&&undistorted&&persp)
     {
-        Mat undistorted;;
-        Mat processed;
+        // INITIAL CAMERA PREPROCESSING
+        Mat undistorted;
+        Mat preProcessing;
         
         loopCamera(rawCameraMat, capture, false);
         undistort(rawCameraMat, undistorted, camMat, distortMat);
-        warpPerspective(undistorted, processed, H, dstSize,  INTER_LINEAR+CV_WARP_FILL_OUTLIERS, BORDER_CONSTANT, Scalar());
-
-        // MOG2 implementation
-        processed.copyTo(frame);
-        bg.operator()(frame, fore,0.001);
-        bg.getBackgroundImage(back);
-        erode(fore, fore, Mat::ones(Size(4,4), CV_64F));
-        dilate(fore, fore, Mat::ones(Size(4,4), CV_64F) ); 
-        Mat tempContours;
-        fore.copyTo(tempContours);
-        findContours(tempContours, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-        
-                            
-        // just calculating the arc length of contour
-        double length = arcLength(contours[0], true);
-        cout << "contour[0] length" << length << endl;
-        
-        // some interesting functions that could be of use:
-        // cv::contourArea
-        // cv::pointPolygonTest test if point in or out of contour
-        // cv::matchShapes measure resemblance between two contours
-        
-        // applying a mask to show foreground
-        Mat mask(fore.size(),CV_8U);
-        processed.copyTo(fore,mask);
-        
-        imshow("foreground", fore);
-        
-        
-        
-        // MOG implementation
-//        cvtColor(processed, processed, CV_RGB2HSV); // sometimes greater contrast in HSV space
-//        processed.copyTo(frame);
-//        mog(frame,foreground,0.01);
-//        erode(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-//        dilate(foreground, foreground, Mat::ones(Size(4,4),CV_32F));
-//        bitwise_not(foreground, foreground); // just to flip
-//        Mat image;
-//        foreground.copyTo(image);
-//        
-//        findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-//        
-//        // FILTER OUT "BAD" CONTOURS
-//        vector<vector<Point> >::iterator itc = contours.begin();
-//        while(itc != contours.end())
-//        {
-//            if (itc->size() < cmin || itc->size() > cmax)
-//            {
-//                itc = contours.erase(itc);
-//            }
-//            else
-//                ++itc;
-//        }
-//        
-//        Mat result(image.size(), CV_8U, Scalar(255));
-//        drawContours(result,  contours, -1, Scalar(0),2);
-//        imshow("contours", result);
-//        createTrackbar("cmin", "contours", &cmin, 100);
-//        createTrackbar("cmax", "contours", &cmax, 6000);
-//        imshow("gaussian", foreground); 
-        
-        
-        
-        
-//        cvtColor(processed, processed, CV_BGR2GRAY);
+        warpPerspective(undistorted, preProcessing, H, dstSize,  INTER_LINEAR+CV_WARP_FILL_OUTLIERS, BORDER_CONSTANT, Scalar());
 
         
+        imshow("Camera Pre-processing", preProcessing);
         
-//        if(i==0){
-//        processed.copyTo(bg); 
-//            i++;
-//        }
-
+        // SEGMENTATION
+        
+        preProcessing.copyTo(bgSegmentation);
+        //
+        mog2.operator()(bgSegmentation, foreground,mogLearningRate);
+        mog2.getBackgroundImage(background);
+        imshow("Foreground Mask", foreground);
+        imshow("Background", background);
+        
+        // clean up a bit
+//        morphologyEx(foreground, foreground, MORPH_ERODE, Mat(), Point(-1,-1), 5);
+        morphologyEx(foreground, foreground, MORPH_OPEN, Mat()); // erode~dilate
+        
+        // contour stuff
+        Mat fgContours;
+        foreground.copyTo(fgContours);
+        vector<vector<Point> > contours;
+        
+        findContours(fgContours, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+        
+        // FILTER OUT "BAD" CONTOURS // EXTRACTING MAXIMUM 2 LIKELY AREAS OF FOOT PRESENCE 
+        // how to decide what is too big/ too small? people have different sized feet
         
         
+        // also calculate the distance from the two "feet"
         
-        imshow("output", processed);
+        vector<vector<Point> >::iterator iterContours = contours.begin();
+        while(iterContours != contours.end())
+        {
+            if (iterContours->size() < minContourSize || iterContours->size() > maxContourSize)
+            {
+                iterContours = contours.erase(iterContours);
+            }
+            else
+                ++iterContours;
+        }
         
-//        createTrackbar("canny threshold", "output", &lowThreshold, 100);
+//        Mat result(fgContours.size(), CV_8U, Scalar(255));
+        
+        Mat contourMask = Mat::zeros(preProcessing.size(), CV_8UC1);
+        
+        drawContours(contourMask,  contours, -1, Scalar(100),CV_FILLED);
+        imshow("Contours", contourMask);
+        createTrackbar("cmin", "Contours", &minContourSize, 100);
+        createTrackbar("cmax", "Contours", &maxContourSize, 6000);
+        
+        // contours masked... or sth
+        Mat toHist(preProcessing.size(), CV_8UC3);
+        preProcessing.copyTo(toHist, contourMask);
+        
+        imshow("test", toHist);
+        
+        // toHist is now ready for histogram back projection 
+        
+        
         
         char key =  waitKey(100);
         if( key  == 27 ) // 27 == ESC
@@ -136,3 +111,5 @@ int main()
     
     return 0;
 }
+
+//        createTrackbar("canny threshold", "output", &lowThreshold, 100);
