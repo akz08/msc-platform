@@ -16,7 +16,6 @@ void camHelper::updateCamera(Mat& outputMatrix)
     camCapture >> outputMatrix;
 }
 
-
 bool camHelper::loadUndistort()
 {
     FileStorage fs;
@@ -36,7 +35,7 @@ void camHelper::initUndistort(Mat inputMatrix)
     initUndistortRectifyMap(cameraMatrix, distortionCoeff, Mat(), getOptimalNewCameraMatrix(cameraMatrix, distortionCoeff, inputMatrix.size(), 1), inputMatrix.size(), CV_16SC2, map1, map2);
 }
 
-bool camHelper::calcUndistort(Mat inputMatrix, Mat& outputMatrix)
+bool camHelper::calcUndistort(Mat inputMatrix)
 {
     Mat rawCameraMat;
     vector<vector<Point2f> > imagePoints; // captured images from camera
@@ -165,7 +164,32 @@ bool camHelper::loadPerspective()
     return true;
 }
 
-bool camHelper::calcPerspective(int calcType)
+void camHelper::onMouse(int event, int x, int y, int flags)
+{
+    switch (event) {
+        case CV_EVENT_LBUTTONDOWN:
+        {
+            cout << "detected a left mouse click at: " << x << ", " << y  << endl;
+            
+            if(perspectivePoints.size() < 4)
+            {
+                circle(perspectiveMat, Point(x,y), 10, Scalar(0,0,0), 3, 8);
+                perspectivePoints.push_back(Point(x,y));
+                cout << "saved the point: " << x << ", " << y << endl;
+            }
+            else {
+                enoughPerspectivePoints = true;
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+}
+
+bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
 {
     // find the chessboard/ some other method to find homography
     switch(calcType) // choose how source points to be determined
@@ -179,14 +203,14 @@ bool camHelper::calcPerspective(int calcType)
             int board_w = 5;
             int board_h = 8;
             Size boardSize = Size(board_w,board_h);
-            foundChessboard = findChessboardCorners(undistortedCameraMat, boardSize, corners,
+            foundChessboard = findChessboardCorners(inputMatrix, boardSize, corners,
                                                     CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE | CALIB_CB_FILTER_QUADS);
             if(foundChessboard)
             {
                 Mat greyCameraMat;
                 cout << "found chessboard for perspective" <<endl;
                 // get subpixel accuracy on corners
-                cvtColor(undistortedCameraMat, greyCameraMat, CV_BGR2GRAY);
+                cvtColor(inputMatrix, greyCameraMat, CV_BGR2GRAY);
                 cornerSubPix(greyCameraMat, corners, Size(11,11), Size(-1,-1), TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1));
                 
                 // now extracting the 4 points for homography
@@ -210,8 +234,8 @@ bool camHelper::calcPerspective(int calcType)
                     Point2f(0, board_h*100-1)
                 };
                 
-                drawChessboardCorners(undistortedCameraMat, boardSize, corners, foundChessboard);
-                imshow( "Checkers", undistortedCameraMat );
+                drawChessboardCorners(inputMatrix, boardSize, corners, foundChessboard);
+                imshow( "Checkers", inputMatrix );
                 
                 homographyMatrix = getPerspectiveTransform(srcQuad, dstQuad);
                 
@@ -229,10 +253,8 @@ bool camHelper::calcPerspective(int calcType)
         case(CLICKRECTANGLE):
         {
             // USE 4 USER DEFINED POINTS
-            undistortedCameraMat.copyTo(perspectiveMat); // copy to a globally accessible variable
-            
-            namedWindow("ledRectangle", 0);
-//            setMouseCallback("ledRectangle", perspMouse, 0);
+            inputMatrix.copyTo(perspectiveMat); // copy to a globally accessible variable
+
             perspectivePoints.empty();
             enoughPerspectivePoints = false;
             while(!enoughPerspectivePoints)
@@ -240,15 +262,16 @@ bool camHelper::calcPerspective(int calcType)
                 // draw the circles on the image when clicked & also store the points of click
                 string msg = format("Click on four(4) points. Starting from the top left, moving clockwise");
                 putText(perspectiveMat, msg, Point(5,15), 1, 1,Scalar(0,255,0));
-                imshow("ledRectangle", perspectiveMat);
+                imshow(winName, perspectiveMat);
                 
                 char key =  waitKey(100);
                 if( key  == 27 ) // 27 == ESC
                     return false;
             }
             
+            
             // once the points have been collected, destroy the imshow and perform the homography
-            destroyWindow("ledRectangle");
+            destroyWindow(winName);
             
             // choosing this kind of dstQuad will deform the image 
             
@@ -322,15 +345,6 @@ bool camHelper::calcPerspective(int calcType)
             
             destinationSize = Size(scaled_w, scaled_h);
             
-            // depreciated
-            //                Point2f dstQuad[4] =
-            //                {
-            //                    Point2f(0,0),
-            //                    Point2f(perspectiveMat.cols-1, 0),
-            //                    Point2f(perspectiveMat.cols-1, perspectiveMat.rows-1),
-            //                    Point2f(0, perspectiveMat.rows-1)
-            //                };
-            
             homographyMatrix = getPerspectiveTransform(srcQuad, dstQuad);
             
             if(enoughPerspectivePoints /*&& hmgMat is not empty*/)
@@ -361,8 +375,6 @@ bool camHelper::calcPerspective(int calcType)
             return false;
             
     }
-    
-    // perform perspective undistortion
     
     return true;
 }

@@ -18,30 +18,6 @@ class camHelper
     Mat perspectiveMat;
     vector<Point2f> perspectivePoints;
     bool enoughPerspectivePoints;
-    void perspMouse(int event, int x, int y, int, void* param)
-    {
-        switch (event) {
-            case CV_EVENT_LBUTTONDOWN:
-            {
-                cout << "detected a left mouse click at: " << x << ", " << y  << endl;
-                
-                if(perspectivePoints.size() < 4)
-                {
-                    circle(perspectiveMat, Point(x,y), 10, Scalar(0,0,0), 3, 8);
-                    perspectivePoints.push_back(Point(x,y));
-                    cout << "saved the point: " << x << ", " << y << endl;
-                }
-                else {
-                    enoughPerspectivePoints = true;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-    }
-     
     
     public:
     
@@ -56,15 +32,16 @@ class camHelper
     
     bool loadUndistort(); 
     void initUndistort(Mat inputMatrix);
-    bool calcUndistort(Mat inputMatrix, Mat& outputMatrix);
+    bool calcUndistort(Mat inputMatrix);
     void doUndistort(Mat inputMatrix, Mat& outputMatrix);
     
     Mat undistortedCameraMat;
     Mat homographyMatrix;
     Size destinationSize;
     
+    void onMouse(int event, int x, int y, int flags);
     bool loadPerspective();
-    bool calcPerspective(int calcType);
+    bool calcPerspective(Mat inputMatrix, string winName, int calcType = CLICKRECTANGLE );
     void doPerspective(Mat inputMatrix, Mat& outputMatrix);
     
     float ratio_w, ratio_h;
@@ -72,7 +49,8 @@ class camHelper
     camHelper()
     {
         initCamera(0);
-
+        ratio_w = 7;
+        ratio_h = 14;
     }
     
     ~camHelper()

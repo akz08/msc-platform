@@ -1,17 +1,23 @@
 #include "main.h"
 #include "camHelper.h"
-// Global variables
 
 camHelper cam;
 Mat cameraOut, cameraUndistorted, cameraFixPerspective;
+
+void mousePerspectiveWrap(int event, int x, int y, int, void* param);
 
 int main()
 {
     cam.initCamera(0);
     cam.updateCamera(cameraOut);
     cam.loadUndistort();
+//    cam.calcUndistort(cameraOut);
     cam.initUndistort(cameraOut);
     cam.loadPerspective();
+    
+    namedWindow("ledRectangle", 0);
+    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
+    cam.calcPerspective(cameraOut, "ledRectangle");
     
     while(true)
     {
@@ -20,6 +26,8 @@ int main()
        
         cam.doUndistort(cameraOut, cameraUndistorted);
         imshow("undistorted camera output", cameraUndistorted);
+        
+        
         
         cam.doPerspective(cameraUndistorted, cameraFixPerspective);
         imshow("fixed perspective camera output", cameraFixPerspective);
@@ -34,3 +42,10 @@ int main()
 }
 
 //        createTrackbar("canny threshold", "output", &lowThreshold, 100);
+
+void mousePerspectiveWrap(int event, int x, int y, int flags, void* pointer)
+{
+    camHelper* cHPointer = (camHelper*)pointer;
+    if(cHPointer != NULL)
+        cHPointer->onMouse(event, x, y, flags);
+}
