@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		DD11C4CF1582B3F800A9369F /* ioPhidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD11C4CE1582B3F800A9369F /* ioPhidget.cpp */; };
 		DD1F6EEB15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F6EEA15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib */; };
-		DD2BDA7F1585F591000FD88F /* vPreprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */; };
+		DD2BDA7F1585F591000FD88F /* camHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA7E1585F591000FD88F /* camHelper.cpp */; };
 		DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA85158BF622000FD88F /* oFrameworks.cpp */; };
 		DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD6D5B4715922718006ADB4B /* Phidget21.framework */; };
 		DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */; };
@@ -40,8 +40,8 @@
 		DD11C4D11582B43800A9369F /* ioPhidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioPhidget.h; path = IO/ioPhidget.h; sourceTree = "<group>"; };
 		DD1951671577DD8700E41FD9 /* libcvblob.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcvblob.dylib; path = ../../../../../usr/local/lib/libcvblob.dylib; sourceTree = "<group>"; };
 		DD1F6EEA15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_video.2.4.2.dylib; sourceTree = "<group>"; };
-		DD2BDA7C1585F572000FD88F /* vPreprocess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vPreprocess.h; path = vision/vPreprocess.h; sourceTree = "<group>"; };
-		DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vPreprocess.cpp; path = vision/vPreprocess.cpp; sourceTree = "<group>"; };
+		DD2BDA7C1585F572000FD88F /* camHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; name = camHelper.h; path = vision/camHelper.h; sourceTree = "<group>"; };
+		DD2BDA7E1585F591000FD88F /* camHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camHelper.cpp; path = vision/camHelper.cpp; sourceTree = "<group>"; };
 		DD2BDA85158BF622000FD88F /* oFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oFrameworks.cpp; sourceTree = "<group>"; };
 		DD6D5B4715922718006ADB4B /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../../Library/Frameworks/Phidget21.framework; sourceTree = "<group>"; };
 		DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_calib3d.2.4.2.dylib; sourceTree = "<group>"; };
@@ -86,8 +86,8 @@
 		DD2BDA7D1585F578000FD88F /* vision */ = {
 			isa = PBXGroup;
 			children = (
-				DD2BDA7C1585F572000FD88F /* vPreprocess.h */,
-				DD2BDA7E1585F591000FD88F /* vPreprocess.cpp */,
+				DD2BDA7C1585F572000FD88F /* camHelper.h */,
+				DD2BDA7E1585F591000FD88F /* camHelper.cpp */,
 			);
 			name = vision;
 			sourceTree = "<group>";
@@ -208,7 +208,7 @@
 			files = (
 				DDA967D014DF209800E1E92D /* main.cpp in Sources */,
 				DD11C4CF1582B3F800A9369F /* ioPhidget.cpp in Sources */,
-				DD2BDA7F1585F591000FD88F /* vPreprocess.cpp in Sources */,
+				DD2BDA7F1585F591000FD88F /* camHelper.cpp in Sources */,
 				DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */,
 				DDA0427715CEBC76004381D4 /* old_main.cpp in Sources */,
 			);

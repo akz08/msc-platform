@@ -467,7 +467,7 @@ bool initPerspective(bool loadExisting, Mat undistortedCameraMat, int calcType, 
 // FOOT DETECTION STEP // <-- THIS IS THE CORE CONTENT!!!
 //void initFootDetection(int mogType = 2);
 //
-//
+//  
 //void footDetection(Mat inputImage, int mogType = 2);
 //
 //void footDetection(Mat inputImage, int mogType)
