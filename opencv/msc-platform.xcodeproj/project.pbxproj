@@ -12,6 +12,7 @@
 		DD2BDA7F1585F591000FD88F /* camHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA7E1585F591000FD88F /* camHelper.cpp */; };
 		DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA85158BF622000FD88F /* oFrameworks.cpp */; };
 		DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD6D5B4715922718006ADB4B /* Phidget21.framework */; };
+		DD7282DD15E3E200007193BB /* footDetect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7282DC15E3E200007193BB /* footDetect.cpp */; };
 		DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */; };
 		DDA0425015CC40B0004381D4 /* libopencv_core.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */; };
 		DDA0425115CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */; };
@@ -40,10 +41,12 @@
 		DD11C4D11582B43800A9369F /* ioPhidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioPhidget.h; path = IO/ioPhidget.h; sourceTree = "<group>"; };
 		DD1951671577DD8700E41FD9 /* libcvblob.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcvblob.dylib; path = ../../../../../usr/local/lib/libcvblob.dylib; sourceTree = "<group>"; };
 		DD1F6EEA15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_video.2.4.2.dylib; sourceTree = "<group>"; };
-		DD2BDA7C1585F572000FD88F /* camHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; name = camHelper.h; path = vision/camHelper.h; sourceTree = "<group>"; };
+		DD2BDA7C1585F572000FD88F /* camHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = camHelper.h; path = vision/camHelper.h; sourceTree = "<group>"; };
 		DD2BDA7E1585F591000FD88F /* camHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camHelper.cpp; path = vision/camHelper.cpp; sourceTree = "<group>"; };
 		DD2BDA85158BF622000FD88F /* oFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oFrameworks.cpp; sourceTree = "<group>"; };
 		DD6D5B4715922718006ADB4B /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../../Library/Frameworks/Phidget21.framework; sourceTree = "<group>"; };
+		DD7282DA15E3E1F2007193BB /* footDetect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = footDetect.h; path = vision/footDetect.h; sourceTree = "<group>"; };
+		DD7282DC15E3E200007193BB /* footDetect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = footDetect.cpp; path = vision/footDetect.cpp; sourceTree = "<group>"; };
 		DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_calib3d.2.4.2.dylib; sourceTree = "<group>"; };
 		DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_core.2.4.2.dylib; sourceTree = "<group>"; };
 		DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_highgui.2.4.2.dylib; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 			children = (
 				DD2BDA7C1585F572000FD88F /* camHelper.h */,
 				DD2BDA7E1585F591000FD88F /* camHelper.cpp */,
+				DD7282DA15E3E1F2007193BB /* footDetect.h */,
+				DD7282DC15E3E200007193BB /* footDetect.cpp */,
 			);
 			name = vision;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				DD2BDA7F1585F591000FD88F /* camHelper.cpp in Sources */,
 				DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */,
 				DDA0427715CEBC76004381D4 /* old_main.cpp in Sources */,
+				DD7282DD15E3E200007193BB /* footDetect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

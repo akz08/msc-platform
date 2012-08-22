@@ -18,6 +18,8 @@ class camHelper
     Mat perspectiveMat;
     vector<Point2f> perspectivePoints;
     bool enoughPerspectivePoints;
+    float ratio_w, ratio_h;
+    float unit;
     
     public:
     
@@ -41,13 +43,13 @@ class camHelper
     
     void onMouse(int event, int x, int y, int flags);
     bool loadPerspective();
+    void setPerspectiveRatio(float width, float height);
     bool calcPerspective(Mat inputMatrix, string winName, int calcType = CLICKRECTANGLE );
     void doPerspective(Mat inputMatrix, Mat& outputMatrix);
     
-    float ratio_w, ratio_h;
-    
     camHelper()
     {
+        // default parameters
         initCamera(0);
         ratio_w = 7;
         ratio_h = 14;

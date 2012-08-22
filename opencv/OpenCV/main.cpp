@@ -1,8 +1,11 @@
 #include "main.h"
 #include "camHelper.h"
+#include "footDetect.h"
 
 camHelper cam;
+footDetect foot;
 Mat cameraOut, cameraUndistorted, cameraFixPerspective;
+Mat background, fg;
 
 void mousePerspectiveWrap(int event, int x, int y, int, void* param);
 
@@ -15,9 +18,11 @@ int main()
     cam.initUndistort(cameraOut);
     cam.loadPerspective();
     
-    namedWindow("ledRectangle", 0);
-    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
-    cam.calcPerspective(cameraOut, "ledRectangle");
+//    namedWindow("ledRectangle", 0);
+//    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
+//    cam.calcPerspective(cameraOut, "ledRectangle");
+    
+    foot.initMOG();
     
     while(true)
     {
@@ -27,21 +32,34 @@ int main()
         cam.doUndistort(cameraOut, cameraUndistorted);
         imshow("undistorted camera output", cameraUndistorted);
         
-        
-        
         cam.doPerspective(cameraUndistorted, cameraFixPerspective);
         imshow("fixed perspective camera output", cameraFixPerspective);
         
-        char key =  waitKey(100);
-        if( key  == 27 ) // 27 == ESC
+        // preferably do some thresholding first
+        foot.updateMOG(cameraFixPerspective);
+        foot.getBackground(background);
+        imshow("MOG Background", background);
+        
+        imshow("fg", foot.foreground);
+
+        foot.getForeground(cameraFixPerspective, fg);
+        imshow("MOG Foreground", fg);
+        
+        foot.grabForeground();
+        
+        char key =  waitKey(10);
+        if(key == 32)
+        {
+            cout << "decreased learning rate to 0.0000001" << endl;
+            foot.setLearningRate(0.0000001);
+        }
+        if(key  == 27) // 27 == ESC
             break;
 
     }
     
     return 0;
 }
-
-//        createTrackbar("canny threshold", "output", &lowThreshold, 100);
 
 void mousePerspectiveWrap(int event, int x, int y, int flags, void* pointer)
 {

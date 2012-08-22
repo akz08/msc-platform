@@ -1,5 +1,6 @@
 #include "camHelper.h"
 
+#pragma mark Camera Startup
 void camHelper::initCamera(int camSource)
 {
     camCapture.open(camSource);
@@ -30,6 +31,7 @@ bool camHelper::loadUndistort()
     return true;
 }
 
+#pragma mark Fix Distortion
 void camHelper::initUndistort(Mat inputMatrix)
 {
     initUndistortRectifyMap(cameraMatrix, distortionCoeff, Mat(), getOptimalNewCameraMatrix(cameraMatrix, distortionCoeff, inputMatrix.size(), 1), inputMatrix.size(), CV_16SC2, map1, map2);
@@ -131,7 +133,7 @@ bool camHelper::calcUndistort(Mat inputMatrix)
         }
         
         // stop on ESC key
-        char key =  waitKey(100);
+        char key =  waitKey(1);
         if( key  == 27 ){
             return false;
         }
@@ -146,6 +148,7 @@ void camHelper::doUndistort(Mat inputMatrix, Mat &outputMatrix)
     remap(inputMatrix, outputMatrix, map1, map2, INTER_LINEAR);
 }
 
+#pragma mark Fix Perspective
 bool camHelper::loadPerspective()
 {
     FileStorage fs;
@@ -162,6 +165,12 @@ bool camHelper::loadPerspective()
     fs["dstHeight"] >> dstHeight;
     destinationSize = Size(dstWidth, dstHeight);
     return true;
+}
+
+void camHelper::setPerspectiveRatio(float width, float height)
+{
+    ratio_w = width;
+    ratio_h = height;
 }
 
 void camHelper::onMouse(int event, int x, int y, int flags)
@@ -264,7 +273,7 @@ bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
                 putText(perspectiveMat, msg, Point(5,15), 1, 1,Scalar(0,255,0));
                 imshow(winName, perspectiveMat);
                 
-                char key =  waitKey(100);
+                char key =  waitKey(1);
                 if( key  == 27 ) // 27 == ESC
                     return false;
             }
@@ -300,7 +309,7 @@ bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
                 horizontalSkew = true; // so lH & rH are of interest
                 // determine which is smaller & scale according to aspect ratio
                 float minHeight = min(leftHeight, rightHeight); // scale it down
-                float unit = minHeight/ratio_h; // compare to the height ratio
+                unit = minHeight/ratio_h; // compare to the height ratio
                 scaled_w = ratio_w * unit; // scale the image properly
                 scaled_h = ratio_h * unit;
                 
