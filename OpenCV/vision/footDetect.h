@@ -12,8 +12,8 @@ class footDetect
 {
     
 private:
-    Mat grabbedImage;
-    
+    Mat grabbedFrame;
+    vector<vector<Point> > contours;
     
     
 public:
@@ -29,9 +29,12 @@ public:
     void getForeground(Mat inputMatrix, Mat& outputMatrix);
 
     bool grabForeground();
+    float activeAreaPc;
+    Mat footFrame;
     void findFeet();
     
-    
+    int minFootSize; // be generous with these
+    int maxFootSize;
     
     
     
@@ -41,7 +44,9 @@ public:
     
     footDetect()
     {
-        
+        activeAreaPc = 0.7f;
+        minFootSize = 100;
+        maxFootSize = 3000;
     }
     
     ~footDetect()

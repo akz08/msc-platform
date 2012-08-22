@@ -5,7 +5,7 @@
 camHelper cam;
 footDetect foot;
 Mat cameraOut, cameraUndistorted, cameraFixPerspective;
-Mat background, fg;
+Mat background, foreground;
 
 void mousePerspectiveWrap(int event, int x, int y, int, void* param);
 
@@ -27,10 +27,10 @@ int main()
     while(true)
     {
         cam.updateCamera(cameraOut);
-        imshow("raw camera output", cameraOut);
+//        imshow("raw camera output", cameraOut);
        
         cam.doUndistort(cameraOut, cameraUndistorted);
-        imshow("undistorted camera output", cameraUndistorted);
+//        imshow("undistorted camera output", cameraUndistorted);
         
         cam.doPerspective(cameraUndistorted, cameraFixPerspective);
         imshow("fixed perspective camera output", cameraFixPerspective);
@@ -40,11 +40,11 @@ int main()
         foot.getBackground(background);
         imshow("MOG Background", background);
         
-        imshow("fg", foot.foreground);
+        imshow("Foreground", foot.foreground);
 
-        foot.getForeground(cameraFixPerspective, fg);
-        imshow("MOG Foreground", fg);
-        
+        foot.getForeground(cameraFixPerspective, foreground);
+        imshow("MOG Foreground", foreground);
+         
         foot.grabForeground();
         
         char key =  waitKey(10);
