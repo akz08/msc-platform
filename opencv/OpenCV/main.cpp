@@ -42,12 +42,12 @@ int main()
         
         imshow("Foreground", foot.foreground);
 
-        foot.getForeground(cameraFixPerspective, foreground);
-        imshow("MOG Foreground", foreground);
+//        foot.getForeground(cameraFixPerspective, foreground);
+//        imshow("MOG Foreground", foreground);
          
         foot.grabForeground();
         
-        char key =  waitKey(10);
+        char key =  waitKey(50);
         if(key == 32)
         {
             cout << "decreased learning rate to 0.0000001" << endl;
