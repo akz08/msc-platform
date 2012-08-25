@@ -164,6 +164,25 @@ void testApp::update(){
         // do the calculation of X-Y stuff here.........
         cout << "normal phidget vis" << endl;
         // do stuff to output cogPlatformX & Y
+        // remembering that we are using the standard is -1 to +1
+        // anticlockwise from top left standard (check circuit)
+        double topLeft = bridgeValuesArray[0].currentCalibratedValue;
+        double bottomLeft = bridgeValuesArray[1].currentCalibratedValue;
+        double bottomRight = bridgeValuesArray[2].currentCalibratedValue;
+        double topRight = bridgeValuesArray[3].currentCalibratedValue;
+        
+        // normalise the values to ||1|| . we divide the value by the users weight . temp set to 20kg
+        double totalWeight = 20;
+        topLeft = topLeft / totalWeight;
+        bottomLeft = bottomLeft / totalWeight;
+        bottomRight = bottomRight / totalWeight;
+        topRight = topRight / totalWeight;
+        
+        cogPlatformX = (topRight + bottomRight) - (topLeft + bottomLeft); // correct ?
+        cogPlatformY = (bottomLeft + bottomRight) - (topLeft + topRight); // correct ?
+        
+        cout << "platformX" << cogPlatformX << endl;
+        cout << "platformY" << cogPlatformY << endl;
     }
     
     // SIMULATE BALANCE
@@ -283,14 +302,14 @@ void testApp::draw(){
     // RENDER THE SCOOTER PLATFORM
     if(enableVisualisation){
         
-        // setup scooter handle
+        // setup scooter handle (actual full length of handle is 29cm. one foam handle is 11cm 
         ofRectangle scooterHandle; // to do: insert a scale. proper scaling for handle needed.
         scooterHandle.x = -scooterHandleLength/2; 
         scooterHandle.y = -11;
         scooterHandle.width = scooterHandleLength;
         scooterHandle.height = 22;
 
-        // setup platform base (for CENTRE origin)
+        // setup platform base (for CENTRE origin) (actual base is 44x51cm)
         ofRectangle platformBase;
         platformBase.x = - platformBaseWidth/2;
         platformBase.y = - platformBaseHeight/2; 
@@ -638,10 +657,14 @@ void testApp::setGUIPlatform(){
     guiPlatform->addWidgetDown(new ofxUILabel("PLATFORM VISUAL", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
     guiPlatform->addWidgetDown(new ofxUIToggle(16, 16, true, "enable visualisation"));
+    guiPlatform->addWidgetDown(new ofxUILabel("Balance Simulation", OFX_UI_FONT_MEDIUM));
     oscBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable TouchOSC balance simulation");
     guiPlatform->addWidgetDown(oscBalanceSimToggle); 
     wiibbBalanceSimToggle = new ofxUIToggle(16, 16, false, "enable Wii Balance Board");
     guiPlatform->addWidgetDown(wiibbBalanceSimToggle); 
+    guiPlatform->addWidgetDown(new ofxUILabel("Foot-press Simulation", OFX_UI_FONT_MEDIUM));
+    oscFootPressSimToggle = new ofxUIToggle(16, 16, false, "enable TouchOSC foot-press simulation");
+    guiPlatform->addWidgetDown(oscFootPressSimToggle);
     
     guiPlatform->addWidgetDown(new ofxUILabel("Platform Parameters", OFX_UI_FONT_MEDIUM));
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 

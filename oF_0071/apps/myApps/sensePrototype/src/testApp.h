@@ -137,6 +137,7 @@ public:
     ofxUITextInput *calibLabel2;
     ofxUIToggle *oscBalanceSimToggle;
     ofxUIToggle *wiibbBalanceSimToggle;
+    ofxUIToggle *oscFootPressSimToggle;
     
     bool enableSaving;
     
