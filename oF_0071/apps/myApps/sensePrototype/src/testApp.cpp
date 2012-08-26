@@ -157,6 +157,27 @@ void testApp::update(){
         }
     }
     
+    // TRIAL FOOT PRESS
+    if(footFound && !oscFootPressSim)
+    {
+        // do the opencv calls to get 0-1 reading on foot 'height'
+    }
+    else if(oscFootPressSim)
+    {
+        while(receiver.hasWaitingMessages()){
+            // get the next message
+            ofxOscMessage m;
+            receiver.getNextMessage(&m);
+            
+            if(m.getAddress() == "/1/fader1"){
+                footPressL = m.getArgAsFloat(0);
+            }
+            else if(m.getAddress() == "/1/fader2"){
+                footPressR = m.getArgAsFloat(0);
+            }
+        }
+    }
+    
     // to do: group the balance processing stuff
     // ACTUAL BALANCE
     if(phidget.isConnected && !oscBalanceSim && !wiibbBalanceSim)
@@ -194,7 +215,7 @@ void testApp::update(){
             ofxOscMessage m;
             receiver.getNextMessage(&m);
             
-            // check for mouse moved message
+            // check for xy
             if(m.getAddress() == "/3/xy"){
                 cogPlatformX = m.getArgAsFloat(0);
                 cogPlatformX = cogPlatformX*2 - 1;
@@ -620,6 +641,18 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
         else
         {
             oscBalanceSim = false;
+        }
+    }
+    else if(name == "enable TouchOSC foot-press simulation")
+    {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue())
+        {
+            oscFootPressSim = true; // flip the value (since initially is false)
+        }
+        else
+        {
+            oscFootPressSim = false;
         }
     }
     else if(name == "enable Wii Balance Board")

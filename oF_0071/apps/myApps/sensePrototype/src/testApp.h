@@ -153,8 +153,12 @@ public:
     double cogPlatformX;
     double cogPlatformY;
     
+    double footPressL;
+    double footPressR;
+    
     ofxOscReceiver receiver;
     bool oscBalanceSim;
+    bool oscFootPressSim;
 //    float simulateBalanceX;
 //    float simulateBalanceY;
     
@@ -166,6 +170,8 @@ public:
     float wiiBottomRight;
     float wiiTopLeft;
     float wiiTopRight;
+    
+    bool footFound;
     
     //////
 //private:
