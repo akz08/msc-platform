@@ -305,6 +305,12 @@ void testApp::update(){
     inputBalance.addFloatArg(cogPlatformX);
     inputBalance.addFloatArg(cogPlatformY);
     sender.sendMessage(inputBalance);
+    
+    ofxOscMessage inputFootPress;
+    inputFootPress.setAddress("/input/footPress");
+    inputFootPress.addFloatArg(footPressL);
+    inputFootPress.addFloatArg(footPressR);
+    sender.sendMessage(inputFootPress);
 }
 
 //--------------------------------------------------------------
