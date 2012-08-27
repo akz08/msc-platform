@@ -28,15 +28,15 @@ public:
     void getBackground(Mat& outputMatrix);
     void getForeground(Mat inputMatrix, Mat& outputMatrix);
 
-    bool grabForeground();
+    void grabForeground();
     float activeAreaPc;
     Mat footFrame;
-    void findFeet();
+    void findFeet(Mat inputMatrix, Mat& outputMatrix);
     
     int minFootSize; // be generous with these
     int maxFootSize;
     
-    
+    MatND getHueHistogram(Mat& inputMatrix);
     
     
     void initGetFeet();

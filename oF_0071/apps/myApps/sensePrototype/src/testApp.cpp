@@ -311,6 +311,7 @@ void testApp::update(){
     inputFootPress.addFloatArg(footPressL);
     inputFootPress.addFloatArg(footPressR);
     sender.sendMessage(inputFootPress);
+
 }
 
 //--------------------------------------------------------------
@@ -643,6 +644,8 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             oscBalanceSim = true; // flip the value (since initially is false)
             wiibbBalanceSimToggle->setValue(false);
             wiibbBalanceSim = false; // hacky implementation, should do it better
+            oscFootPressSimToggle->setValue(false);
+            oscFootPressSim = false;
         }
         else
         {
@@ -655,6 +658,8 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
         if(toggle->getValue())
         {
             oscFootPressSim = true; // flip the value (since initially is false)
+            oscBalanceSimToggle->setValue(false);
+            oscBalanceSim = false;
         }
         else
         {
@@ -763,6 +768,10 @@ void testApp::setGUISetup(){
     guiSetup->addWidgetDown(new ofxUILabel("Serial Value", OFX_UI_FONT_MEDIUM));
     serialValueLabel = new ofxUILabel("Raw Serial Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(serialValueLabel);
+    
+    // OPENCV SECTION
+    guiSetup->addWidgetDown(new ofxUILabel("OPENCV SETUP", OFX_UI_FONT_LARGE));
+    guiSetup->addWidgetDown(new ofxUISpacer(300, 2)); 
     
     ofAddListener(guiSetup->newGUIEvent, this, &testApp::guiEvent); 
     

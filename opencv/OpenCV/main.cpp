@@ -6,6 +6,7 @@ camHelper cam;
 footDetect foot;
 Mat cameraOut, cameraUndistorted, cameraFixPerspective;
 Mat background, foreground;
+Mat foundFeet;
 
 void mousePerspectiveWrap(int event, int x, int y, int, void* param);
 
@@ -45,13 +46,20 @@ int main()
 //        foot.getForeground(cameraFixPerspective, foreground);
 //        imshow("MOG Foreground", foreground);
          
-        foot.grabForeground();
+//        foot.grabForeground();
         
         char key =  waitKey(50);
         if(key == 32)
         {
             cout << "decreased learning rate to 0.0000001" << endl;
             foot.setLearningRate(0.0000001);
+        }
+        if (key == 99)
+        {
+            foot.grabForeground();
+            foot.findFeet(cameraFixPerspective,foundFeet);
+            imshow("found feet", foundFeet);
+            foot.getHueHistogram(foundFeet);
         }
         if(key  == 27) // 27 == ESC
             break;

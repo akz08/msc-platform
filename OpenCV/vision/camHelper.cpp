@@ -304,6 +304,7 @@ bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
             bool horizontalSkew;
             float scaled_w, scaled_h;
             
+            // these rough checks aren't always valid. may mess up the view
             if (abs(topWidth-bottomWidth) < abs(leftHeight-rightHeight)) 
             {
                 horizontalSkew = true; // so lH & rH are of interest
@@ -332,7 +333,7 @@ bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
             };
             
             // output a decent display destination size
-            // do some checks for scaled_w & h . modify if necessary to fit screen
+            // do some checks for scaled_w & h . modify if necessary to fit screen (rarely called)
             if(horizontalSkew)
             {
                 if(scaled_w > 800)
