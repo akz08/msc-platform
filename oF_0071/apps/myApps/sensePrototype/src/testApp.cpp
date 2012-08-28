@@ -82,7 +82,7 @@ void testApp::setup(){
     // DRAWING
     enableVisualisation = true;
     xPlatform = 990;
-    yPlatform = 400;
+    yPlatform = 550; // was 400
     
     platformBaseWidth = 230;
     platformBaseHeight = 250;
@@ -97,6 +97,43 @@ void testApp::setup(){
 //    thread.startThread(true,false);
 //    boost::thread workerThread(workerFunction, bBoard);
 //    workerThread.join(); 
+    
+    // GRAPHS 
+    int numGraphSamples = 100;
+//    plot = new ofxHistoryPlot( &currentFramerate, "frame rate", numGraphSamples, true);
+//    plot->setLowerRange(0);
+//	plot->setColor( ofColor(0,0,0) );
+//	plot->setShowNumericalInfo(true);
+//	plot->setRespectBorders(true);
+//	plot->setLineWidth(2);
+
+    plotTL = new ofxHistoryPlot( &valTL, "topLeft Load Cell", numGraphSamples, true);
+    plotTL->setLowerRange(0);
+	plotTL->setColor( ofColor(0,0,0) );
+	plotTL->setShowNumericalInfo(true);
+	plotTL->setRespectBorders(true);
+	plotTL->setLineWidth(2);
+    
+    plotBL = new ofxHistoryPlot( &valBL, "bottomLeft Load Cell", numGraphSamples, true);
+    plotBL->setLowerRange(0);
+	plotBL->setColor( ofColor(0,0,0) );
+	plotBL->setShowNumericalInfo(true);
+	plotBL->setRespectBorders(true);
+	plotBL->setLineWidth(2);
+    
+    plotBR = new ofxHistoryPlot( &valBR, "bottomRight Load Cell", numGraphSamples, true);
+    plotBR->setLowerRange(0);
+	plotBR->setColor( ofColor(0,0,0) );
+	plotBR->setShowNumericalInfo(true);
+	plotBR->setRespectBorders(true);
+	plotBR->setLineWidth(2);
+    
+    plotTR = new ofxHistoryPlot( &valTR, "topRight Load Cell", numGraphSamples, true);
+    plotTR->setLowerRange(0);
+	plotTR->setColor( ofColor(0,0,0) );
+	plotTR->setShowNumericalInfo(true);
+	plotTR->setRespectBorders(true);
+	plotTR->setLineWidth(2);
 }
 
 //void testApp::workerFunction(struct balanceBoard){
@@ -105,7 +142,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-
+//    currentFramerate = ofGetFrameRate();
 //    thread.lock();
 //    thread.threadedFunction();
 //    thread.unlock();
@@ -132,6 +169,12 @@ void testApp::update(){
         }
         if (bridgeValuesArray[currentBridge].calculated){
             bridgeCalibValueLabel->setLabel(ofToString(bridgeValuesArray[currentBridge].currentCalibratedValue));
+            
+            valTL = bridgeValuesArray[0].currentCalibratedValue;
+            valBL = bridgeValuesArray[1].currentCalibratedValue;
+            valBR = bridgeValuesArray[2].currentCalibratedValue;
+            valTR = bridgeValuesArray[3].currentCalibratedValue;
+            
         }
     }
     
@@ -317,6 +360,8 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+   
+    
     // PRINT RELEVANT NETWORK INFORMATION
     ofSetColor(0);
     string portInfo, hostInfo, inportInfo;
@@ -343,7 +388,7 @@ void testApp::draw(){
         platformBase.y = - platformBaseHeight/2; 
         platformBase.width = platformBaseWidth;
         platformBase.height = platformBaseHeight;        
-                
+
         glPushMatrix();
             glTranslatef(xPlatform, yPlatform, 0); // the 'origin' is now the center
             ofSetColor(200); // set to grey or "gray"
@@ -353,6 +398,12 @@ void testApp::draw(){
                 ofSetColor(90);    // set to black for dots
                 // we use the convention that x & y ranges from -1 to 1 with a specified "buffer" value
                 ofCircle(cogPlatformX*platformBaseWidth/2, cogPlatformY*platformBaseHeight/2, 4);
+        
+                // drawing 4 points of micro load cells
+//                ofCircle(-platformBaseWidth/2, -platformBaseHeight/2, 6);     // TopL
+//                ofCircle(-platformBaseWidth/2, platformBaseHeight/2, 6);     // BottomL
+//                ofCircle(platformBaseWidth/2, platformBaseHeight/2, 6);     // BottomR
+//                ofCircle(platformBaseWidth/2, -platformBaseHeight/2, 6);     // TopR
             glPopMatrix();
 
            // draw the handle & sort for rotation
@@ -374,6 +425,15 @@ void testApp::draw(){
         
         glPopMatrix();
         
+    }
+    
+    if(phidget.isConnected)
+    {
+        // DRAW GRAPHS
+        plotTL->draw(670, 10, 305, 150);  // TopLeft
+        plotTR->draw(985, 10, 305, 150);  // TopRight
+        plotBL->draw(670, 170, 305, 150); // BottomLeft
+        plotBR->draw(985, 170, 305, 150); // BottomRight
     }
 }
 
@@ -713,9 +773,12 @@ void testApp::setGUIPlatform(){
     guiPlatform->addWidgetDown(new ofxUILabel("Platform Parameters", OFX_UI_FONT_MEDIUM));
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform")); 
-    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseWidth, "platformBaseWidth")); 
-    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, 500, platformBaseHeight, "platformBaseHeight"));
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 500, platformBaseWidth, "platformBaseWidth")); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 500, platformBaseHeight, "platformBaseHeight"));
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 200, 400, scooterHandleLength, "scooterHandleLength"));
+//    guiPlatform->addWidgetDown(new ofxUILabel("GRAPHING", OFX_UI_FONT_LARGE));
+//    guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
+    
     ofAddListener(guiPlatform->newGUIEvent,this,&testApp::guiEvent);
 }
 
@@ -780,6 +843,10 @@ void testApp::setGUISetup(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
+    plotTL->reset();
+    plotBL->reset();
+    plotBR->reset();
+    plotTR->reset();
 }
 
 //--------------------------------------------------------------

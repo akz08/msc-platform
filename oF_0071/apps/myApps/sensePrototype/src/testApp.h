@@ -10,6 +10,7 @@
 #include "boost/thread.hpp"  // to help support multithreading for the wiic connection
 #include <boost/date_time.hpp>  
 #include "ioThreading.h"
+#include "ofxHistoryPlot.h"
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
@@ -172,6 +173,15 @@ public:
     float wiiTopRight;
     
     bool footFound;
+    
+    // graphing
+//    ofxHistoryPlot * plot;
+    ofxHistoryPlot * plotTL;
+    ofxHistoryPlot * plotBL;
+    ofxHistoryPlot * plotBR;
+    ofxHistoryPlot * plotTR;
+//    float currentFramerate;
+    float valTL, valBL, valBR, valTR;
     
     //////
 //private:

@@ -112,13 +112,13 @@ void footDetect::findFeet(Mat inputMatrix, Mat& outputMatrix)
 //            cout<< "didn't make it" << alpha << endl;
 //        }
         // filter out by principal axis length
-        if(max(a1,a2) < 50)
+        if(max(a1,a2) < 50 || isnan(a1))
         {
             itc = contours.erase(itc);
 //            cout << max(a1,a2) << " didn't make it" << endl;
         }
         // filter out by eccentricity
-        else if(eccentricity < 2)
+        else if(eccentricity < 2 || eccentricity > 10 || isnan(eccentricity))
         {
             itc = contours.erase(itc);
         }
@@ -136,55 +136,133 @@ void footDetect::findFeet(Mat inputMatrix, Mat& outputMatrix)
         }
     }
     
+    // we now have a mostly well filtered out set of contours
+    // now want to return the two/one largest contour(s)
+    // search again
+//    itc = contours.begin();
+//    while(itc != contours.end()){
+//        
+//        
+//        
+//    }
+    
     footFrame.operator=(Scalar(0)); // wipe before drawing feet
      drawContours(footFrame, contours, -1, Scalar(255),-1);
-//    imshow("Feet Found", footFrame);
+    imshow("Feet Found", footFrame);
 
 //    foreground.copyTo(outputMatrix);
 //    Mat mask(inputMatrix.size(), CV_8UC1);
+//    outputMatrix.operator=(Scalar(255,255,255)); // wipe it white
     inputMatrix.copyTo(outputMatrix, footFrame);
 
     
 }
 
-MatND footDetect::getHueHistogram(Mat& inputMatrix)
+MatND footDetect::getHueHistogram(Mat inputMatrix, Mat checkMat)
 {
+    // reduce colour
+//    int div = 64;
+//    int nl = inputMatrix.rows;
+//    int nc = inputMatrix.cols * inputMatrix.channels();
+//    
+//    for(int j = 0; j<nl; j++){
+//        uchar* data = inputMatrix.ptr<uchar>(j); // address of row j
+//        for(int i=0; i<nc; i++){
+//            data[i] = data[i]/div*div + div/2;
+//        }
+//    }
+    
+    //DONE!
+    MatND hist;
+    int h_bins = 100; int s_bins = 100;
+    int hist_size[] = {h_bins, s_bins};
+    float h_range[] = { 0, 180};
+    float s_range[] = {0, 255};
+    const float* Ranges[] = {h_range, s_range};
+    int channels[] = {0,1};
+
+    
     // get hue 1D histogram
     MatND histogram;
-    Mat hsv, hue;
+    Mat hsv, hue, hsv2, hue2;
     cvtColor(inputMatrix, hsv, CV_BGR2HSV);
+    
+    cvtColor(checkMat, hsv2, CV_BGR2HSV);
 
+    
+    calcHist(&hsv, 1, channels, Mat(), hist, 2, hist_size, Ranges);
+    normalize(hist, hist, 0, 255, NORM_MINMAX, -1, Mat());
+    MatND backproj2;
+    calcBackProject(&hsv2, 1, channels, hist, backproj2, Ranges);
+    
     hue.create( hsv.size(), hsv.depth() );
     int ch[] = { 0, 0 };
     mixChannels( &hsv, 1, &hue, 1, ch, 1 );
     
-    float thresh; // for backprojection
-    int minSaturation;
+    hue2.create( hsv2.size(), hsv2.depth() );
+    mixChannels( &hsv2, 1, &hue2, 1, ch, 1 );
+    
+    float thresh = 0.1; // for backprojection
+//    int minSaturation;
     int histSize;
-    histSize = 256; // the number of bins
+    histSize = 1024; // the number of bins
     
     float hue_range[] = { 0, 180 };
     const float* ranges = { hue_range };
 
-    Mat mask;
-    if (minSaturation > 0) 
-    {
-        vector<Mat> v;
-        split(hsv, v);
-        threshold(v[1], mask, minSaturation, 255, THRESH_BINARY);
-    }
+//    Mat mask;
+//    if (minSaturation > 0) 
+//    {
+//        vector<Mat> v;
+//        split(hsv, v);
+//        threshold(v[1], mask, minSaturation, 255, THRESH_BINARY);
+//    }
     
-    calcHist(&hue, 1, 0, Mat(), histogram, 1, &histSize, &ranges);
-    normalize(histogram, histogram);
+    calcHist(&hue, 1, 0, Mat(), histogram, 1, &histSize, &ranges);//,true,false);
+    normalize(histogram, histogram, 0, 255, NORM_MINMAX, -1, Mat());
     
     // calculate the back projection
-    Mat backProjection;
+    MatND backProjection, backProjection2;
     calcBackProject(&hue, 1, 0, histogram, backProjection, &ranges);
+    calcBackProject(&hue2, 1, 0, histogram, backProjection2, &ranges);
     
     if(thresh > 0.0)
-        threshold(backProjection, backProjection, thresh, 255, THRESH_BINARY);
+        threshold(backproj2, backproj2, thresh*thresh, 255, THRESH_BINARY);
+    
+    imshow("back projection", backproj2);
     
     return histogram;
+}
+
+void footDetect::kalmanFilter(Mat inputMatrix, VideoCapture capture)
+{
+    /* a kalman filter implementation, based on:
+     17-02-2011
+     Authors : Giacomo Rodeghiero, Daniel Depaoli
+     Project for the Computer Vision course: tracking moving objects with the Kalman Filter.
+     
+     Università degli Studi di Trento - A.Y.: 2010-2011
+     */
+//    Scalar NOISE_STD=Scalar(2);
+//    Scalar NOISE_MEAN=Scalar(0);
+//    
+//    
+//    // size of video
+//    Size size = inputMatrix.size();
+//    KalmanFilter kalman = KalmanFilter(8, 4); // why 8 & 4?
+//    Mat x_k = Mat(4, 1, CV_32FC1);
+//    Mat z_k = Mat(4, 1, CV_32FC1);
+//    Mat v_k = Mat(4, 1, CV_32FC1);
+//    const Mat y_k;
+//    
+//    RNG rng;
+//    rng.fill(v_k, CV_RAND_NORMAL, NOISE_MEAN, NOISE_STD);
+//    
+//    double fps = capture.get(CV_CAP_PROP_FPS);
+//    const double DEL_T = 1/fps;
+    
+    // my implementation:
+    
 }
 
 void footDetect::initGetFeet()

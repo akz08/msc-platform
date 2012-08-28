@@ -4,6 +4,7 @@
 
 #include "iostream"
 #include "opencv2/opencv.hpp"
+#include "opencv2/legacy/legacy.hpp"
 
 using namespace std;
 using namespace cv;
@@ -36,9 +37,10 @@ public:
     int minFootSize; // be generous with these
     int maxFootSize;
     
-    MatND getHueHistogram(Mat& inputMatrix);
+    void kalmanFilter(Mat inputMatrix, VideoCapture capture);
     
     
+    MatND getHueHistogram(Mat inputMatrix, Mat checkMat);
     void initGetFeet();
     void getFeet();
     

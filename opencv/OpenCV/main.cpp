@@ -48,6 +48,12 @@ int main()
          
 //        foot.grabForeground();
         
+        foot.setLearningRate(0.0000001);
+        foot.grabForeground();
+        foot.findFeet(cameraFixPerspective,foundFeet);
+        imshow("found feet", foundFeet);
+        foot.getHueHistogram(foundFeet, cameraFixPerspective);
+        
         char key =  waitKey(50);
         if(key == 32)
         {
@@ -59,7 +65,7 @@ int main()
             foot.grabForeground();
             foot.findFeet(cameraFixPerspective,foundFeet);
             imshow("found feet", foundFeet);
-            foot.getHueHistogram(foundFeet);
+            foot.getHueHistogram(foundFeet, cameraFixPerspective);
         }
         if(key  == 27) // 27 == ESC
             break;

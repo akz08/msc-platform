@@ -21,6 +21,7 @@
 		DDA0425415CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424E15CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib */; };
 		DDA0427715CEBC76004381D4 /* old_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA0427615CEBC76004381D4 /* old_main.cpp */; };
 		DDA967D014DF209800E1E92D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA967CF14DF209800E1E92D /* main.cpp */; };
+		DDBDE82915ECCDDE00A57D6A /* libopencv_legacy.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBDE82815ECCDDE00A57D6A /* libopencv_legacy.2.4.2.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,7 @@
 		DDA0427615CEBC76004381D4 /* old_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = old_main.cpp; sourceTree = "<group>"; };
 		DDA967CB14DF209800E1E92D /* msc-platform */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "msc-platform"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA967CF14DF209800E1E92D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DDBDE82815ECCDDE00A57D6A /* libopencv_legacy.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_legacy.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_legacy.2.4.2.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				DDA0425315CC40B0004381D4 /* libopencv_legacy.2.4.2.dylib in Frameworks */,
 				DDA0425415CC40B0004381D4 /* libopencv_objdetect.2.4.2.dylib in Frameworks */,
 				DD1F6EEB15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib in Frameworks */,
+				DDBDE82915ECCDDE00A57D6A /* libopencv_legacy.2.4.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1F6EEA15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib */,
+				DDBDE82815ECCDDE00A57D6A /* libopencv_legacy.2.4.2.dylib */,
 				DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */,
 				DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */,
 				DDA0424B15CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib */,
