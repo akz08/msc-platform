@@ -956,6 +956,7 @@
 					/usr/local/include,
 					../../../addons/wiic/include,
 					../../../addons/wiicpp/include,
+					/opt/local/include/opencv2,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1055,6 +1056,7 @@
 					/usr/local/include,
 					../../../addons/wiic/include,
 					../../../addons/wiicpp/include,
+					/opt/local/include/opencv2,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";

@@ -99,7 +99,7 @@ void testApp::setup(){
 //    workerThread.join(); 
     
     // GRAPHS 
-    int numGraphSamples = 100;
+    int numGraphSamples = 1000;
 //    plot = new ofxHistoryPlot( &currentFramerate, "frame rate", numGraphSamples, true);
 //    plot->setLowerRange(0);
 //	plot->setColor( ofColor(0,0,0) );
@@ -108,28 +108,32 @@ void testApp::setup(){
 //	plot->setLineWidth(2);
 
     plotTL = new ofxHistoryPlot( &valTL, "topLeft Load Cell", numGraphSamples, true);
-    plotTL->setLowerRange(0);
+//    plotTL->setLowerRange(0);
+    plotTL->setRange(-1, 20);
 	plotTL->setColor( ofColor(0,0,0) );
 	plotTL->setShowNumericalInfo(true);
 	plotTL->setRespectBorders(true);
 	plotTL->setLineWidth(2);
     
     plotBL = new ofxHistoryPlot( &valBL, "bottomLeft Load Cell", numGraphSamples, true);
-    plotBL->setLowerRange(0);
+//    plotBL->setLowerRange(0);
+    plotBL->setRange(-1, 20);
 	plotBL->setColor( ofColor(0,0,0) );
 	plotBL->setShowNumericalInfo(true);
 	plotBL->setRespectBorders(true);
 	plotBL->setLineWidth(2);
     
     plotBR = new ofxHistoryPlot( &valBR, "bottomRight Load Cell", numGraphSamples, true);
-    plotBR->setLowerRange(0);
+//    plotBR->setLowerRange(0);
+    plotBR->setRange(-1, 20);
 	plotBR->setColor( ofColor(0,0,0) );
 	plotBR->setShowNumericalInfo(true);
 	plotBR->setRespectBorders(true);
 	plotBR->setLineWidth(2);
     
     plotTR = new ofxHistoryPlot( &valTR, "topRight Load Cell", numGraphSamples, true);
-    plotTR->setLowerRange(0);
+//    plotTR->setLowerRange(0);
+    plotTR->setRange(-1, 20);
 	plotTR->setColor( ofColor(0,0,0) );
 	plotTR->setShowNumericalInfo(true);
 	plotTR->setRespectBorders(true);

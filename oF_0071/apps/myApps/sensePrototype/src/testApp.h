@@ -11,6 +11,7 @@
 #include <boost/date_time.hpp>  
 #include "ioThreading.h"
 #include "ofxHistoryPlot.h"
+#include "opencv2/opencv.hpp"
 
 // OSC definitions of host to connect to
 #define HOST "localhost"
@@ -182,6 +183,10 @@ public:
     ofxHistoryPlot * plotTR;
 //    float currentFramerate;
     float valTL, valBL, valBR, valTR;
+    
+    
+    // OPENCV
+    Mat testMatrix;
     
     //////
 //private:
