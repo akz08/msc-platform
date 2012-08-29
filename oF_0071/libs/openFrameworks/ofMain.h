@@ -65,9 +65,9 @@
 #include "ofSoundPlayer.h"
 
 //--------------------------
-// video
-#include "ofVideoGrabber.h"
-#include "ofVideoPlayer.h"
+// video // commented out since causes problems with 64 bit build
+//#include "ofVideoGrabber.h"
+//#include "ofVideoPlayer.h"
 
 //--------------------------
 // events

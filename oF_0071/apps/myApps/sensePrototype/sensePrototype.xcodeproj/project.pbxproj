@@ -31,13 +31,6 @@
 		DD61F70815938B0A00E0F3B7 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD61F6FA15938B0A00E0F3B7 /* ofxOscSender.cpp */; };
 		DD88F3CA15C1AE39000E20B5 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD88F3C915C1AE39000E20B5 /* IOBluetooth.framework */; };
 		DD8A1FFC15AB162C001B28EC /* ioPhidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD8A1FFA15AB162C001B28EC /* ioPhidget.cpp */; };
-		DDA66ECD15EA4F0B000FD36C /* libopencv_video.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66EC615EA4F0B000FD36C /* libopencv_video.2.4.2.dylib */; };
-		DDA66ECE15EA4F0B000FD36C /* libopencv_calib3d.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66EC715EA4F0B000FD36C /* libopencv_calib3d.2.4.2.dylib */; };
-		DDA66ECF15EA4F0B000FD36C /* libopencv_core.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66EC815EA4F0B000FD36C /* libopencv_core.2.4.2.dylib */; };
-		DDA66ED015EA4F0B000FD36C /* libopencv_highgui.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66EC915EA4F0B000FD36C /* libopencv_highgui.2.4.2.dylib */; };
-		DDA66ED115EA4F0B000FD36C /* libopencv_imgproc.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66ECA15EA4F0B000FD36C /* libopencv_imgproc.2.4.2.dylib */; };
-		DDA66ED215EA4F0B000FD36C /* libopencv_legacy.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66ECB15EA4F0B000FD36C /* libopencv_legacy.2.4.2.dylib */; };
-		DDA66ED315EA4F0B000FD36C /* libopencv_objdetect.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA66ECC15EA4F0B000FD36C /* libopencv_objdetect.2.4.2.dylib */; };
 		DDBB8B6F1596124500EB8F6D /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBB8B6E1596124500EB8F6D /* Phidget21.framework */; };
 		DDF2C4E715C0366900F391A2 /* libwiic.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF2C4DC15C0366900F391A2 /* libwiic.dylib */; };
 		DDF2C4E815C0366900F391A2 /* libwiicpp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF2C4E615C0366900F391A2 /* libwiicpp.dylib */; };
@@ -185,13 +178,6 @@
 		DD88F3C915C1AE39000E20B5 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = /System/Library/Frameworks/IOBluetooth.framework; sourceTree = "<absolute>"; };
 		DD8A1FFA15AB162C001B28EC /* ioPhidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ioPhidget.cpp; path = io/ioPhidget.cpp; sourceTree = "<group>"; };
 		DD8A1FFB15AB162C001B28EC /* ioPhidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioPhidget.h; path = io/ioPhidget.h; sourceTree = "<group>"; };
-		DDA66EC615EA4F0B000FD36C /* libopencv_video.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_video.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66EC715EA4F0B000FD36C /* libopencv_calib3d.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_calib3d.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66EC815EA4F0B000FD36C /* libopencv_core.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_core.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66EC915EA4F0B000FD36C /* libopencv_highgui.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_highgui.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66ECA15EA4F0B000FD36C /* libopencv_imgproc.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_imgproc.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66ECB15EA4F0B000FD36C /* libopencv_legacy.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_legacy.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_legacy.2.4.2.dylib; sourceTree = "<group>"; };
-		DDA66ECC15EA4F0B000FD36C /* libopencv_objdetect.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.2.4.2.dylib; path = ../../../../../../../../opt/local/lib/libopencv_objdetect.2.4.2.dylib; sourceTree = "<group>"; };
 		DDBB8B6E1596124500EB8F6D /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = /Library/Frameworks/Phidget21.framework; sourceTree = "<absolute>"; };
 		DDF2C4C815C0366900F391A2 /* balanceboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = balanceboard.h; sourceTree = "<group>"; };
 		DDF2C4C915C0366900F391A2 /* classic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classic.h; sourceTree = "<group>"; };
@@ -263,13 +249,6 @@
 				E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */,
 				DDF2C4E715C0366900F391A2 /* libwiic.dylib in Frameworks */,
 				DDF2C4E815C0366900F391A2 /* libwiicpp.dylib in Frameworks */,
-				DDA66ECD15EA4F0B000FD36C /* libopencv_video.2.4.2.dylib in Frameworks */,
-				DDA66ECE15EA4F0B000FD36C /* libopencv_calib3d.2.4.2.dylib in Frameworks */,
-				DDA66ECF15EA4F0B000FD36C /* libopencv_core.2.4.2.dylib in Frameworks */,
-				DDA66ED015EA4F0B000FD36C /* libopencv_highgui.2.4.2.dylib in Frameworks */,
-				DDA66ED115EA4F0B000FD36C /* libopencv_imgproc.2.4.2.dylib in Frameworks */,
-				DDA66ED215EA4F0B000FD36C /* libopencv_legacy.2.4.2.dylib in Frameworks */,
-				DDA66ED315EA4F0B000FD36C /* libopencv_objdetect.2.4.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,7 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				DD5F151715EBA9B2002E3B3F /* ofxHistoryPlot */,
-				DDA66EC515EA4EFD000FD36C /* OpenCV */,
 				DD4B547815C54EDA0048D7B0 /* ofxThread */,
 				DDF2C4C615C0366900F391A2 /* wiic */,
 				DDF2C4DD15C0366900F391A2 /* wiicpp */,
@@ -578,20 +556,6 @@
 			name = ioPhidget;
 			sourceTree = "<group>";
 		};
-		DDA66EC515EA4EFD000FD36C /* OpenCV */ = {
-			isa = PBXGroup;
-			children = (
-				DDA66EC615EA4F0B000FD36C /* libopencv_video.2.4.2.dylib */,
-				DDA66EC715EA4F0B000FD36C /* libopencv_calib3d.2.4.2.dylib */,
-				DDA66EC815EA4F0B000FD36C /* libopencv_core.2.4.2.dylib */,
-				DDA66EC915EA4F0B000FD36C /* libopencv_highgui.2.4.2.dylib */,
-				DDA66ECA15EA4F0B000FD36C /* libopencv_imgproc.2.4.2.dylib */,
-				DDA66ECB15EA4F0B000FD36C /* libopencv_legacy.2.4.2.dylib */,
-				DDA66ECC15EA4F0B000FD36C /* libopencv_objdetect.2.4.2.dylib */,
-			);
-			name = OpenCV;
-			sourceTree = "<group>";
-		};
 		DDF2C4C615C0366900F391A2 /* wiic */ = {
 			isa = PBXGroup;
 			children = (
@@ -863,7 +827,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
@@ -899,7 +863,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
@@ -936,6 +900,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -956,7 +921,7 @@
 					/usr/local/include,
 					../../../addons/wiic/include,
 					../../../addons/wiicpp/include,
-					/opt/local/include/opencv2,
+					../../../addons/OpenCV/src,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1025,10 +990,10 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 					"\"$(SRCROOT)/../../../addons/wiic/lib/osx\"",
 					"\"$(SRCROOT)/../../../addons/wiicpp/lib/osx\"",
-					/opt/local/lib,
+					"\"$(SRCROOT)/../../../addons/OpenCV/libs\"",
 				);
 				PRODUCT_NAME = sensePrototypeDebug;
-				USER_HEADER_SEARCH_PATHS = "$(OF_CORE_HEADERS) src ../../../addons/ofxOsc/** /usr/local/include ../../../addons/wiicpp/include ../../../addons/wiic/include";
+				USER_HEADER_SEARCH_PATHS = "$(OF_CORE_HEADERS) src ../../../addons/ofxOsc/** /usr/local/include ../../../addons/wiicpp/include ../../../addons/wiic/include ../../../addons/OpenCV/src";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1037,6 +1002,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1056,7 +1022,7 @@
 					/usr/local/include,
 					../../../addons/wiic/include,
 					../../../addons/wiicpp/include,
-					/opt/local/include/opencv2,
+					../../../addons/OpenCV/src,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1126,9 +1092,10 @@
 					"\"$(SRCROOT)/../../../addons/wiic/lib/osx\"",
 					"\"$(SRCROOT)/../../../addons/wiicpp/lib/osx\"",
 					/opt/local/lib,
+					"\"$(SRCROOT)/../../../addons/OpenCV/libs\"",
 				);
 				PRODUCT_NAME = sensePrototype;
-				USER_HEADER_SEARCH_PATHS = "$(OF_CORE_HEADERS) src ../../../addons/ofxOsc/** /usr/local/include ../../../addons/wiicpp/include ../../../addons/wiic/include";
+				USER_HEADER_SEARCH_PATHS = "$(OF_CORE_HEADERS) src ../../../addons/ofxOsc/** /usr/local/include ../../../addons/wiicpp/include ../../../addons/wiic/include ../../../addons/OpenCV/src";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

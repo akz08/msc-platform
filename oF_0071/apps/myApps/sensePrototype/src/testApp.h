@@ -186,7 +186,7 @@ public:
     
     
     // OPENCV
-    Mat testMatrix;
+//    cv::Mat testMatrix;
     
     //////
 //private:
