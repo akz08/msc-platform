@@ -214,6 +214,20 @@ void testApp::update(){
         
     }
     
+    // DELETE THIS STUFF
+    if(logEnabled)
+    {
+        
+        float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+        phidgetCaliFile << 0 << ",";
+        phidgetCaliFile << 1 << ",";
+        phidgetCaliFile << 2 << ",";
+        phidgetCaliFile << 3 << ",";
+        phidgetCaliFile << clockElapsed << endl;
+        
+        logTimeElapsed->setLabel(ofToString(clockElapsed));
+    }
+    
     //SERIAL READ
     serialLabel->setLabel(currentSerial);
     if(serialConnected)
