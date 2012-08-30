@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<hmgMat type_id="opencv-matrix">
+  <rows>3</rows>
+  <cols>3</cols>
+  <dt>d</dt>
+  <data>
+    2.2631287930648950e-01 -1.9802376939317376e-01
+    7.7512161162460060e+00 7.0791508515525223e-03 3.5693823767298960e-01
+    -7.1657773027617637e+01 -2.0425657112569756e-05
+    -1.3263945885394512e-03 1.</data></hmgMat>
+<dstWidth>298.</dstWidth>
+<dstHeight>596.</dstHeight>
+</opencv_storage>

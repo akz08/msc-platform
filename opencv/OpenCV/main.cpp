@@ -14,14 +14,14 @@ int main()
 {
     cam.initCamera(0);
     cam.updateCamera(cameraOut);
-    cam.loadUndistort();
-//    cam.calcUndistort(cameraOut);
+//    cam.loadUndistort();
+    cam.calcUndistort(cameraOut);
     cam.initUndistort(cameraOut);
-    cam.loadPerspective();
+//    cam.loadPerspective();
     
-//    namedWindow("ledRectangle", 0);
-//    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
-//    cam.calcPerspective(cameraOut, "ledRectangle");
+    namedWindow("ledRectangle", 0);
+    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
+    cam.calcPerspective(cameraOut, "ledRectangle");
     
     foot.initMOG();
     
