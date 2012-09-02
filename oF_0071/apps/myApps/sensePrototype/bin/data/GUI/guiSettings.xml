@@ -1,0 +1,65 @@
+<Widget>
+    <Kind>2</Kind>
+    <Name>enable saving</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>enable phidget</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Brdg 0</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Brdg 1</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Brdg 2</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Brdg 3</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>12</Kind>
+    <Name>VALUE 1</Name>
+    <Value>Value 1</Value>
+</Widget>
+<Widget>
+    <Kind>12</Kind>
+    <Name>VALUE 2</Name>
+    <Value>Value 2</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>enable serial</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>cu.Bluetooth-PDA-Sync</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>tty.Bluetooth-PDA-Sync</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>cu.Bluetooth-Modem</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>tty.Bluetooth-Modem</Name>
+    <Value>0</Value>
+</Widget>

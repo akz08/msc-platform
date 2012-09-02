@@ -1,0 +1,355 @@
+Tmsc-platform
+v5
+r1
+cCheck dependencies
+cCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o /Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o /Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platform normal x86_64
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../Library/Frameworks/Phidget21.framework/Phidget21
+c000000004FE1EBF20000000000184C2C
+t1340206066
+s1592364
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_calib3d.2.4.1.dylib
+c000000004FCCF1FE00000000000A2508
+t1338831358
+s664840
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_core.2.4.1.dylib
+c000000004FCCF0F500000000002205E4
+t1338831093
+s2229732
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_flann.2.4.1.dylib
+c000000004FCCF10600000000000763A0
+t1338831110
+s484256
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_gpu.2.4.1.dylib
+c000000004FCCF251000000000001E2F8
+t1338831441
+s123640
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_highgui.2.4.1.dylib
+c000000004FCCF14B0000000000047814
+t1338831179
+s292884
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_imgproc.2.4.1.dylib
+c000000004FCCF13200000000001CA854
+t1338831154
+s1878100
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_legacy.2.4.1.dylib
+c000000004FCCF2D00000000000122FD4
+t1338831568
+s1191892
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/../../../../../opt/local/lib/libopencv_objdetect.2.4.1.dylib
+c000000004FCCF1EE0000000000083D6C
+t1338831342
+s540012
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/IO/Phidget21.h
+c000000004FA7FCCC000000000000D130
+t1336409292
+s53552
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp
+c000000004FF86C820000000000001654
+t1341680770
+s5716
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.h
+c000000004FF7021C00000000000009B8
+t1341587996
+s2488
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp
+c00000000500C55FF0000000000000309
+t1342985727
+s777
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp
+c00000000501AC7EB0000000000002FD8
+t1343932395
+s12248
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.h
+c000000004FE608C50000000000000115
+t1340475589
+s277
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp
+c000000004FE0F6030000000000000093
+t1340143107
+s147
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platform
+t1343932320
+s143080
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o
+t1343932320
+s27460
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o
+t1343932318
+s10212
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o
+t1343932320
+s354712
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/msc-platform.LinkFileList
+c00000000501AC79E0000000000000278
+t1343932318
+s632
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o
+t1343932318
+s1904
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o
+t1343932318
+s27476
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp
+c000000004FD754F800000000000000FE
+t1339512056
+s254
+
+N/Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.h
+c000000004FD754EF00000000000003A4
+t1339512047
+s932
+
+N/opt/local/include/opencv2/calib3d/calib3d.hpp
+c000000004FC77AF600000000000092FA
+t1338473206
+s37626
+
+N/opt/local/include/opencv2/contrib/contrib.hpp
+c000000004FC77AF200000000000097AA
+t1338473202
+s38826
+
+N/opt/local/include/opencv2/contrib/retina.hpp
+c000000004FC77AF20000000000005C57
+t1338473202
+s23639
+
+N/opt/local/include/opencv2/core/core.hpp
+c000000004FC77AE8000000000002B8BD
+t1338473192
+s178365
+
+N/opt/local/include/opencv2/core/core_c.h
+c000000004FC77AE800000000000132EB
+t1338473192
+s78571
+
+N/opt/local/include/opencv2/core/mat.hpp
+c000000004FC77AE80000000000013B34
+t1338473192
+s80692
+
+N/opt/local/include/opencv2/core/operations.hpp
+c000000004FC77AE8000000000001ECA7
+t1338473192
+s126119
+
+N/opt/local/include/opencv2/core/types_c.h
+c000000004FC77AE8000000000000E06A
+t1338473192
+s57450
+
+N/opt/local/include/opencv2/core/version.hpp
+c000000004FC77AE800000000000009EA
+t1338473192
+s2538
+
+N/opt/local/include/opencv2/features2d/features2d.hpp
+c000000004FC8C575000000000000DA4D
+t1338557813
+s55885
+
+N/opt/local/include/opencv2/flann/config.h
+c000000004FC77AF200000000000006FD
+t1338473202
+s1789
+
+N/opt/local/include/opencv2/flann/defines.h
+c000000004FC77AF20000000000001206
+t1338473202
+s4614
+
+N/opt/local/include/opencv2/flann/miniflann.hpp
+c000000004FC77AF200000000000016BE
+t1338473202
+s5822
+
+N/opt/local/include/opencv2/highgui/highgui.hpp
+c000000004FC77AD9000000000000238C
+t1338473177
+s9100
+
+N/opt/local/include/opencv2/highgui/highgui_c.h
+c000000004FC77AD90000000000006345
+t1338473177
+s25413
+
+N/opt/local/include/opencv2/imgproc/imgproc.hpp
+c000000004FC77AF4000000000000D02F
+t1338473204
+s53295
+
+N/opt/local/include/opencv2/imgproc/imgproc_c.h
+c000000004FC77AF40000000000007683
+t1338473204
+s30339
+
+N/opt/local/include/opencv2/imgproc/types_c.h
+c000000004FC77AF40000000000003E30
+t1338473204
+s15920
+
+N/opt/local/include/opencv2/ml/ml.hpp
+c000000004FC77AFB0000000000013276
+t1338473211
+s78454
+
+N/opt/local/include/opencv2/objdetect/objdetect.hpp
+c000000004FC77AF700000000000089FF
+t1338473207
+s35327
+
+N/opt/local/include/opencv2/opencv.hpp
+c000000004FC77AB50000000000000ABF
+t1338473141
+s2751
+
+N/opt/local/include/opencv2/photo/photo.hpp
+c000000004FC77AEB0000000000000B24
+t1338473195
+s2852
+
+N/opt/local/include/opencv2/photo/photo_c.h
+c000000004FC77AEB0000000000000A9C
+t1338473195
+s2716
+
+N/opt/local/include/opencv2/video/background_segm.hpp
+c000000004FC77AFA00000000000020D4
+t1338473210
+s8404
+
+N/opt/local/include/opencv2/video/tracking.hpp
+c000000004FC77AFA0000000000004102
+t1338473210
+s16642
+
+N/opt/local/include/opencv2/video/video.hpp
+c000000004FC77AFA0000000000000974
+t1338473210
+s2420
+
+CBuild AST from /Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp
+r0
+
+CBuild AST from /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp
+r0
+
+CBuild AST from /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp
+r0
+
+CBuild AST from /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp
+r0
+
+CBuild AST from /Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesa2f18c6bffcab541^c7d48d6bffcab541^---0#1#0#--18"Check dependencies36"73E08D36-26BC-4D6A-9176-348C5DC24AAD-
+
+CCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s365625118.998044
+e365625120.272021
+r1
+xCompileC
+xbuild/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cppf5a1ff1effcab541^e6b24520ffcab541^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp0000000000000000^3235"CompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o OpenCV/cleaned.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wshorten-64-to-32 -Wno-newline-eof -Wc++11-extensions -DDEBUG=1 -fasm-blocks -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-conversion -Wno-sign-conversion -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-generated-files.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-own-target-headers.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-all-target-headers.hmap -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-project-headers.hmap -iquote/usr/local/lib -iquote/opt/local/lib -iquote/opt/local/lib/db46 -iquote/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/include -I/usr/local/include -I/opt/local/include -I/opt/local/include/opencv -I/opt/local/include/opencv2 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources/x86_64 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -MMD -MT dependencies -MF /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.d --serialize-diagnostics /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.dia -c /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/cleaned.cpp -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/cleaned.o36"2F3556FB-2F2B-48CE-8269-E7B226DA1B8F-
+
+CCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o /Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s365625118.244930
+e365625118.508607
+r1
+xCompileC
+xbuild/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp34d63e1effcab541^3140821effcab541^---0#0#0#-19%DVTDocumentLocation2@75"file://localhost/Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp0000000000000000^3239"CompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o IO/ioPhidget.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wshorten-64-to-32 -Wno-newline-eof -Wc++11-extensions -DDEBUG=1 -fasm-blocks -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-conversion -Wno-sign-conversion -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-generated-files.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-own-target-headers.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-all-target-headers.hmap -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-project-headers.hmap -iquote/usr/local/lib -iquote/opt/local/lib -iquote/opt/local/lib/db46 -iquote/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/include -I/usr/local/include -I/opt/local/include -I/opt/local/include/opencv -I/opt/local/include/opencv2 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources/x86_64 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -MMD -MT dependencies -MF /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.d --serialize-diagnostics /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.dia -c /Users/kamilzainal/Documents/OpenCV/OpenCV/IO/ioPhidget.cpp -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/ioPhidget.o36"A6EADADD-EF09-4CDA-AEA6-A023ED2E9268-
+
+CCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s365625195.556412
+e365625198.484818
+r1
+xCompileC
+xbuild/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection66"Compile /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp9f938e6bffcab541^67267c6effcab541^---0#0#0#-19%DVTDocumentLocation2@74"file://localhost/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp0000000000000000^3217"CompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o OpenCV/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wshorten-64-to-32 -Wno-newline-eof -Wc++11-extensions -DDEBUG=1 -fasm-blocks -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-conversion -Wno-sign-conversion -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-generated-files.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-own-target-headers.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-all-target-headers.hmap -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-project-headers.hmap -iquote/usr/local/lib -iquote/opt/local/lib -iquote/opt/local/lib/db46 -iquote/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/include -I/usr/local/include -I/opt/local/include -I/opt/local/include/opencv -I/opt/local/include/opencv2 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources/x86_64 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -MMD -MT dependencies -MF /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.dia -c /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/main.cpp -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/main.o36"A84262A7-D816-4452-AC4B-30980F79FE95-
+
+CCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s365625118.974362
+e365625118.996776
+r1
+xCompileC
+xbuild/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Compile /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp1092f91effcab541^4f3cff1effcab541^---0#0#0#-19%DVTDocumentLocation2@81"file://localhost/Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp0000000000000000^3259"CompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o OpenCV/oFrameworks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wshorten-64-to-32 -Wno-newline-eof -Wc++11-extensions -DDEBUG=1 -fasm-blocks -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-conversion -Wno-sign-conversion -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-generated-files.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-own-target-headers.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-all-target-headers.hmap -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-project-headers.hmap -iquote/usr/local/lib -iquote/opt/local/lib -iquote/opt/local/lib/db46 -iquote/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/include -I/usr/local/include -I/opt/local/include -I/opt/local/include/opencv -I/opt/local/include/opencv2 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources/x86_64 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -MMD -MT dependencies -MF /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.d --serialize-diagnostics /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.dia -c /Users/kamilzainal/Documents/OpenCV/OpenCV/OpenCV/oFrameworks.cpp -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/oFrameworks.o36"753BF638-DE35-4078-82F1-5C0C1EF4D49F-
+
+CCompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o /Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s365625118.510653
+e365625118.973065
+r1
+xCompileC
+xbuild/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Compile /Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp93df821effcab541^971af91effcab541^---0#0#0#-19%DVTDocumentLocation2@81"file://localhost/Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp0000000000000000^3259"CompileC build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o vision/vPreprocess.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-sign-compare -Wshorten-64-to-32 -Wno-newline-eof -Wc++11-extensions -DDEBUG=1 -fasm-blocks -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-conversion -Wno-sign-conversion -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-generated-files.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-own-target-headers.hmap -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-all-target-headers.hmap -iquote /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/msc-platform-project-headers.hmap -iquote/usr/local/lib -iquote/opt/local/lib -iquote/opt/local/lib/db46 -iquote/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/include -I/usr/local/include -I/opt/local/include -I/opt/local/include/opencv -I/opt/local/include/opencv2 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/posix -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/ip/win32 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/libs/oscpack/src/osc -I/Users/kamilzainal/Documents/OpenCV/OpenCV/addons/ofxOsc/src -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources/x86_64 -I/Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/DerivedSources -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -MMD -MT dependencies -MF /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.d --serialize-diagnostics /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.dia -c /Users/kamilzainal/Documents/OpenCV/OpenCV/vision/vPreprocess.cpp -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/vPreprocess.o36"1C4270C2-11CF-41C0-9174-96B76E88DC7D-
+
+CLd /Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platform normal x86_64
+s365625198.492331
+e365625198.565267
+r1
+xLd
+x/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platform
+xnormal
+xx86_64
+old: warning: directory not found for option '-L/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE'
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Link /Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platformb01f7e6effcab541^40be906effcab541^-101"ld: warning: directory not found for option '-L/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE'1(21%IDEActivityLogMessage2@87"Directory not found for option '-L/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE'-365625198#0#101#-1#-23%DVTTextDocumentLocation3@-0000000000000000^18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#0#32"Apple Mach-O Linker (ld) Warning--0#0#0#--898"Ld build/Debug/msc-platform normal x86_64    cd /Users/kamilzainal/Documents/OpenCV/OpenCV    setenv MACOSX_DEPLOYMENT_TARGET 10.7    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -L/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -L/opt/local/lib -L/opt/local/lib/db46 -L/opt/local/lib/perl5/5.12.4/darwin-multi-2level/CORE -F/Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug -filelist /Users/kamilzainal/Documents/OpenCV/OpenCV/build/msc-platform.build/Debug/msc-platform.build/Objects-normal/x86_64/msc-platform.LinkFileList -mmacosx-version-min=10.7 -framework Phidget21 -lopencv_calib3d.2.4.1 -lopencv_core.2.4.1 -lopencv_flann.2.4.1 -lopencv_gpu.2.4.1 -lopencv_highgui.2.4.1 -lopencv_imgproc.2.4.1 -lopencv_legacy.2.4.1 -lopencv_objdetect.2.4.1 -o /Users/kamilzainal/Documents/OpenCV/OpenCV/build/Debug/msc-platform36"43453B2F-2AED-4C4C-953F-623204F59396-
+
