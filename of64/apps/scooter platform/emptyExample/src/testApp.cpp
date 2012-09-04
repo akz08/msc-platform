@@ -85,7 +85,7 @@ void testApp::setup(){
     
     // DRAWING
     enableVisualisation = true;
-    xPlatform = 1140; //990;
+    xPlatform = 830; //1140; //990;
     yPlatform = 550; // was 400
     
     // default pixel dimension values
@@ -152,13 +152,16 @@ void testApp::setup(){
     
     plotSerial = new ofxHistoryPlot( &serialLog, "Potentiometer Serial In", numGraphSamples, true);
     //    plotTR->setLowerRange(0);
-    plotSerial->setRange(-1, 1025);
+    plotSerial->setRange(0, 1023);
 	plotSerial->setColor( ofColor(0,0,0) );
 	plotSerial->setShowNumericalInfo(true);
 	plotSerial->setRespectBorders(true);
 	plotSerial->setLineWidth(2);
     
     // logging
+ 
+    // default total weight
+    totalWeight = 0.7;
     
 }
 
@@ -303,7 +306,7 @@ void testApp::update(){
     if(phidget.isConnected && !oscBalanceSim && !wiibbBalanceSim)
     {
         // do the calculation of X-Y stuff here.........
-        cout << "normal phidget vis" << endl;
+//        cout << "normal phidget vis" << endl;
         // do stuff to output cogPlatformX & Y
         // remembering that we are using the standard is -1 to +1
         // anticlockwise from top left standard (check circuit)
@@ -313,7 +316,6 @@ void testApp::update(){
         double topRight = bridgeValuesArray[3].currentCalibratedValue;
         
         // normalise the values to ||1|| . we divide the value by the users weight . temp set to 20kg
-        double totalWeight = 20;
         topLeft = topLeft / totalWeight;
         bottomLeft = bottomLeft / totalWeight;
         bottomRight = bottomRight / totalWeight;
@@ -322,8 +324,8 @@ void testApp::update(){
         cogPlatformX = (topRight + bottomRight) - (topLeft + bottomLeft); // correct ?
         cogPlatformY = (bottomLeft + bottomRight) - (topLeft + topRight); // correct ?
         
-        cout << "platformX" << cogPlatformX << endl;
-        cout << "platformY" << cogPlatformY << endl;
+//        cout << "platformX" << cogPlatformX << endl;
+//        cout << "platformY" << cogPlatformY << endl;
     }
     
     // SIMULATE BALANCE
@@ -529,7 +531,7 @@ void testApp::draw(){
     
     if(serialConnected)
     {
-        plotSerial->draw(670, 330, 305,150);
+        plotSerial->draw(985, 330, 305,150);
     }
     
     // PRINT RELEVANT NETWORK INFORMATION
@@ -717,6 +719,14 @@ void testApp::eventGUISetup(ofxUIEventArgs &e){
         bridgeValuesArray[currentBridge].yIntercept = bridgeValuesArray[currentBridge].actValue1 - (bridgeValuesArray[currentBridge].rawValue1 * bridgeValuesArray[currentBridge].slope);
         
         bridgeValuesArray[currentBridge].calculated = true;
+        
+    }
+    
+    if (name == "Get Weight"){
+        
+        totalWeight = bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue;
+        
+        cout << "weight:" << totalWeight << endl;
         
     }
     
@@ -994,10 +1004,11 @@ void testApp::setGUISetup(){
     calibLabel2->setAutoClear(false);
     guiSetup->addWidgetDown(calibLabel2);
     
-    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Calibrate", OFX_UI_FONT_MEDIUM));
+    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Calibrate", OFX_UI_FONT_SMALL));
     guiSetup->addWidgetDown(new ofxUILabel("Calibrated Value", OFX_UI_FONT_MEDIUM));
     bridgeCalibValueLabel = new ofxUILabel("Calibrated Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeCalibValueLabel);
+    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Get Weight", OFX_UI_FONT_SMALL));
     
     
     // SERIAL SECTION
@@ -1008,7 +1019,7 @@ void testApp::setGUISetup(){
     currentSerial = "Choose Serial Device";
     serialLabel = new ofxUILabel("CHOOSE THE DEVICE", OFX_UI_FONT_MEDIUM); // rename this- essential
     guiSetup->addWidgetDown(serialLabel);
-    serialDropdown = new ofxUIDropDownList(200, currentSerial, /*items*/ deviceLine, OFX_UI_FONT_MEDIUM);
+    serialDropdown = new ofxUIDropDownList(200, currentSerial, /*items*/ deviceLine, OFX_UI_FONT_SMALL);
     //    serialDropdown->setDrawPadding(true);
     guiSetup->addWidgetDown(serialDropdown);
     guiSetup->addWidgetDown(new ofxUILabel("Serial Value", OFX_UI_FONT_MEDIUM));
@@ -1048,6 +1059,12 @@ void testApp::keyPressed(int key){
             bcalcDist = !bcalcDist;
         }
             break;
+            case 'z':
+        {
+            cout << "predicted x: " << ((cogPlatformX+1)/2) * mmPlatformBaseWidth << endl;
+            cout << "predicted y: " << ((cogPlatformY+1)/2) * mmPlatformBaseWidth << endl;
+
+        }break;
     }
 }
 

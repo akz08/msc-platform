@@ -180,6 +180,8 @@ public:
     double cogPlatformX;
     double cogPlatformY;
     
+    double totalWeight;
+    
     double footPressL;
     double footPressR;
     

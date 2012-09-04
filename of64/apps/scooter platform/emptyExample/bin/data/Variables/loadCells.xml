@@ -1,48 +1,48 @@
 <Bridge>
     <number>0</number>
-    <rawValue1>0.0382718</rawValue1>
-    <rawValue2>0.0908412</rawValue2>
+    <rawValue1>0.0519948</rawValue1>
+    <rawValue2>0.106452</rawValue2>
     <actValue1>0</actValue1>
     <actValue2>1.5</actValue2>
-    <slope>28.5337</slope>
-    <yIntercept>-1.09203</yIntercept>
-    <currentValue>0.0388389</currentValue>
-    <currentCalibratedValue>0.0161837</currentCalibratedValue>
+    <slope>27.5446</slope>
+    <yIntercept>-1.43217</yIntercept>
+    <currentValue>0.0517052</currentValue>
+    <currentCalibratedValue>-0.00797801</currentCalibratedValue>
     <calculated>1</calculated>
 </Bridge>
 <Bridge>
     <number>1</number>
-    <rawValue1>-0.0149505</rawValue1>
-    <rawValue2>0.0538882</rawValue2>
+    <rawValue1>-0.0106338</rawValue1>
+    <rawValue2>0.0597052</rawValue2>
     <actValue1>0</actValue1>
     <actValue2>1.5</actValue2>
-    <slope>21.7901</slope>
-    <yIntercept>0.325773</yIntercept>
-    <currentValue>-0.0150008</currentValue>
-    <currentCalibratedValue>-0.00109582</currentCalibratedValue>
+    <slope>21.3253</slope>
+    <yIntercept>0.22677</yIntercept>
+    <currentValue>-0.0101468</currentValue>
+    <currentCalibratedValue>0.0103871</currentCalibratedValue>
     <calculated>1</calculated>
 </Bridge>
 <Bridge>
     <number>2</number>
-    <rawValue1>0.0208924</rawValue1>
-    <rawValue2>0.0520628</rawValue2>
+    <rawValue1>0.059179</rawValue1>
+    <rawValue2>0.118191</rawValue2>
     <actValue1>0</actValue1>
     <actValue2>1.5</actValue2>
-    <slope>48.1225</slope>
-    <yIntercept>-1.00539</yIntercept>
-    <currentValue>0.0204481</currentValue>
-    <currentCalibratedValue>-0.021378</currentCalibratedValue>
+    <slope>25.4184</slope>
+    <yIntercept>-1.50424</yIntercept>
+    <currentValue>0.05743</currentValue>
+    <currentCalibratedValue>-0.0444573</currentCalibratedValue>
     <calculated>1</calculated>
 </Bridge>
 <Bridge>
     <number>3</number>
-    <rawValue1>0.00884384</rawValue1>
-    <rawValue2>0.0773026</rawValue2>
+    <rawValue1>-0.0351332</rawValue1>
+    <rawValue2>0.0198614</rawValue2>
     <actValue1>0</actValue1>
     <actValue2>1.5</actValue2>
-    <slope>21.911</slope>
-    <yIntercept>-0.193777</yIntercept>
-    <currentValue>0.00851601</currentValue>
-    <currentCalibratedValue>-0.00718309</currentCalibratedValue>
+    <slope>27.2754</slope>
+    <yIntercept>0.958273</yIntercept>
+    <currentValue>-0.0334242</currentValue>
+    <currentCalibratedValue>0.0466128</currentCalibratedValue>
     <calculated>1</calculated>
 </Bridge>
