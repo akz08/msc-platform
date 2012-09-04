@@ -160,8 +160,18 @@ public:
     
     bool enableVisualisation;
     
+    bool bcalcDist;
+    bool bdrawGrid;
+    void drawGrid(float x, float y);
+    
+    // visualisation variables
     double xPlatform;
     double yPlatform;
+    
+    double px2mmRatio;
+    double mmPlatformBaseWidth;
+    double mmPlatformBaseHeight;
+    double mmScooterHandleLength;
     
     double platformBaseWidth;
     double platformBaseHeight;

@@ -88,9 +88,16 @@ void testApp::setup(){
     xPlatform = 990;
     yPlatform = 550; // was 400
     
-    platformBaseWidth = 230;
-    platformBaseHeight = 250;
-    scooterHandleLength = 200;
+    // default pixel dimension values
+    px2mmRatio = 0.5;
+//    platformBaseWidth = 230;
+//    platformBaseHeight = 250;
+//    scooterHandleLength = 200;
+    
+    // default mm dimension values
+    mmPlatformBaseWidth = 410;
+    mmPlatformBaseHeight = 510;
+    mmScooterHandleLength = 300;
     
     //    simulateBalance = false; // simulateBalance & wiiBalance bool activation now contained within toggles
     cogPlatformX = 0;
@@ -410,27 +417,20 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    
-    
-    // PRINT RELEVANT NETWORK INFORMATION
-    ofSetColor(0);
-    string portInfo, hostInfo, inportInfo;
-    inportInfo = "Port(Incoming: " + ofToString(PORT_RECEIVE);
-    portInfo = "Port(Outgoing): " + ofToString(PORT_SEND);
-    hostInfo = "Host: " + ofToString(HOST); 
-    font.drawString(inportInfo, ofGetWidth() - 200, ofGetHeight() - 10);
-    font.drawString(portInfo, ofGetWidth() - 200, ofGetHeight() - 30);
-    font.drawString(hostInfo, ofGetWidth() - 200, ofGetHeight() - 50);
+    // PERFORMING SCALING TO SET TO CORRECT VALUES
+    platformBaseWidth = px2mmRatio * mmPlatformBaseWidth;
+    platformBaseHeight = px2mmRatio * mmPlatformBaseHeight;
+    scooterHandleLength = px2mmRatio * mmScooterHandleLength;
     
     // RENDER THE SCOOTER PLATFORM
     if(enableVisualisation){
         
         // setup scooter handle (actual full length of handle is 29cm. one foam handle is 11cm 
         ofRectangle scooterHandle; // to do: insert a scale. proper scaling for handle needed.
-        scooterHandle.x = -scooterHandleLength/2; 
-        scooterHandle.y = -11;
         scooterHandle.width = scooterHandleLength;
-        scooterHandle.height = 22;
+        scooterHandle.height = 25 * px2mmRatio;//22;
+        scooterHandle.x = -scooterHandleLength/2; 
+        scooterHandle.y = -scooterHandle.height/2;
         
         // setup platform base (for CENTRE origin) (actual base is 44x51cm)
         ofRectangle platformBase;
@@ -458,23 +458,44 @@ void testApp::draw(){
         
         // draw the handle & sort for rotation
         glPushMatrix();
-        glTranslatef(0,-platformBaseHeight/2 - 20,0); // relative to centre of platform
+        glTranslatef(0,-platformBaseHeight/2 - 20*px2mmRatio,0); // relative to centre of platform
         // drawing the base attachement...for fun
         ofSetColor(210);        
-        ofRect(-20,-35,40,55);
+        ofRect(-35*px2mmRatio,-35*px2mmRatio,70*px2mmRatio,55*px2mmRatio);
         ofSetColor(205);
-        ofRect(-15,-35,30,55);
+        ofRect(-18*px2mmRatio,-35*px2mmRatio,36*px2mmRatio,55*px2mmRatio);
         ofSetColor(212);
-        ofRect(-11,-35,22,25);
+        ofRect(-11*px2mmRatio,-35*px2mmRatio,22*px2mmRatio,25*px2mmRatio);
+        
+        // drawing scooter handle
         glRotatef(ofToFloat(bytesReadString),0,0,1);
         ofSetColor(215);
         ofRect(scooterHandle);
         ofSetColor(220);
-        ofRect(-25,-13,50,26);
+        ofRect(-25*px2mmRatio,-15*px2mmRatio,50*px2mmRatio,30*px2mmRatio);
         glPopMatrix();
+        
+        if(bcalcDist)
+        {
+            ofSetColor(0,0,0,210);
+            string xDist, yDist;
+            double xD, yD;
+            xD = ((cogPlatformX+1)/2) * mmPlatformBaseWidth;
+            yD = ((cogPlatformY+1)/2) * mmPlatformBaseWidth;
+            xDist = "x [mm]: " + ofToString(xD);
+            yDist = "y [mm]: " + ofToString(yD);
+            font.drawString(xDist, 5 + platformBaseWidth/2, -20 + platformBaseHeight/2);
+            font.drawString(yDist, 5 + platformBaseWidth/2, -3 + platformBaseHeight/2);
+        }
         
         glPopMatrix();
         
+    }
+    
+    if(bdrawGrid)
+    {
+        ofSetColor(255, 255, 255, 70);	
+        drawGrid(8,8); 
     }
     
     if(phidget.isConnected)
@@ -485,6 +506,34 @@ void testApp::draw(){
         plotBL->draw(670, 170, 305, 150); // BottomLeft
         plotBR->draw(985, 170, 305, 150); // BottomRight
     }
+    
+    // PRINT RELEVANT NETWORK INFORMATION
+    ofSetColor(0);
+    string portInfo, hostInfo, inportInfo;
+    inportInfo = "Port(Incoming: " + ofToString(PORT_RECEIVE);
+    portInfo = "Port(Outgoing): " + ofToString(PORT_SEND);
+    hostInfo = "Host: " + ofToString(HOST); 
+    font.drawString(inportInfo, ofGetWidth() - 200, ofGetHeight() - 10);
+    font.drawString(portInfo, ofGetWidth() - 200, ofGetHeight() - 30);
+    font.drawString(hostInfo, ofGetWidth() - 200, ofGetHeight() - 50);
+}
+
+//--------------------------------------------------------------
+
+void testApp::drawGrid(float x, float y)
+{
+    float w = ofGetWidth(); 
+    float h = ofGetHeight(); 
+    
+    for(int i = 0; i < h; i+=y)
+    {
+        ofLine(0,i,w,i); 
+    }
+    
+    for(int j = 0; j < w; j+=x)
+    {
+        ofLine(j,0,j,h); 
+    }    
 }
 
 //--------------------------------------------------------------
@@ -731,20 +780,25 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
         yPlatform = slider->getScaledValue(); 
 	}
+    else if(name == "scalingRatio")
+    {
+        ofxUISlider *slider = (ofxUISlider *) e.widget; 
+        px2mmRatio = slider->getScaledValue();
+    }
     else if(name == "platformBaseWidth [mm]")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
-        platformBaseWidth = slider->getScaledValue(); 
+        mmPlatformBaseWidth = slider->getScaledValue(); 
 	}
     else if(name == "platformBaseHeight [mm]")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget; 
-        platformBaseHeight = slider->getScaledValue(); 
+        mmPlatformBaseHeight = slider->getScaledValue(); 
 	}
     else if(name == "scooterHandleLength [mm]")
     {
         ofxUISlider *slider = (ofxUISlider *) e.widget; 
-        scooterHandleLength = slider->getScaledValue(); 
+        mmScooterHandleLength = slider->getScaledValue(); 
     }
     else if(name == "enable TouchOSC balance simulation")
     {
@@ -855,11 +909,17 @@ void testApp::setGUIPlatform(){
     guiPlatform->addWidgetDown(oscFootPressSimToggle);
     
     guiPlatform->addWidgetDown(new ofxUILabel("Platform Parameters", OFX_UI_FONT_MEDIUM));
+    guiPlatform->addWidgetDown(new ofxUISpacer(300, 1)); 
+    guiPlatform->addWidgetDown(new ofxUILabel("Screen Location", OFX_UI_FONT_SMALL));
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetWidth(), xPlatform, "xPlatform")); 
     guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.0, ofGetHeight(), yPlatform, "yPlatform"));
-    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 500, platformBaseWidth, "platformBaseWidth [mm]")); 
-    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 500, platformBaseHeight, "platformBaseHeight [mm]"));
-    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 200, 400, scooterHandleLength, "scooterHandleLength [mm]"));
+    
+    guiPlatform->addWidgetDown(new ofxUISpacer(300, 1)); 
+    guiPlatform->addWidgetDown(new ofxUILabel("Dimensions", OFX_UI_FONT_SMALL));
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 0.2, 1.0, px2mmRatio, "scalingRatio"));
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 520, mmPlatformBaseWidth, "platformBaseWidth [mm]")); 
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 10.0, 520, mmPlatformBaseHeight, "platformBaseHeight [mm]"));
+    guiPlatform->addWidgetDown(new ofxUISlider(300,16, 200, 400, mmScooterHandleLength, "scooterHandleLength [mm]"));
     guiPlatform->addWidgetDown(new ofxUILabel("DATA LOGGING", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
 
@@ -938,10 +998,28 @@ void testApp::setGUISetup(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
     
-    plotTL->reset();
-    plotBL->reset();
-    plotBR->reset();
-    plotTR->reset();
+    
+    switch(key)
+    {
+            case '`':
+        {
+            bdrawGrid = !bdrawGrid;
+        }
+            break;
+            case 'g':
+        {
+            plotTL->reset();
+            plotBL->reset();
+            plotBR->reset();
+            plotTR->reset();
+        }
+            break;
+            case 'd':
+        {
+            bcalcDist = !bcalcDist;
+        }
+            break;
+    }
 }
 
 //--------------------------------------------------------------

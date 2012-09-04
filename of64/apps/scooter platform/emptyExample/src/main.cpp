@@ -22,22 +22,22 @@ void mousePerspectiveWrap(int event, int x, int y, int flags, void* pointer)
 //========================================================================
 int main( ){
 
-    camHelper cam;
-    footDetect foot;
-    Mat cameraOut, cameraUndistorted, cameraFixPerspective;
-    Mat background, foreground;
-    Mat foundFeet;
-    
-    cam.initCamera(0);
-    cam.updateCamera(cameraOut);
-    cam.loadUndistort();
-//    cam.calcUndistort(cameraOut);
-//    cam.initUndistort(cameraOut);
-    cam.loadPerspective();
-    
-//    namedWindow("ledRectangle", 0);
-//    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
-//    cam.calcPerspective(cameraOut, "ledRectangle");
+//    camHelper cam;
+//    footDetect foot;
+//    Mat cameraOut, cameraUndistorted, cameraFixPerspective;
+//    Mat background, foreground;
+//    Mat foundFeet;
+//    
+//    cam.initCamera(0);
+//    cam.updateCamera(cameraOut);
+//    cam.loadUndistort();
+////    cam.calcUndistort(cameraOut);
+////    cam.initUndistort(cameraOut);
+//    cam.loadPerspective();
+//    
+////    namedWindow("ledRectangle", 0);
+////    setMouseCallback("ledRectangle", mousePerspectiveWrap, (void*)&cam);
+////    cam.calcPerspective(cameraOut, "ledRectangle");
     
     ofAppGlutWindow window;
 	ofSetupOpenGL(&window, 1300,768, OF_WINDOW);			// <-------- setup the GL context
