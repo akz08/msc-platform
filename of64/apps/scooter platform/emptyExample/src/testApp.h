@@ -206,6 +206,9 @@ public:
     ofxHistoryPlot * plotBL;
     ofxHistoryPlot * plotBR;
     ofxHistoryPlot * plotTR;
+    
+    ofxHistoryPlot * plotSerial;
+    float serialLog;
     //    float currentFramerate;
     float valTL, valBL, valBR, valTR;
     
@@ -220,6 +223,7 @@ public:
     string baseCsvFolder = "/Users/kamilzainal/Documents/OpenCV/of64/apps/scooter platform/emptyExample/bin/data/CSV/";
     ofstream phidgetRawFile;
     ofstream phidgetCaliFile;
+    ofstream serialFile;
 
     // OPENCV
     

@@ -85,7 +85,7 @@ void testApp::setup(){
     
     // DRAWING
     enableVisualisation = true;
-    xPlatform = 990;
+    xPlatform = 1140; //990;
     yPlatform = 550; // was 400
     
     // default pixel dimension values
@@ -149,6 +149,14 @@ void testApp::setup(){
 	plotTR->setShowNumericalInfo(true);
 	plotTR->setRespectBorders(true);
 	plotTR->setLineWidth(2);
+    
+    plotSerial = new ofxHistoryPlot( &serialLog, "Potentiometer Serial In", numGraphSamples, true);
+    //    plotTR->setLowerRange(0);
+    plotSerial->setRange(-1, 1025);
+	plotSerial->setColor( ofColor(0,0,0) );
+	plotSerial->setShowNumericalInfo(true);
+	plotSerial->setRespectBorders(true);
+	plotSerial->setLineWidth(2);
     
     // logging
     
@@ -222,18 +230,22 @@ void testApp::update(){
     }
     
     // DELETE THIS STUFF
-    if(logEnabled)
-    {
-        
-        float clockElapsed = (clock() - logStartTime) / 10000.0f ;
-        phidgetCaliFile << 0 << ",";
-        phidgetCaliFile << 1 << ",";
-        phidgetCaliFile << 2 << ",";
-        phidgetCaliFile << 3 << ",";
-        phidgetCaliFile << clockElapsed << endl;
-        
-        logTimeElapsed->setLabel(ofToString(clockElapsed));
-    }
+//    if(logEnabled)
+//    {
+//        
+//        float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+//        phidgetCaliFile << 0 << ",";
+//        phidgetCaliFile << 1 << ",";
+//        phidgetCaliFile << 2 << ",";
+//        phidgetCaliFile << 3 << ",";
+//        phidgetCaliFile << clockElapsed << endl;
+//        
+////        float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+//        serialFile << serialLog << ",";
+//        serialFile << clockElapsed << endl;
+//        
+//        logTimeElapsed->setLabel(ofToString(clockElapsed));
+//    }
     
     //SERIAL READ
     serialLabel->setLabel(currentSerial);
@@ -254,6 +266,14 @@ void testApp::update(){
                 nBytesRead = nRead;
             };
             memcpy(bytesReadString, bytesReturned, 4);
+            serialLog = ofToFloat(bytesReadString);
+            
+            if(logEnabled)
+            {
+                float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+                serialFile << serialLog << ",";
+                serialFile << clockElapsed << endl;
+            }
         }
     }
     
@@ -505,6 +525,11 @@ void testApp::draw(){
         plotTR->draw(985, 10, 305, 150);  // TopRight
         plotBL->draw(670, 170, 305, 150); // BottomLeft
         plotBR->draw(985, 170, 305, 150); // BottomRight
+    }
+    
+    if(serialConnected)
+    {
+        plotSerial->draw(670, 330, 305,150);
     }
     
     // PRINT RELEVANT NETWORK INFORMATION
@@ -866,6 +891,8 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             phidgetRawFile.open(temp_filename.c_str());
             temp_filename = baseCsvFolder + logSessionName + "calLoadCell.csv";
             phidgetCaliFile.open(temp_filename.c_str());
+            temp_filename = baseCsvFolder+ logSessionName + "serial.csv";
+            serialFile.open(temp_filename.c_str());
             logStartTime = clock();
             
             logEnabled = true;
@@ -880,6 +907,7 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             // done with the logging files
             phidgetRawFile.close();
             phidgetCaliFile.close();
+            serialFile.close();
         }
     }
     else if(name == "session name")
@@ -1012,6 +1040,7 @@ void testApp::keyPressed(int key){
             plotBL->reset();
             plotBR->reset();
             plotTR->reset();
+            plotSerial->reset();
         }
             break;
             case 'd':
