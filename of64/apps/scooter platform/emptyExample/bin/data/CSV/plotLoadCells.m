@@ -27,42 +27,52 @@ loadCell_3 = inputMat(:,4);
 
 clockTime = inputMat(:,5);
 
+% "zero in the data" - a bit of a cheat
+diff0 = loadCell_0(1);
+loadCell_0 = loadCell_0 - diff0;
+diff1 = loadCell_1(1);
+loadCell_1 = loadCell_1 - diff1;
+diff2 = loadCell_2(1);
+loadCell_2 = loadCell_2 - diff2;
+diff3 = loadCell_3(1);
+loadCell_3 = loadCell_3 - diff3;
+
 % plot the data
 figure(1)
 subplot(3,2,1);
-plot(loadCell_0,clockTime,'r')
+plot(clockTime,loadCell_0,'r')
 title([titleType, 'Load Cell 0'])
-subplot(3,2,2);
-plot(loadCell_1,clockTime,'g')
-title([titleType, 'Load Cell 1'])
 subplot(3,2,3);
-plot(loadCell_2,clockTime,'b')
-title([titleType, 'Load Cell 2'])
+plot(clockTime,loadCell_1,'g')
+title([titleType, 'Load Cell 1'])
 subplot(3,2,4);
-plot(loadCell_3,clockTime,'k')
+plot(clockTime,loadCell_2,'b')
+title([titleType, 'Load Cell 2'])
+subplot(3,2,2);
+plot(clockTime,loadCell_3,'k')
 title([titleType, 'Load Cell 3'])
 subplot(3,2,[5 6])
 hold on
-plot(loadCell_0,clockTime,'r')
-plot(loadCell_1,clockTime,'g')
-plot(loadCell_2,clockTime,'b')
-plot(loadCell_3,clockTime,'k')
+plot(clockTime,loadCell_0,'r')
+plot(clockTime,loadCell_1,'g')
+plot(clockTime,loadCell_2,'b')
+plot(clockTime,loadCell_3,'k')
 title([titleType, 'Combined Load Cells'])
 hold off
 ylabel(yAxis), xlabel('clock time')
 
 
 figure(2)
-plot(loadCell_0,clockTime,'r'),ylabel(yAxis), xlabel('clock time')
+plot(clockTime,loadCell_0,'r'),ylabel(yAxis), xlabel('clock time')
 title([titleType, 'Load Cell 0'])
 figure(3)
-plot(loadCell_1,clockTime,'g'),ylabel(yAxis), xlabel('clock time')
+plot(clockTime,loadCell_1,'g'),ylabel(yAxis), xlabel('clock time')
 title([titleType, 'Load Cell 1'])
 figure(4)
-plot(loadCell_2,clockTime,'b'),ylabel(yAxis), xlabel('clock time')
+plot(clockTime,loadCell_2,'b'),ylabel(yAxis), xlabel('clock time')
 title([titleType, 'Load Cell 2'])
 figure(5)
-plot(loadCell_3,clockTime,'k'),ylabel(yAxis), xlabel('clock time')
+plot(clockTime,loadCell_3,'k'),ylabel(yAxis), xlabel('clock time')
 title([titleType, 'Load Cell 3'])
 
 appendName = strcat('../Figures/',filename(1:end-4),'-');

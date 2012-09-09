@@ -9,7 +9,7 @@ inputMat = csvread(filename);
 serial = inputMat(:,1);
 clockTime = inputMat(:,2);
 
-plot(serial,clockTime)
+plot(clockTime,serial)
 title('Potentiometer Value vs. Clock Time')
 ylabel('raw potentiometer value'), xlabel('clock time')
 

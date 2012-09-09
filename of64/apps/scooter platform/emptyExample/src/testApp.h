@@ -93,6 +93,7 @@ public:
     double currentBridgeValue;
     double value;
     double blank;
+    double zeroIn[4];
     
     // Serial Input
     ofSerial serial;
@@ -180,7 +181,7 @@ public:
     double cogPlatformX;
     double cogPlatformY;
     
-    double totalWeight;
+//    double totalWeight;
     
     double footPressL;
     double footPressR;
@@ -225,6 +226,7 @@ public:
     string baseCsvFolder = "/Users/kamilzainal/Documents/OpenCV/of64/apps/scooter platform/emptyExample/bin/data/CSV/";
     ofstream phidgetRawFile;
     ofstream phidgetCaliFile;
+    ofstream phidgetLocFile;
     ofstream serialFile;
 
     // OPENCV

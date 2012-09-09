@@ -51,8 +51,8 @@ class camHelper
     {
         // default parameters
         initCamera(0);
-        ratio_w = 7;
-        ratio_h = 14;
+        ratio_w = 25;//7;
+        ratio_h = 25;//14;
     }
     
     ~camHelper()

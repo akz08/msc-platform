@@ -17,6 +17,9 @@ private:
     vector<vector<Point> > contours;
     
     
+    int h_lo = 0; int h_up = 20; 
+    int s_lo = 100; int s_up = 255; int v_up = 255; int v_lo = 100;
+    
 public:
     
     double _mogLearningRate;
@@ -30,6 +33,7 @@ public:
     void getForeground(Mat inputMatrix, Mat& outputMatrix);
 
     void grabForeground();
+    void threshForeground(Mat inputMatrix, Mat& outputMatrix);
     float activeAreaPc;
     Mat footFrame;
     void findFeet(Mat inputMatrix, Mat& outputMatrix);

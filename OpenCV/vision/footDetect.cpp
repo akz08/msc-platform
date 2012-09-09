@@ -37,7 +37,36 @@ void footDetect::grabForeground()
 {
     foreground.copyTo(grabbedFrame);
 //    findFeet(); // temporary
-    imshow("snapshot", grabbedFrame);
+//    imshow("foreground snapshot", grabbedFrame);
+}
+
+void footDetect::threshForeground(cv::Mat inputMatrix, cv::Mat &outputMatrix)
+{
+    // find from grabbedFrame (temporary?)
+    morphologyEx(grabbedFrame, grabbedFrame, MORPH_ERODE, Mat::ones(10,10,CV_32F)); // large kernel to ensure separation
+    threshold(grabbedFrame, grabbedFrame, 254, 255, THRESH_BINARY);
+    //    outputMatrix = grabbedFrame.clone();
+    outputMatrix.operator=(Scalar(0));// wipe frame
+
+    inputMatrix.copyTo(outputMatrix, grabbedFrame);
+    
+    cvtColor(outputMatrix.clone(), outputMatrix, CV_BGR2GRAY);
+    threshold(outputMatrix.clone(), outputMatrix, 220, 255, THRESH_BINARY);
+    
+//    cvtColor(outputMatrix.clone(), outputMatrix, CV_BGR2HSV);
+//    
+//    
+//    inRange(outputMatrix.clone(), Scalar((double)h_lo, (double)s_lo, (double)v_lo), Scalar((double)h_up, (double)s_up, (double)v_up), outputMatrix);
+//    imshow("trial", outputMatrix);
+//    createTrackbar( "H Low thresh", "trial", &h_lo, 255, 0 );
+//    createTrackbar( "H High thresh", "trial", &h_up, 360, 0 );
+//    
+//    createTrackbar( "S Low thresh", "trial", &s_lo, 255, 0 );
+//    createTrackbar( "S High thresh", "trial", &s_up, 255, 0 );
+//    
+//    createTrackbar( "V Low thresh", "trial", &v_lo, 255, 0 );
+//    createTrackbar( "V High thresh", "trial", &v_up, 1000, 0 );
+
 }
 
 void footDetect::findFeet(Mat inputMatrix, Mat& outputMatrix)

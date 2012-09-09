@@ -317,6 +317,7 @@ bool camHelper::calcPerspective(Mat inputMatrix, string winName, int calcType)
             }
             else if(abs(topWidth-bottomWidth) > abs(leftHeight-rightHeight))
             {
+                cout << "did a vertical skew" << endl;
                 verticalSkew = true; // so tW & bW are of interest
                 float minWidth = min(topWidth, bottomWidth);
                 float unit = minWidth/ratio_w; // compare to the width ratio

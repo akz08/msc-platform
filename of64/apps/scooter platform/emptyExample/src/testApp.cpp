@@ -35,6 +35,11 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
+    zeroIn[0] = 0;
+    zeroIn[1] = 0;
+    zeroIn[2] = 0;
+    zeroIn[3] = 0;
+    
     // OPENCV
     
     
@@ -95,8 +100,8 @@ void testApp::setup(){
 //    scooterHandleLength = 200;
     
     // default mm dimension values
-    mmPlatformBaseWidth = 410;
-    mmPlatformBaseHeight = 510;
+    mmPlatformBaseWidth = 350;//410;
+    mmPlatformBaseHeight = 430;//510;
     mmScooterHandleLength = 300;
     
     //    simulateBalance = false; // simulateBalance & wiiBalance bool activation now contained within toggles
@@ -160,8 +165,9 @@ void testApp::setup(){
     
     // logging
  
+
     // default total weight
-    totalWeight = 0.7;
+//    totalWeight = 0.7;
     
 }
 
@@ -194,7 +200,7 @@ void testApp::update(){
         
         for (int i = 0; i < 4; i++){
             bridgeValuesArray[i].currentValue = phidget.getValues()[i];
-            bridgeValuesArray[i].currentCalibratedValue = bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope + bridgeValuesArray[i].yIntercept;
+            bridgeValuesArray[i].currentCalibratedValue = ((bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope) + bridgeValuesArray[i].yIntercept) - zeroIn[i];
         }
         if (bridgeValuesArray[currentBridge].calculated){
             bridgeCalibValueLabel->setLabel(ofToString(bridgeValuesArray[currentBridge].currentCalibratedValue));
@@ -316,13 +322,35 @@ void testApp::update(){
         double topRight = bridgeValuesArray[3].currentCalibratedValue;
         
         // normalise the values to ||1|| . we divide the value by the users weight . temp set to 20kg
-        topLeft = topLeft / totalWeight;
-        bottomLeft = bottomLeft / totalWeight;
-        bottomRight = bottomRight / totalWeight;
-        topRight = topRight / totalWeight;
+//        topLeft = topLeft / totalWeight;
+//        bottomLeft = bottomLeft / totalWeight;
+//        bottomRight = bottomRight / totalWeight;
+//        topRight = topRight / totalWeight;
         
-        cogPlatformX = (topRight + bottomRight) - (topLeft + bottomLeft); // correct ?
-        cogPlatformY = (bottomLeft + bottomRight) - (topLeft + topRight); // correct ?
+        double total = topLeft + bottomLeft + bottomRight + topRight;
+        
+        cogPlatformX = (topRight+bottomRight)/total ;//(topRight + bottomRight) - (topLeft + bottomLeft); // correct ?
+//        cout << "ratio x:" << cogPlatformX<< endl;
+        
+        cogPlatformY = (bottomLeft + bottomRight)/total;//(bottomLeft + bottomRight) - (topLeft + topRight); // correct ?
+//        cout<< "ratio y:" << cogPlatformY<<endl;
+        
+        if(total > 1){
+            cogPlatformX = (cogPlatformX*2) -1;
+            cogPlatformY = (cogPlatformY*2) -1;
+        }
+        else{
+            cogPlatformX = 0;
+            cogPlatformY = 0;
+        }
+        
+        if(logEnabled)
+        {
+            float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+            phidgetLocFile << ((cogPlatformX+1)/2) * mmPlatformBaseWidth << ",";
+            phidgetLocFile << ((cogPlatformY+1)/2) * mmPlatformBaseHeight << ",";
+            phidgetLocFile << clockElapsed << endl;
+        }
         
 //        cout << "platformX" << cogPlatformX << endl;
 //        cout << "platformY" << cogPlatformY << endl;
@@ -434,6 +462,7 @@ void testApp::update(){
     inputFootPress.addFloatArg(footPressR);
     sender.sendMessage(inputFootPress);
     
+    cout << "troubled:" << zeroIn[0]<<endl;
 }
 
 //--------------------------------------------------------------
@@ -503,7 +532,7 @@ void testApp::draw(){
             string xDist, yDist;
             double xD, yD;
             xD = ((cogPlatformX+1)/2) * mmPlatformBaseWidth;
-            yD = ((cogPlatformY+1)/2) * mmPlatformBaseWidth;
+            yD = ((cogPlatformY+1)/2) * mmPlatformBaseHeight;
             xDist = "x [mm]: " + ofToString(xD);
             yDist = "y [mm]: " + ofToString(yD);
             font.drawString(xDist, 5 + platformBaseWidth/2, -20 + platformBaseHeight/2);
@@ -520,7 +549,7 @@ void testApp::draw(){
         drawGrid(8,8); 
     }
     
-    if(phidget.isConnected)
+    if(true/*phidget.isConnected*/)
     {
         // DRAW GRAPHS
         plotTL->draw(670, 10, 305, 150);  // TopLeft
@@ -529,7 +558,7 @@ void testApp::draw(){
         plotBR->draw(985, 170, 305, 150); // BottomRight
     }
     
-    if(serialConnected)
+    if(true/*serialConnected*/)
     {
         plotSerial->draw(985, 330, 305,150);
     }
@@ -722,13 +751,32 @@ void testApp::eventGUISetup(ofxUIEventArgs &e){
         
     }
     
-    if (name == "Get Weight"){
+    //WORK ON THIS!!!!!!
+    if (name == "Zero"){
         
-        totalWeight = bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue;
-        
-        cout << "weight:" << totalWeight << endl;
+//        for (int i = 0; i < 4; i++){
+        zeroIn[0] = bridgeValuesArray[0].currentCalibratedValue;
+        cout << "trouble value:" << bridgeValuesArray[0].currentCalibratedValue<<endl;
+        zeroIn[1] = bridgeValuesArray[1].currentCalibratedValue;
+        zeroIn[2] = bridgeValuesArray[2].currentCalibratedValue;
+        zeroIn[3] = bridgeValuesArray[3].currentCalibratedValue;
+
+//            cout << zeroIn[i] << endl;
+//            bridgeValuesArray[i].yIntercept = -bridgeValuesArray[i].currentValue;
+//            bridgeValuesArray[i].slope = 1;
+//            bridgeValuesArray[i].currentValue = phidget.getValues()[i];
+//            bridgeValuesArray[i].currentCalibratedValue = bridgeValuesArray[i].currentValue*bridgeValuesArray[i].slope + bridgeValuesArray[i].yIntercept;
+//        }
         
     }
+    
+//    if (name == "Get Weight"){
+//        
+//        totalWeight = bridgeValuesArray[0].currentCalibratedValue + bridgeValuesArray[1].currentCalibratedValue + bridgeValuesArray[2].currentCalibratedValue + bridgeValuesArray[3].currentCalibratedValue;
+//        
+//        cout << "weight:" << totalWeight << endl;
+//        
+//    }
     
     if(name == "Brdg 0"){
         // load up the calibration values
@@ -901,6 +949,8 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             phidgetRawFile.open(temp_filename.c_str());
             temp_filename = baseCsvFolder + logSessionName + "calLoadCell.csv";
             phidgetCaliFile.open(temp_filename.c_str());
+            temp_filename = baseCsvFolder + logSessionName + "balancePosition.csv";
+            phidgetLocFile.open(temp_filename.c_str());
             temp_filename = baseCsvFolder+ logSessionName + "serial.csv";
             serialFile.open(temp_filename.c_str());
             logStartTime = clock();
@@ -917,6 +967,7 @@ void testApp::eventGUIPlatform(ofxUIEventArgs &e){
             // done with the logging files
             phidgetRawFile.close();
             phidgetCaliFile.close();
+            phidgetLocFile.close();
             serialFile.close();
         }
     }
@@ -961,7 +1012,7 @@ void testApp::setGUIPlatform(){
     guiPlatform->addWidgetDown(new ofxUILabel("DATA LOGGING", OFX_UI_FONT_LARGE));
     guiPlatform->addWidgetDown(new ofxUISpacer(300, 2)); 
 
-    logSessionStatus = new ofxUILabel("available to log: phidgets", OFX_UI_FONT_SMALL); // dummy
+    logSessionStatus = new ofxUILabel("available to log: phidgets, serial", OFX_UI_FONT_SMALL); // dummy
     guiPlatform->addWidgetDown(logSessionStatus);
     guiPlatform->addWidgetDown(new ofxUILabel("Session Name:", OFX_UI_FONT_MEDIUM));
     logSessionInput = new ofxUITextInput(300,"session name", "", OFX_UI_FONT_LARGE);
@@ -992,6 +1043,7 @@ void testApp::setGUISetup(){
     guiSetup->addWidgetDown(new ofxUILabel("Bridge Value", OFX_UI_FONT_MEDIUM));
     bridgeValueLabel = new ofxUILabel("Raw Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeValueLabel);
+    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Zero", OFX_UI_FONT_SMALL));
     
     guiSetup->addWidgetDown(new ofxUISpacer(300, 0.5)); 
     guiSetup->addWidgetDown(new ofxUILabel("Calibration Value 1", OFX_UI_FONT_MEDIUM));
@@ -1008,7 +1060,7 @@ void testApp::setGUISetup(){
     guiSetup->addWidgetDown(new ofxUILabel("Calibrated Value", OFX_UI_FONT_MEDIUM));
     bridgeCalibValueLabel = new ofxUILabel("Calibrated Bridge Value", OFX_UI_FONT_SMALL);
     guiSetup->addWidgetDown(bridgeCalibValueLabel);
-    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Get Weight", OFX_UI_FONT_SMALL));
+//    guiSetup->addWidgetDown(new ofxUILabelButton(false, "Get Weight", OFX_UI_FONT_SMALL));
     
     
     // SERIAL SECTION
@@ -1029,6 +1081,7 @@ void testApp::setGUISetup(){
     // OPENCV SECTION
     guiSetup->addWidgetDown(new ofxUILabel("OPENCV SETUP", OFX_UI_FONT_LARGE));
     guiSetup->addWidgetDown(new ofxUISpacer(300, 2)); 
+    guiSetup->addWidgetDown(new ofxUIToggle( 16, 16, false, "enable foot detection")); 
     
     ofAddListener(guiSetup->newGUIEvent, this, &testApp::guiEvent); 
     
