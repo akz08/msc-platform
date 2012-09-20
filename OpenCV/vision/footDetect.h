@@ -3,6 +3,7 @@
 
 
 #include "iostream"
+#include <fstream>
 #include "opencv2/opencv.hpp"
 #include "opencv2/legacy/legacy.hpp"
 
@@ -48,8 +49,11 @@ public:
     void initGetFeet();
     void getFeet();
     
+    ofstream testFile;
+    
     footDetect()
     {
+        testFile.open("/Users/kamilzainal/Documents/centroid.csv");
         activeAreaPc = 0.7f;
         minFootSize = 100;
         maxFootSize = 3000;
@@ -57,7 +61,7 @@ public:
     
     ~footDetect()
     {
-        
+        testFile.close();
     } 
     
 };

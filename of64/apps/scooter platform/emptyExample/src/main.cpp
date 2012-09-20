@@ -2,22 +2,22 @@
 #include "testApp.h"
 #include "ofAppGlutWindow.h"
 
-#include "opencv2/opencv.hpp"
+//#include "opencv2/opencv.hpp"
 //#include "opencv2/highgui/highgui.hpp"
 //#include <iostream>
 //#include <math.h>
 //#include <time.h>
-#include "camHelper.h"
-#include "footDetect.h"
+//#include "camHelper.h"
+//#include "footDetect.h"
 
-void mousePerspectiveWrap(int event, int x, int y, int, void* param);
-
-void mousePerspectiveWrap(int event, int x, int y, int flags, void* pointer)
-{
-    camHelper* cHPointer = (camHelper*)pointer;
-    if(cHPointer != NULL)
-        cHPointer->onMouse(event, x, y, flags);
-}
+//void mousePerspectiveWrap(int event, int x, int y, int, void* param);
+//
+//void mousePerspectiveWrap(int event, int x, int y, int flags, void* pointer)
+//{
+//    camHelper* cHPointer = (camHelper*)pointer;
+//    if(cHPointer != NULL)
+//        cHPointer->onMouse(event, x, y, flags);
+//}
 
 //========================================================================
 int main( ){

@@ -279,9 +279,11 @@ void testApp::update(){
             
             if(logEnabled)
             {
-                float clockElapsed = (clock() - logStartTime) / 10000.0f ;
+                float clockElapsed = (clock() - logStartTime);
                 serialFile << serialLog << ",";
-                serialFile << clockElapsed << endl;
+                serialFile << clockElapsed/CLOCKS_PER_SEC << endl; //!!
+                logTimeElapsed->setLabel(ofToString(clockElapsed));
+                
             }
         }
     }

@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD05A56D15FE370000DF24FE /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD05A56C15FE370000DF24FE /* Phidget21.framework */; };
 		DD11C4CF1582B3F800A9369F /* ioPhidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD11C4CE1582B3F800A9369F /* ioPhidget.cpp */; };
 		DD1F6EEB15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F6EEA15DAA4DD0050A268 /* libopencv_video.2.4.2.dylib */; };
 		DD2BDA7F1585F591000FD88F /* camHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA7E1585F591000FD88F /* camHelper.cpp */; };
 		DD2BDA86158BF622000FD88F /* oFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2BDA85158BF622000FD88F /* oFrameworks.cpp */; };
-		DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD6D5B4715922718006ADB4B /* Phidget21.framework */; };
 		DD7282DD15E3E200007193BB /* footDetect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7282DC15E3E200007193BB /* footDetect.cpp */; };
 		DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */; };
 		DDA0425015CC40B0004381D4 /* libopencv_core.2.4.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA0424A15CC40B0004381D4 /* libopencv_core.2.4.2.dylib */; };
@@ -37,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DD05A56A15FE309800DF24FE /* phidget21.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = phidget21.h; path = ../of64/addons/Phidgets/src/phidget21.h; sourceTree = "<group>"; };
+		DD05A56C15FE370000DF24FE /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../../Library/Frameworks/Phidget21.framework; sourceTree = "<group>"; };
 		DD11C4CD1582B36C00A9369F /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		DD11C4CE1582B3F800A9369F /* ioPhidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ioPhidget.cpp; path = IO/ioPhidget.cpp; sourceTree = "<group>"; };
 		DD11C4D11582B43800A9369F /* ioPhidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioPhidget.h; path = IO/ioPhidget.h; sourceTree = "<group>"; };
@@ -45,7 +47,6 @@
 		DD2BDA7C1585F572000FD88F /* camHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = camHelper.h; path = vision/camHelper.h; sourceTree = "<group>"; };
 		DD2BDA7E1585F591000FD88F /* camHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camHelper.cpp; path = vision/camHelper.cpp; sourceTree = "<group>"; };
 		DD2BDA85158BF622000FD88F /* oFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oFrameworks.cpp; sourceTree = "<group>"; };
-		DD6D5B4715922718006ADB4B /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../../Library/Frameworks/Phidget21.framework; sourceTree = "<group>"; };
 		DD7282DA15E3E1F2007193BB /* footDetect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = footDetect.h; path = vision/footDetect.h; sourceTree = "<group>"; };
 		DD7282DC15E3E200007193BB /* footDetect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = footDetect.cpp; path = vision/footDetect.cpp; sourceTree = "<group>"; };
 		DDA0424915CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.2.dylib; path = ../../../../../opt/local/lib/libopencv_calib3d.2.4.2.dylib; sourceTree = "<group>"; };
@@ -65,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD6D5B4815922718006ADB4B /* Phidget21.framework in Frameworks */,
+				DD05A56D15FE370000DF24FE /* Phidget21.framework in Frameworks */,
 				DDA0424F15CC40B0004381D4 /* libopencv_calib3d.2.4.2.dylib in Frameworks */,
 				DDA0425015CC40B0004381D4 /* libopencv_core.2.4.2.dylib in Frameworks */,
 				DDA0425115CC40B0004381D4 /* libopencv_highgui.2.4.2.dylib in Frameworks */,
@@ -83,6 +84,7 @@
 		DD11C4D01582B41500A9369F /* interface */ = {
 			isa = PBXGroup;
 			children = (
+				DD05A56A15FE309800DF24FE /* phidget21.h */,
 				DD11C4CE1582B3F800A9369F /* ioPhidget.cpp */,
 				DD11C4D11582B43800A9369F /* ioPhidget.h */,
 			);
@@ -118,8 +120,8 @@
 		DDA967C014DF209800E1E92D = {
 			isa = PBXGroup;
 			children = (
+				DD05A56C15FE370000DF24FE /* Phidget21.framework */,
 				DDB42B3915E1025E0049EB0D /* algo */,
-				DD6D5B4715922718006ADB4B /* Phidget21.framework */,
 				DD2BDA7D1585F578000FD88F /* vision */,
 				DD11C4D01582B41500A9369F /* interface */,
 				DDE886E215754C8E0090CBA0 /* cvBlob-legacy.framework */,
@@ -277,6 +279,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/usr/local/include/,
@@ -309,6 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/usr/local/include/,

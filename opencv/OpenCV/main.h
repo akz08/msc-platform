@@ -14,13 +14,44 @@
 #include <time.h>
 #include "ioPhidget.h"
 #include "opencv2/highgui/highgui.hpp"
-
+#include <fstream>
 
 
 using namespace std;
 using namespace cv;
 using namespace cvb;
 
+
+struct calibrationValues {
+    double rawValue1;
+    double rawValue2;
+    double actValue1;
+    double actValue2;
+    double slope;
+    double yIntercept;
+    double currentValue;
+    double currentCalibratedValue;
+    bool calculated;
+};
+calibrationValues bridgeValuesArray[4];
+
+ioPhidget phidget;
+
+vector<string> bridgeNo;
+int currentBridge;
+double currentBridgeValue;
+double value;
+double blank;
+double zeroIn[4];
+
+ofstream phidgetFile;
+clock_t temp;
+clock_t temp1;
+
+time_t rawtime;
+struct tm * timeinfo;
+
+time_t seconds;
 
 /* the code has been restructured to have clearly sectioned out code for both photo trials for testing, and the main foot sensing algorithms */
 

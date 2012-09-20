@@ -159,6 +159,8 @@ void footDetect::findFeet(Mat inputMatrix, Mat& outputMatrix)
         else {
             cout << max(a1,a2) << " made it! with angle: " << theta << endl;
             cout << "eccentricity: " << eccentricity << endl;
+            cout << "centroid: " << centroidPt.x << "," << centroidPt.y << endl;
+            testFile << centroidPt.x << "," << centroidPt.y << endl;
 //            cout << "b:" << b << "g:" << g << "r:" << r << endl;
             // save the centroid point for checking later ?
             ++itc;

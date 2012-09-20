@@ -8,7 +8,7 @@
 
 #include "ioPhidget.h"
 
-   
+// redundant?
 int ioPhidget::connectorStatus(bool connect){
     
     isConnected = connect;
@@ -16,6 +16,7 @@ int ioPhidget::connectorStatus(bool connect){
     return 0;
 }
 
+// get the value of phidget bridge by specifying index
 double ioPhidget::getValue(int index){
     
     double value = 0;
@@ -23,93 +24,93 @@ double ioPhidget::getValue(int index){
     if (value == 0) {
         lc0.value = value;
     }
-//    value = lc0.value;
+    //    value = lc0.value;
     return value;
 }
 
-int ioPhidget::assignRawData(int index, double value){
+double* ioPhidget::getValues(){
     
-//    printf("Data Event (%d) %lf\n",index,value);// it reads in the data fine. problem with the assigning to structs
+    double *array = new double[4];
+    CPhidgetBridge_getBridgeValue(bridge, 0, &array[0]);
+    CPhidgetBridge_getBridgeValue(bridge, 1, &array[1]);
+    CPhidgetBridge_getBridgeValue(bridge, 2, &array[2]);
+    CPhidgetBridge_getBridgeValue(bridge, 3, &array[3]);
     
-//    if(index == 0)
-//        printf("it was a zero!");
+    return array;
+    
+}
 
-    switch (index) {
-//        case 0:
-//            lc0.value = value;
-//            lc0.index = index;
-//            printf("Data Event (%d) %lf\n",lc0.index,lc0.value);
-//            break;
-//        case 1:
-//            lc1.value = value;
-//            lc1.index = index;
-//            printf("Data Event (%d) %lf\n",lc1.index,lc1.value);
-//            break;
-//        case 2:
-//            lc2.value = value;
-//            lc2.index = index;
-//            printf("Data Event (%d) %lf\n",lc2.index,lc2.value);
-//            break;
-//        case 3:
-//            lc3.value = value;
-//            lc3.index = index;
-//            printf("Data Event (%d) %lf\n",lc3.index,lc3.value);
-//            break;
-            
+double ioPhidget::calibValue(int index){
+    
+    // init value
+    double value = 0;
+    CPhidgetBridge_getBridgeValue(bridge, index, &value);
+    
+    // hard coding the calibration for the moment;
+    switch(index){
+        case 0:
+            value= 25.1078*value + 0.3380;
+            break;
+        case 1:
+            value = 24.4284*value - 0.9835;
+            break;
+        case 2:
+            value = 29.1218*value - 0.0542;
+            break;
+        case 3:
+            value = 27.3662*value + 0.7292;
+            break;
         default:
             break;
     }
     
-//    switch (index) {
-//
-//        case 0:
-//    
-//            lc0.index = index;
-//            lc0.value = value;
-//            cell0 = value;
-//            break;
-//            
-//        case 1:
-//            lc1.index = index;
-//            lc1.value = value;
-//            cell1 = value;
-//            break;
-//            
-//        case 2:
-//            lc2.index = index;
-//            lc2.value = value;
-//            cell2 = value;
-//            break;
-//            
-//        case 3:
-//            lc3.index = index;
-//            lc3.value = value;
-//            cell3 = value;
-//            break;
-//            
-//        default:
-//            break;
-//    }
+    return value;
+    
+}
 
-//    if (index == 0 ){
-//        lc0.index = index;
-//        lc0.value = value;
-//    }
-//    
-//    else if (index == 1){
-//        lc1.value = value;
-//        lc1.index = index;
-//    }
-//    
-//    else if (index == 2){
-//        lc2.value = value;
-//        lc2.index = index;
-//    }
-//    
-//    else if (index == 3){
-//        lc3.value = value;
-//        lc3.index = 3;
-//    }
+double ioPhidget::calibrate(int index, double current, double value1, double cur1, double value2, double cur2){
+    
+    // just implementing the calibration equation & returning the calibrated value
+    // index is currently redundant
+    double calibrated;
+    double slope = (value2 - value1) / (cur2 - cur1);
+    double yint = value1 - (cur1*slope);
+    
+    calibrated = (slope*current) + yint;
+    
+    return calibrated;
+    
+}
+
+int ioPhidget::assignRawData(int index, double value){
+    
+    
+    
+    switch (index) {
+            //        case 0:
+            //            lc0.value = value;
+            //            lc0.index = index;
+            //            printf("Data Event (%d) %lf\n",lc0.index,lc0.value);
+            //            break;
+            //        case 1:
+            //            lc1.value = value;
+            //            lc1.index = index;
+            //            printf("Data Event (%d) %lf\n",lc1.index,lc1.value);
+            //            break;
+            //        case 2:
+            //            lc2.value = value;
+            //            lc2.index = index;
+            //            printf("Data Event (%d) %lf\n",lc2.index,lc2.value);
+            //            break;
+            //        case 3:
+            //            lc3.value = value;
+            //            lc3.index = index;
+            //            printf("Data Event (%d) %lf\n",lc3.index,lc3.value);
+            //            break;
+            
+        default:
+            break;
+    }
     
     
     return 0;
@@ -136,12 +137,12 @@ int CCONV AttachHandler(CPhidgetHandle phid, void *userptr)
 	CPhidgetBridge_setDataRate(bridge, 100);
     
     //CPhidget_getDeviceStatus((CPhidgetHandle)phid, &iophidgetIsConnected);
-
+    
 	printf("Attach handler ran!");
     
     // send a flag that attach handler ran
     bool connected = true;
-
+    
 	return ((ioPhidget*)userptr)->connectorStatus(connected);
 }
 
@@ -151,7 +152,7 @@ int CCONV DetachHandler(CPhidgetHandle phid, void *userptr)
     
     // send a flag that attach handler ran
     bool connected = false;
-
+    
 	return ((ioPhidget*)userptr)->connectorStatus(connected);
 }
 
@@ -165,17 +166,17 @@ int CCONV ErrorHandler(CPhidgetHandle phid, void *userptr, int ErrorCode, const 
 int CCONV data(CPhidgetBridgeHandle phid, void *userPtr, int index, double val)
 {
 	//CPhidgetBridgeHandle bridge = (CPhidgetBridgeHandle)phid; // what is the purpose of this?
-
     
-//	printf("Data Event (%d) %lf\n",index,val); // index refers to the 'port' of the phidget
-
-//    userPtr = &index;
     
-//    double dat[2] = {(double)index, val};
-//    userPtr = &dat;
-//
-//    printf("test %f, %f", dat[0],dat[1]);
-//    userPtr = &index;
+    //	printf("Data Event (%d) %lf\n",index,val); // index refers to the 'port' of the phidget
+    
+    //    userPtr = &index;
+    
+    //    double dat[2] = {(double)index, val};
+    //    userPtr = &dat;
+    //
+    //    printf("test %f, %f", dat[0],dat[1]);
+    //    userPtr = &index;
     
 	return ((ioPhidget*)userPtr)->assignRawData(index, val);
 }
@@ -208,7 +209,7 @@ void ioPhidget::connect(int timeout = 10000){
     
     // return if the device is attached or not (int)
     CPhidget_getDeviceStatus((CPhidgetHandle)bridge, &isAttached);
-
+    
     
     
     return;
