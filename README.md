@@ -15,7 +15,7 @@ As the repository was created primarily as a backup tool, and this was a *learn-
 
 Development
 -----------
-Development of the project will be continued in a separate repository, after sufficient revision of programming concepts in C++. The current target is full reimplementation of the system using the Qt framework, with a completion date of early 2014.  
+Development of the project is suspended indefinitely and will be replaced with a collection of smaller spiritual successors.
 
 [1]: https://github.com/akz08/msc-platform/tree/master/of64/apps/scooter%20platform/emptyExample  "OpenFrameworks UI"
 
