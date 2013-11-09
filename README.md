@@ -11,11 +11,11 @@ Prototype code used for a Master's dissertation for the creation of a rehabilita
 
 As the repository was created primarily as a backup tool, and this was a *learn-as-you-go project*, there are plenty of obsolete files and several clones of [OpenFrameworks][3] project files. The bulk of the self-authored working code can be found at the linked bullet points above. A basic game using [OSC][4] for networking with the sensor UI was also created in C#/[Unity3D][5], but was not uploaded due to size constraints.
 
-**This repository is for reference purposes only.**
+**This repository is for (historical) reference purposes only. The code is *bad*.**
 
 Development
 -----------
-Development of the project is suspended indefinitely and will be replaced with a collection of smaller spiritual successors.
+Development of the project is suspended indefinitely.
 
 [1]: https://github.com/akz08/msc-platform/tree/master/of64/apps/scooter%20platform/emptyExample  "OpenFrameworks UI"
 
