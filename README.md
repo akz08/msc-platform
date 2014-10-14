@@ -7,7 +7,7 @@ Prototype code used for a Master's dissertation for the creation of a rehabilita
 
 * [Sensor & data visualisation UI][1] using [OpenFrameworks][3]
 
-* [Base implementation of vision-based foot detection methods][6] using [OpenCV] [2]  
+* [Base implementation of vision-based foot detection methods][2] using [OpenCV] [6]  
 
 As the repository was created primarily as a backup tool, and this was a *learn-as-you-go project*, there are plenty of obsolete files and several clones of [OpenFrameworks][3] project files. The bulk of the self-authored working code can be found at the linked bullet points above. A basic game using [OSC][4] for networking with the sensor UI was also created in C#/[Unity3D][5], but was not uploaded due to size constraints.
 
