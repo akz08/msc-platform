@@ -13,9 +13,15 @@ As the repository was created primarily as a backup tool, and this was a *learn-
 
 **This repository is for (historical) reference purposes only. The code is *bad*.**
 
+### OpenFrameworks UI
+![OpenFrameworks UI](https://github.com/akz08/msc-platform/blob/master/img/UI.jpg "OpenFrameworks UI")
+
+### Scooter Platform
+![Scooter Platform](https://github.com/akz08/msc-platform/blob/master/img/actualScooter.jpg "Scooter Platform")
+
 Development
 -----------
-Development of the project is suspended indefinitely.
+Development of this project is suspended indefinitely.
 
 [1]: https://github.com/akz08/msc-platform/tree/master/of64/apps/scooter%20platform/emptyExample  "OpenFrameworks UI"
 
